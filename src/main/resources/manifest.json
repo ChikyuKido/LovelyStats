@@ -1,0 +1,18 @@
+{
+  "Group": "LovelyStats",
+  "Name": "LovelyStats",
+  "Version": "0.0.1",
+  "Description": "Advanced statistics tracking",
+  "Authors": [
+    {
+      "Name": "ChikyuKido"
+    }
+  ],
+  "Website": "https://github.com/ChikyuKido/LovelyStats",
+  "Main": "io.github.chikyukido.lovelystats.Main",
+  "ServerVersion": "*",
+  "Dependencies": {},
+  "OptionalDependencies": {},
+  "DisabledByDefault": false,
+  "IncludesAssetPack": true
+}
