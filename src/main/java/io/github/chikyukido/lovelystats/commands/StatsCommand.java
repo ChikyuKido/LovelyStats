@@ -10,7 +10,6 @@ import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayer
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import io.github.chikyukido.lovelystats.stats.StatsHandler;
 
 import javax.annotation.Nonnull;
 
@@ -26,8 +25,7 @@ public class StatsCommand extends AbstractPlayerCommand {
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
         String type = typeArg.get(commandContext);
         if (type.equals("playtime")) {
-            long playtime = StatsHandler.get().getTotalPlaytime(playerRef.getUuid().toString());
-            playerRef.sendMessage(Message.raw("Your total playtime is: " + playtime + " seconds"));
+            PlaytimeCommand.run(playerRef);
         } else {
             playerRef.sendMessage(Message.raw("Unknown type: " + type));
         }

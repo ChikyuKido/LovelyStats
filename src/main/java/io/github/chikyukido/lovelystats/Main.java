@@ -4,7 +4,9 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import io.github.chikyukido.lovelystats.commands.StatsCommand;
-import io.github.chikyukido.lovelystats.systems.PlaytimeSystem;
+import io.github.chikyukido.lovelystats.stats.PlaytimePlayerHandler;
+import io.github.chikyukido.lovelystats.systems.LastInteractionSystem;
+import io.github.chikyukido.lovelystats.systems.PlaytimePlayerSystem;
 
 import javax.annotation.Nonnull;
 
@@ -16,11 +18,16 @@ public class Main extends JavaPlugin {
 
     @Override
     protected void setup() {
-        this.getEventRegistry().registerGlobal(PlayerConnectEvent.class, PlaytimeSystem::onPlayerConnect);
-        this.getEventRegistry().registerGlobal(PlayerDisconnectEvent.class, PlaytimeSystem::onPlayerDisconnect);
+        this.getEventRegistry().registerGlobal(PlayerConnectEvent.class, PlaytimePlayerSystem::onPlayerConnect);
+        this.getEventRegistry().registerGlobal(PlayerDisconnectEvent.class, PlaytimePlayerSystem::onPlayerDisconnect);
+
+        this.getEventRegistry().registerGlobal(PlayerConnectEvent.class, LastInteractionSystem::onPlayerConnect);
 
         this.getCommandRegistry().registerCommand(new StatsCommand());
 
-        new PlaytimeSystem();
+        PlaytimePlayerHandler.init();
+
+        PlaytimePlayerSystem.registerPlaytimeSystem();
+        LastInteractionSystem.registerLastInteractionSystem();
     }
 }

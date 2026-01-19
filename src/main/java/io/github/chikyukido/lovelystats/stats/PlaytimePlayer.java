@@ -4,13 +4,14 @@ import io.github.chikyukido.lovelystats.types.PlaytimeSession;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-public class StatsPlayer {
-    private String uuid;
-    private List<PlaytimeSession> sessions = new ArrayList<>();
+public class PlaytimePlayer {
+    private final UUID uuid;
+    private final List<PlaytimeSession> sessions = new ArrayList<>();
     private PlaytimeSession currentSession = null;
 
-    public StatsPlayer(String uuid) {
+    public PlaytimePlayer(UUID uuid) {
         this.uuid = uuid;
     }
     void startPlaytimeSession () {
@@ -22,17 +23,19 @@ public class StatsPlayer {
         sessions.add(currentSession);
         currentSession = null;
     }
-    void increasePlaytime(double playtime) {
+    void increaseActivePlaytime(long playtime) {
         if(currentSession == null) {
             startPlaytimeSession();
         }
-        currentSession.increasePlaytime(playtime);
+        currentSession.increaseActiveTime(playtime);
     }
-    long getTotalPlaytime() {
-        return (long) currentSession.getTotalPlaytime();
+    void increaseIdlePlaytime(long playtime) {
+        if(currentSession == null) {
+            startPlaytimeSession();
+        }
+        currentSession.increaseIdleTime(playtime);
     }
-
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid;
     }
 

@@ -3,12 +3,14 @@ package io.github.chikyukido.lovelystats.types;
 public class PlaytimeSession {
     private long startTime;
     private long stopTime;
-    private double playtime;
+    private long activeTime;
+    private long idleTime;
 
-    public PlaytimeSession(long startTime, long stopTime, double playtime) {
+    public PlaytimeSession(long startTime, long stopTime, long activeTime,long idleTime) {
         this.startTime = startTime;
         this.stopTime = stopTime;
-        this.playtime = playtime;
+        this.activeTime = activeTime;
+        this.idleTime = idleTime;
     }
     public PlaytimeSession() {
         this.startTime = System.currentTimeMillis()/1000;
@@ -17,21 +19,25 @@ public class PlaytimeSession {
     public void stopSession() {
         stopTime = System.currentTimeMillis()/1000;
     }
-    public void stopSession(long stopTime) {
-        this.stopTime = stopTime;
+    public void increaseActiveTime(long playtime) {
+        this.activeTime += playtime;
     }
-    public void increasePlaytime(double playtime) {
-        this.playtime += playtime;
+    public void increaseIdleTime(long playtime) {
+        this.idleTime += playtime;
     }
 
     public long getStartTime() {
         return startTime;
     }
-
     public long getStopTime() {
         return stopTime;
     }
-    public double getTotalPlaytime() {
-        return playtime;
+
+    public long getActiveTime() {
+        return activeTime;
+    }
+
+    public long getIdleTime() {
+        return idleTime;
     }
 }

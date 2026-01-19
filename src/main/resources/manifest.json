@@ -11,7 +11,9 @@
   "Website": "https://github.com/ChikyuKido/LovelyStats",
   "Main": "io.github.chikyukido.lovelystats.Main",
   "ServerVersion": "*",
-  "Dependencies": {},
+  "Dependencies": {
+    "Zoltus:TinyMessage": "*"
+  },
   "OptionalDependencies": {},
   "DisabledByDefault": false,
   "IncludesAssetPack": true
