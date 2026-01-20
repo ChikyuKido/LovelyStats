@@ -17,8 +17,6 @@ public class ItemCollectedSystem {
                         Murmur3.hash64(inv.item.itemId),
                         inv.item.quantity
                 );
-                playerRef.sendMessage(Message.raw("item collected"));
-
             }
         });
     }

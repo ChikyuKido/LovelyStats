@@ -43,7 +43,6 @@ public class TravelSystem extends EntityTickingSystem<EntityStore> {
 
         double distance = lastPosition.distanceTo(currentPosition);
         if(distance <= 0.0 || Double.isNaN(distance)) return;
-        player.sendMessage(Message.raw("Distance: " + distance));
         double elevation = currentPosition.getY() - lastPosition.getY();
         PlayerStats stats = PlayerStatsHandler.get().getPlayerStats(player.getUuid());
 
