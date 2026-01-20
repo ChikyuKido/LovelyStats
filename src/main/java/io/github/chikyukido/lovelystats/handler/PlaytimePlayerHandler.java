@@ -21,9 +21,7 @@ public class PlaytimePlayerHandler {
             for (PlaytimePlayer player : players) {
                 INSTANCE.players.put(player.getUuid(), player);
             }
-        } catch (IOException _) {
-
-        }
+        } catch (IOException _) {}
     }
 
     public void savePlayer(UUID uuid) {

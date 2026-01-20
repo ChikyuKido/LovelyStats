@@ -1,4 +1,4 @@
-package io.github.chikyukido.lovelystats.systems;
+package io.github.chikyukido.lovelystats.systems.playtime;
 
 import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
@@ -6,6 +6,8 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import io.github.chikyukido.lovelystats.handler.PlaytimePlayerHandler;
+import io.github.chikyukido.lovelystats.systems.LastInteractionSystem;
+
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 

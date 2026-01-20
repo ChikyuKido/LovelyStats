@@ -1,4 +1,4 @@
-package io.github.chikyukido.lovelystats.systems.block;
+package io.github.chikyukido.lovelystats.systems.item;
 
 import com.hypixel.hytale.component.Archetype;
 import com.hypixel.hytale.component.ArchetypeChunk;
@@ -6,21 +6,18 @@ import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.EntityEventSystem;
-import com.hypixel.hytale.logger.HytaleLogger;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.core.event.events.ecs.PlaceBlockEvent;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import io.github.chikyukido.lovelystats.handler.BlockPlayerHandler;
+import io.github.chikyukido.lovelystats.handler.ItemPlayerHandler;
 import io.github.chikyukido.lovelystats.util.Murmur3;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class BlockPlacedSystem extends EntityEventSystem<EntityStore, PlaceBlockEvent> {
-    public static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
     public BlockPlacedSystem() {
         super(PlaceBlockEvent.class);
@@ -35,7 +32,7 @@ public class BlockPlacedSystem extends EntityEventSystem<EntityStore, PlaceBlock
         var playerRef = archetypeChunk.getReferenceTo(i);
         PlayerRef player = store.getComponent(playerRef, PlayerRef.getComponentType());
         if(player == null) return;
-        BlockPlayerHandler.get().increaseBlockPlace(player.getUuid(), Murmur3.hash64(item.getBlockId()));
+        ItemPlayerHandler.get().increaseBlockPlace(player.getUuid(), Murmur3.hash64(item.getBlockId()));
     }
 
     @Nullable

@@ -28,7 +28,9 @@ public class StatsCommand extends AbstractPlayerCommand {
             PlaytimeCommand.run(playerRef);
         } else if (type.equals("block")) {
             BlockCommand.run(playerRef);
-        } else {
+        } else if(type.equals("item")) {
+            ItemCommand.run(playerRef);
+        }else {
             playerRef.sendMessage(Message.raw("Unknown type: " + type));
         }
     }

@@ -1,4 +1,4 @@
-package io.github.chikyukido.lovelystats.systems.block;
+package io.github.chikyukido.lovelystats.systems.item;
 
 import com.hypixel.hytale.component.Archetype;
 import com.hypixel.hytale.component.ArchetypeChunk;
@@ -6,28 +6,23 @@ import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.EntityEventSystem;
-import com.hypixel.hytale.logger.HytaleLogger;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.asset.type.item.config.Item;
-import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.ecs.BreakBlockEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import io.github.chikyukido.lovelystats.handler.BlockPlayerHandler;
+import io.github.chikyukido.lovelystats.handler.ItemPlayerHandler;
 import io.github.chikyukido.lovelystats.util.Murmur3;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class BlockBreakSystem extends EntityEventSystem<EntityStore, BreakBlockEvent> {
-    public static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     public BlockBreakSystem() {
         super(BreakBlockEvent.class);
     }
 
     @Override
     public void handle(int i, @Nonnull ArchetypeChunk<EntityStore> archetypeChunk, @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer, @Nonnull BreakBlockEvent event) {
-
         Item item = event.getBlockType().getItem();
         if (item == null || item == Item.UNKNOWN) return;
 
@@ -35,7 +30,7 @@ public class BlockBreakSystem extends EntityEventSystem<EntityStore, BreakBlockE
         PlayerRef player = store.getComponent(playerRef, PlayerRef.getComponentType());
         if (player == null) return;
 
-        BlockPlayerHandler.get().increaseBlockBreak(player.getUuid(), Murmur3.hash64(item.getBlockId()));
+        ItemPlayerHandler.get().increaseBlockBreak(player.getUuid(), Murmur3.hash64(item.getBlockId()));
     }
 
     @Nullable
