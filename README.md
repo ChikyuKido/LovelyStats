@@ -11,7 +11,7 @@ I tried to make it as efficient as possible so there is no perfomance impact.
 - Items crafted
 - Tools broken (not implemented yet)
 
-## Displaying stats
+### Displaying stats
 Yeah so currently there is no UI for it actually and I will make one soon but currently we have commands
 - /stats playtime
 - /stats block
