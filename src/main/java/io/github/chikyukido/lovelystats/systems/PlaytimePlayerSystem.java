@@ -33,7 +33,6 @@ public class PlaytimePlayerSystem {
         PlayerRef player = event.getPlayerRef();
         UUID uuid = player.getUuid();
         PlaytimePlayerHandler.get().endPlaytimeSession(uuid);
-        PlaytimePlayerHandler.get().savePlayer(uuid);
     }
 
 }

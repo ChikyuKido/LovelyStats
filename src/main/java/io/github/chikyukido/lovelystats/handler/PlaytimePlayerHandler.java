@@ -34,6 +34,11 @@ public class PlaytimePlayerHandler {
             } catch (Exception _) {}
         }
     }
+    public void saveAllPlayers() {
+        for (PlaytimePlayer player : players.values()) {
+            savePlayer(player.getUuid());
+        }
+    }
     public void startPlaytimeSession(UUID uuid) {
         players.computeIfAbsent(uuid, PlaytimePlayer::new).startPlaytimeSession();
     }

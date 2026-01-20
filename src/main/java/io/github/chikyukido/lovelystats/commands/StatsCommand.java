@@ -19,13 +19,15 @@ public class StatsCommand extends AbstractPlayerCommand {
         super("stats", "overiew of your statistics");
     }
 
-    RequiredArg<String> typeArg = this.withRequiredArg("playtime","See your total playtime", ArgTypes.STRING);
+    RequiredArg<String> typeArg = this.withRequiredArg("type","The type of statistic you want to see", ArgTypes.STRING);
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
         String type = typeArg.get(commandContext);
         if (type.equals("playtime")) {
             PlaytimeCommand.run(playerRef);
+        } else if (type.equals("block")) {
+            BlockCommand.run(playerRef);
         } else {
             playerRef.sendMessage(Message.raw("Unknown type: " + type));
         }

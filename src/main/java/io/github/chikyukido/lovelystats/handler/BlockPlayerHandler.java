@@ -2,6 +2,8 @@ package io.github.chikyukido.lovelystats.handler;
 
 import io.github.chikyukido.lovelystats.save.BlockPlayerStorage;
 import io.github.chikyukido.lovelystats.types.BlockPlayer;
+import io.github.chikyukido.lovelystats.types.PlaytimePlayer;
+
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,6 +37,11 @@ public class BlockPlayerHandler {
                 BlockPlayerStorage.INSTANCE.store(player);
             } catch (Exception _) {
             }
+        }
+    }
+    public void saveAllPlayers() {
+        for (BlockPlayer player : players.values()) {
+            savePlayer(player.getUuid());
         }
     }
 

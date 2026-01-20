@@ -6,6 +6,7 @@ import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.EntityEventSystem;
+import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.core.entity.entities.Player;
@@ -19,20 +20,21 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class BlockBreakSystem extends EntityEventSystem<EntityStore, BreakBlockEvent> {
+    public static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     public BlockBreakSystem() {
         super(BreakBlockEvent.class);
     }
 
     @Override
     public void handle(int i, @Nonnull ArchetypeChunk<EntityStore> archetypeChunk, @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer, @Nonnull BreakBlockEvent event) {
+
         Item item = event.getBlockType().getItem();
-        if(item == null) return;
-        if(item == Item.UNKNOWN) return;
+        if (item == null || item == Item.UNKNOWN) return;
+
         var playerRef = archetypeChunk.getReferenceTo(i);
         PlayerRef player = store.getComponent(playerRef, PlayerRef.getComponentType());
-        if(player == null) return;
+        if (player == null) return;
 
-        player.sendMessage(Message.raw(item.getBlockId()));
         BlockPlayerHandler.get().increaseBlockBreak(player.getUuid(), Murmur3.hash64(item.getBlockId()));
     }
 
