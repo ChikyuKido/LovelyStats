@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class PlaytimePlayer {
+public class PlaytimeStats {
     private final UUID uuid;
     private final List<PlaytimeSession> sessions = new ArrayList<>();
     private PlaytimeSession currentSession = null;
 
-    public PlaytimePlayer(UUID uuid) {
+    public PlaytimeStats(UUID uuid) {
         this.uuid = uuid;
     }
     public void startPlaytimeSession () {

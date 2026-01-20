@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public interface PlayerStorage<T> {
+public interface StatsStorage<T> {
 
     File getDataFolder();
 

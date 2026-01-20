@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class ItemPlayer {
+public class ItemStats {
     private final UUID uuid;
 
     private final Map<Long, Long> blocksBroken = new HashMap<>();
@@ -15,7 +15,7 @@ public class ItemPlayer {
     private final Map<Long, Long> crafted = new HashMap<>();
     private final Map<Long, Long> toolsBroken = new HashMap<>();
 
-    public ItemPlayer(UUID uuid) {
+    public ItemStats(UUID uuid) {
         this.uuid = uuid;
     }
 

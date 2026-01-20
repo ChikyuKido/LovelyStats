@@ -5,8 +5,8 @@ import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import fi.sulku.hytale.TinyMsg;
-import io.github.chikyukido.lovelystats.handler.ItemPlayerHandler;
-import io.github.chikyukido.lovelystats.types.ItemPlayer;
+import io.github.chikyukido.lovelystats.handler.ItemStatsHandler;
+import io.github.chikyukido.lovelystats.types.ItemStats;
 import io.github.chikyukido.lovelystats.util.IdHashMap;
 
 import java.util.*;
@@ -14,7 +14,7 @@ import java.util.*;
 public class BlockCommand {
 
     public static void run(PlayerRef playerRef) {
-        ItemPlayer p = ItemPlayerHandler.get().getBlockPlayer(playerRef.getUuid());
+        ItemStats p = ItemStatsHandler.get().getBlockPlayer(playerRef.getUuid());
 
         long totalBroken = p.getBlocksBroken().values().stream().mapToLong(Long::longValue).sum();
         long totalPlaced = p.getBlocksPlaced().values().stream().mapToLong(Long::longValue).sum();

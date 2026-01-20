@@ -1,27 +1,27 @@
 package io.github.chikyukido.lovelystats.handler;
 
-import io.github.chikyukido.lovelystats.save.ItemPlayerStorage;
-import io.github.chikyukido.lovelystats.types.ItemPlayer;
+import io.github.chikyukido.lovelystats.save.ItemStatsStorage;
+import io.github.chikyukido.lovelystats.types.ItemStats;
 
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ItemPlayerHandler {
+public class ItemStatsHandler {
 
-    private static final ItemPlayerHandler INSTANCE = new ItemPlayerHandler();
-    private final ConcurrentHashMap<UUID, ItemPlayer> players = new ConcurrentHashMap<>();
+    private static final ItemStatsHandler INSTANCE = new ItemStatsHandler();
+    private final ConcurrentHashMap<UUID, ItemStats> players = new ConcurrentHashMap<>();
 
-    private ItemPlayerHandler() {}
+    private ItemStatsHandler() {}
 
-    public static ItemPlayerHandler get() {
+    public static ItemStatsHandler get() {
         return INSTANCE;
     }
 
     public static void init() {
         try {
-            var players = ItemPlayerStorage.INSTANCE.loadAll();
-            for (ItemPlayer player : players) {
+            var players = ItemStatsStorage.INSTANCE.loadAll();
+            for (ItemStats player : players) {
                 INSTANCE.players.put(player.getUuid(), player);
             }
         } catch (IOException _) {
@@ -31,15 +31,15 @@ public class ItemPlayerHandler {
 
     public void savePlayer(UUID uuid) {
         if (players.containsKey(uuid)) {
-            ItemPlayer player = players.get(uuid);
+            ItemStats player = players.get(uuid);
             try {
-                ItemPlayerStorage.INSTANCE.store(player);
+                ItemStatsStorage.INSTANCE.store(player);
             } catch (Exception _) {
             }
         }
     }
     public void saveAllPlayers() {
-        for (ItemPlayer player : players.values()) {
+        for (ItemStats player : players.values()) {
             savePlayer(player.getUuid());
         }
     }
@@ -69,8 +69,8 @@ public class ItemPlayerHandler {
     public void increaseToolBroken(UUID uuid, long toolId) {
         getBlockPlayer(uuid).increaseToolBroken(toolId);
     }
-    public ItemPlayer getBlockPlayer(UUID uuid) {
-        return players.computeIfAbsent(uuid, ItemPlayer::new);
+    public ItemStats getBlockPlayer(UUID uuid) {
+        return players.computeIfAbsent(uuid, ItemStats::new);
     }
 }
 

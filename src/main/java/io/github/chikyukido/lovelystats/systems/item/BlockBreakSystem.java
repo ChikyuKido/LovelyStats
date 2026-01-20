@@ -10,7 +10,7 @@ import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.core.event.events.ecs.BreakBlockEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import io.github.chikyukido.lovelystats.handler.ItemPlayerHandler;
+import io.github.chikyukido.lovelystats.handler.ItemStatsHandler;
 import io.github.chikyukido.lovelystats.util.Murmur3;
 
 import javax.annotation.Nonnull;
@@ -26,11 +26,10 @@ public class BlockBreakSystem extends EntityEventSystem<EntityStore, BreakBlockE
         Item item = event.getBlockType().getItem();
         if (item == null || item == Item.UNKNOWN) return;
 
-        var playerRef = archetypeChunk.getReferenceTo(i);
-        PlayerRef player = store.getComponent(playerRef, PlayerRef.getComponentType());
+        PlayerRef player = archetypeChunk.getComponent(i, PlayerRef.getComponentType());
         if (player == null) return;
 
-        ItemPlayerHandler.get().increaseBlockBreak(player.getUuid(), Murmur3.hash64(item.getBlockId()));
+        ItemStatsHandler.get().increaseBlockBreak(player.getUuid(), Murmur3.hash64(item.getBlockId()));
     }
 
     @Nullable

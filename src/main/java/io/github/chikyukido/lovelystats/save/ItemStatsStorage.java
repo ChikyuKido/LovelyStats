@@ -1,22 +1,23 @@
 package io.github.chikyukido.lovelystats.save;
 
-import io.github.chikyukido.lovelystats.types.ItemPlayer;
+import io.github.chikyukido.lovelystats.types.ItemStats;
 
 import java.io.*;
 import java.util.*;
 
-public class ItemPlayerStorage implements PlayerStorage<ItemPlayer>{
-    public static final ItemPlayerStorage INSTANCE = new ItemPlayerStorage();
+public class ItemStatsStorage implements StatsStorage<ItemStats> {
+    public static final ItemStatsStorage INSTANCE = new ItemStatsStorage();
 
     private static final int VERSION = 1;
     private static final File DATA_FOLDER = new File("mods/LovelyStats/block");
 
+    private ItemStatsStorage() {}
     static {
         DATA_FOLDER.mkdirs();
     }
 
     @Override
-    public void store(ItemPlayer player) throws IOException {
+    public void store(ItemStats player) throws IOException {
         File file = new File(DATA_FOLDER, player.getUuid().toString() + ".bin");
         File temp = new File(DATA_FOLDER, player.getUuid().toString() + ".bin.tmp");
 
@@ -40,9 +41,9 @@ public class ItemPlayerStorage implements PlayerStorage<ItemPlayer>{
     }
 
     @Override
-    public ItemPlayer load(UUID uuid) throws IOException {
+    public ItemStats load(UUID uuid) throws IOException {
         File file = new File(DATA_FOLDER, uuid.toString() + ".bin");
-        ItemPlayer player = new ItemPlayer(uuid);
+        ItemStats player = new ItemStats(uuid);
 
         if (!file.exists()) return player;
 

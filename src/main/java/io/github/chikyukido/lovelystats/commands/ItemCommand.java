@@ -1,10 +1,9 @@
 package io.github.chikyukido.lovelystats.commands;
 
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import fi.sulku.hytale.TinyMsg;
-import io.github.chikyukido.lovelystats.handler.ItemPlayerHandler;
-import io.github.chikyukido.lovelystats.types.ItemPlayer;
+import io.github.chikyukido.lovelystats.handler.ItemStatsHandler;
+import io.github.chikyukido.lovelystats.types.ItemStats;
 import io.github.chikyukido.lovelystats.util.IdHashMap;
 
 import java.util.Collections;
@@ -14,7 +13,7 @@ import java.util.Map;
 public class ItemCommand {
 
     public static void run(PlayerRef playerRef) {
-        ItemPlayer p = ItemPlayerHandler.get().getBlockPlayer(playerRef.getUuid());
+        ItemStats p = ItemStatsHandler.get().getBlockPlayer(playerRef.getUuid());
 
         long totalDropped = p.getDropped().values().stream().mapToLong(Long::longValue).sum();
         long totalCollected = p.getCollected().values().stream().mapToLong(Long::longValue).sum();

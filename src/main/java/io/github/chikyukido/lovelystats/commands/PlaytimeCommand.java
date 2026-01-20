@@ -2,13 +2,13 @@ package io.github.chikyukido.lovelystats.commands;
 
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import fi.sulku.hytale.TinyMsg;
-import io.github.chikyukido.lovelystats.types.PlaytimePlayer;
-import io.github.chikyukido.lovelystats.handler.PlaytimePlayerHandler;
+import io.github.chikyukido.lovelystats.types.PlaytimeStats;
+import io.github.chikyukido.lovelystats.handler.PlaytimeStatsHandler;
 import io.github.chikyukido.lovelystats.types.PlaytimeSession;
 
 public class PlaytimeCommand {
     public static void run(PlayerRef playerRef) {
-        PlaytimePlayer p = PlaytimePlayerHandler.get()
+        PlaytimeStats p = PlaytimeStatsHandler.get()
                 .getPlaytimeForPlayer(playerRef.getUuid());
 
         long totalActive = 0;

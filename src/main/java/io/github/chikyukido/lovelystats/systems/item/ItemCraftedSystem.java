@@ -1,18 +1,15 @@
 package io.github.chikyukido.lovelystats.systems.item;
 
-import com.hypixel.hytale.protocol.Packet;
 import com.hypixel.hytale.protocol.packets.window.CraftRecipeAction;
 import com.hypixel.hytale.protocol.packets.window.SendWindowAction;
 import com.hypixel.hytale.protocol.packets.window.UpdateWindow;
 import com.hypixel.hytale.protocol.packets.world.PlaySoundEvent2D;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.asset.type.item.config.CraftingRecipe;
 import com.hypixel.hytale.server.core.inventory.MaterialQuantity;
-import com.hypixel.hytale.server.core.io.PacketHandler;
 import com.hypixel.hytale.server.core.io.adapter.PacketAdapters;
 import com.hypixel.hytale.server.core.io.adapter.PlayerPacketWatcher;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
-import io.github.chikyukido.lovelystats.handler.ItemPlayerHandler;
+import io.github.chikyukido.lovelystats.handler.ItemStatsHandler;
 import io.github.chikyukido.lovelystats.util.Murmur3;
 
 import java.util.HashMap;
@@ -66,7 +63,7 @@ public class ItemCraftedSystem {
         if(outputs == null || outputs.length == 0) return;
         for (MaterialQuantity output : cr.getOutputs()) {
             if(output.getItemId() == null) return;
-            ItemPlayerHandler.get().increaseCrafted(player.getUuid(), Murmur3.hash64(output.getItemId()),output.getQuantity());
+            ItemStatsHandler.get().increaseCrafted(player.getUuid(), Murmur3.hash64(output.getItemId()),output.getQuantity());
         }
         lastRecipe.remove(player.getUuid());
     }

@@ -1,23 +1,25 @@
 package io.github.chikyukido.lovelystats.save;
 
-import io.github.chikyukido.lovelystats.types.PlaytimePlayer;
+import io.github.chikyukido.lovelystats.types.PlaytimeStats;
 import io.github.chikyukido.lovelystats.types.PlaytimeSession;
 
 import java.io.*;
 import java.util.List;
 import java.util.UUID;
 
-public class PlaytimePlayerStorage implements PlayerStorage<PlaytimePlayer> {
-    public static final PlaytimePlayerStorage INSTANCE = new PlaytimePlayerStorage();
+public class PlaytimeStatsStorage implements StatsStorage<PlaytimeStats> {
+    public static final PlaytimeStatsStorage INSTANCE = new PlaytimeStatsStorage();
     private static final int VERSION = 1;
     private static final File DATA_FOLDER = new File("mods/LovelyStats/playtime");
+
+    private PlaytimeStatsStorage() {}
 
     static {
         DATA_FOLDER.mkdirs();
     }
 
     @Override
-    public void store(PlaytimePlayer player) throws IOException {
+    public void store(PlaytimeStats player) throws IOException {
         File file = new File(DATA_FOLDER, player.getUuid().toString() + ".bin");
         File temp = new File(DATA_FOLDER, player.getUuid().toString() + ".bin.tmp");
 
@@ -61,9 +63,9 @@ public class PlaytimePlayerStorage implements PlayerStorage<PlaytimePlayer> {
     }
 
     @Override
-    public PlaytimePlayer load(UUID uuid) throws IOException {
+    public PlaytimeStats load(UUID uuid) throws IOException {
         File file = new File(DATA_FOLDER, uuid.toString() + ".bin");
-        PlaytimePlayer player = new PlaytimePlayer(uuid);
+        PlaytimeStats player = new PlaytimeStats(uuid);
 
         if (!file.exists()) return player;
 

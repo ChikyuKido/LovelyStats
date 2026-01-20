@@ -2,8 +2,9 @@ package io.github.chikyukido.lovelystats.systems;
 
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.HytaleServer;
-import io.github.chikyukido.lovelystats.handler.ItemPlayerHandler;
-import io.github.chikyukido.lovelystats.handler.PlaytimePlayerHandler;
+import io.github.chikyukido.lovelystats.handler.ItemStatsHandler;
+import io.github.chikyukido.lovelystats.handler.PlayerStatsHandler;
+import io.github.chikyukido.lovelystats.handler.PlaytimeStatsHandler;
 import java.util.concurrent.TimeUnit;
 
 public class SaveSystem {
@@ -11,8 +12,9 @@ public class SaveSystem {
     public static void run() {
         HytaleServer.SCHEDULED_EXECUTOR.scheduleAtFixedRate(() -> {
             long startTime = System.nanoTime(); // start timing
-            PlaytimePlayerHandler.get().saveAllPlayers();
-            ItemPlayerHandler.get().saveAllPlayers();
+            PlaytimeStatsHandler.get().saveAllPlayers();
+            ItemStatsHandler.get().saveAllPlayers();
+            PlayerStatsHandler.get().saveAllPlayers();
             long duration = System.nanoTime() - startTime;
             LOGGER.atInfo().log("Saved all player data in %s", formatDuration(duration));
         }, 1, 1, TimeUnit.MINUTES);
