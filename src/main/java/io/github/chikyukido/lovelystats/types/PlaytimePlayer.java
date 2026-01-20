@@ -1,6 +1,4 @@
-package io.github.chikyukido.lovelystats.stats;
-
-import io.github.chikyukido.lovelystats.types.PlaytimeSession;
+package io.github.chikyukido.lovelystats.types;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,22 +12,22 @@ public class PlaytimePlayer {
     public PlaytimePlayer(UUID uuid) {
         this.uuid = uuid;
     }
-    void startPlaytimeSession () {
+    public void startPlaytimeSession () {
         currentSession = new PlaytimeSession();
     }
-    void endPlaytimeSession () {
+    public void endPlaytimeSession () {
         if(currentSession == null) return;
         currentSession.stopSession();
         sessions.add(currentSession);
         currentSession = null;
     }
-    void increaseActivePlaytime(long playtime) {
+    public void increaseActivePlaytime(long playtime) {
         if(currentSession == null) {
             startPlaytimeSession();
         }
         currentSession.increaseActiveTime(playtime);
     }
-    void increaseIdlePlaytime(long playtime) {
+    public void increaseIdlePlaytime(long playtime) {
         if(currentSession == null) {
             startPlaytimeSession();
         }

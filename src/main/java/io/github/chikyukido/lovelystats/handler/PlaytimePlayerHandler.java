@@ -1,6 +1,7 @@
-package io.github.chikyukido.lovelystats.stats;
+package io.github.chikyukido.lovelystats.handler;
 
 import io.github.chikyukido.lovelystats.save.PlaytimePlayerStorage;
+import io.github.chikyukido.lovelystats.types.PlaytimePlayer;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -16,7 +17,7 @@ public class PlaytimePlayerHandler {
     }
     public static void init() {
         try {
-            var players = PlaytimePlayerStorage.loadAll();
+            var players = PlaytimePlayerStorage.INSTANCE.loadAll();
             for (PlaytimePlayer player : players) {
                 INSTANCE.players.put(player.getUuid(), player);
             }
@@ -29,7 +30,7 @@ public class PlaytimePlayerHandler {
         if(players.containsKey(uuid)) {
             PlaytimePlayer player = players.get(uuid);
             try {
-                PlaytimePlayerStorage.save(player);
+                PlaytimePlayerStorage.INSTANCE.store(player);
             } catch (Exception _) {}
         }
     }

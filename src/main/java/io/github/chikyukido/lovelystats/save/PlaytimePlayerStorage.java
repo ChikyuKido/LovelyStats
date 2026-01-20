@@ -1,14 +1,14 @@
 package io.github.chikyukido.lovelystats.save;
 
-import io.github.chikyukido.lovelystats.stats.PlaytimePlayer;
+import io.github.chikyukido.lovelystats.types.PlaytimePlayer;
 import io.github.chikyukido.lovelystats.types.PlaytimeSession;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class PlaytimePlayerStorage {
+public class PlaytimePlayerStorage implements PlayerStorage<PlaytimePlayer> {
+    public static final PlaytimePlayerStorage INSTANCE = new PlaytimePlayerStorage();
     private static final int VERSION = 1;
     private static final File DATA_FOLDER = new File("mods/LovelyStats/playtime");
 
@@ -16,7 +16,8 @@ public class PlaytimePlayerStorage {
         DATA_FOLDER.mkdirs();
     }
 
-    public static void save(PlaytimePlayer player) throws IOException {
+    @Override
+    public void store(PlaytimePlayer player) throws IOException {
         File file = new File(DATA_FOLDER, player.getUuid().toString() + ".bin");
         File temp = new File(DATA_FOLDER, player.getUuid().toString() + ".bin.tmp");
 
@@ -59,7 +60,8 @@ public class PlaytimePlayerStorage {
         }
     }
 
-    public static PlaytimePlayer load(UUID uuid) throws IOException {
+    @Override
+    public PlaytimePlayer load(UUID uuid) throws IOException {
         File file = new File(DATA_FOLDER, uuid.toString() + ".bin");
         PlaytimePlayer player = new PlaytimePlayer(uuid);
 
@@ -95,28 +97,9 @@ public class PlaytimePlayerStorage {
 
         return player;
     }
-    public static List<PlaytimePlayer> loadAll() throws IOException {
-        File[] files = DATA_FOLDER.listFiles((dir, name) ->
-                name.endsWith(".bin") && !name.endsWith(".bin.tmp")
-        );
-
-        if (files == null) return List.of();
-
-        List<PlaytimePlayer> players = new ArrayList<>(files.length);
-
-        for (File file : files) {
-            String name = file.getName();
-            String uuidPart = name.substring(0, name.length() - 4);
-
-            try {
-                UUID uuid = UUID.fromString(uuidPart);
-                players.add(load(uuid));
-            } catch (IllegalArgumentException _) {
-            }
-        }
-
-        return players;
+    @Override
+    public File getDataFolder() {
+        return DATA_FOLDER;
     }
-
 
 }
