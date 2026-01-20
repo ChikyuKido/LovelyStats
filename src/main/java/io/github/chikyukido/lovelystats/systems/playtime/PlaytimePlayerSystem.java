@@ -18,12 +18,12 @@ public class PlaytimePlayerSystem {
             var players = Universe.get().getPlayers();
             for (PlayerRef player : players) {
                 if (LastInteractionSystem.isPlayerIdle(player.getUuid())) {
-                    PlaytimeStatsHandler.get().increaseIdlePlaytime(player.getUuid(),1);
-                }else {
+                    PlaytimeStatsHandler.get().increaseIdlePlaytime(player.getUuid(), 1);
+                } else {
                     PlaytimeStatsHandler.get().increaseActivePlaytime(player.getUuid(), 1);
                 }
             }
-        },1,1, TimeUnit.SECONDS);
+        }, 1, 1, TimeUnit.SECONDS);
     }
 
     public static void onPlayerConnect(PlayerConnectEvent event) {
@@ -31,6 +31,7 @@ public class PlaytimePlayerSystem {
         UUID uuid = player.getUuid();
         PlaytimeStatsHandler.get().startPlaytimeSession(uuid);
     }
+
     public static void onPlayerDisconnect(PlayerDisconnectEvent event) {
         PlayerRef player = event.getPlayerRef();
         UUID uuid = player.getUuid();

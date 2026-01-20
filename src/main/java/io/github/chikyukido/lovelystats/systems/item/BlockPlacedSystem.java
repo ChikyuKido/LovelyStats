@@ -26,11 +26,11 @@ public class BlockPlacedSystem extends EntityEventSystem<EntityStore, PlaceBlock
     @Override
     public void handle(int i, @Nonnull ArchetypeChunk<EntityStore> archetypeChunk, @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer, @Nonnull PlaceBlockEvent event) {
         ItemStack is = event.getItemInHand();
-        if(is == null) return;
+        if (is == null) return;
         Item item = is.getItem();
-        if(item == Item.UNKNOWN) return;
+        if (item == Item.UNKNOWN) return;
         PlayerRef player = archetypeChunk.getComponent(i, PlayerRef.getComponentType());
-        if(player == null) return;
+        if (player == null) return;
         ItemStatsHandler.get().increaseBlockPlace(player.getUuid(), Murmur3.hash64(item.getBlockId()));
     }
 

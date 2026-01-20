@@ -18,32 +18,32 @@ import java.util.UUID;
 
 public class ItemCraftedSystem {
 
-    private static final Map<UUID,String> lastRecipe = new HashMap<>();
-    private static final Map<UUID,Boolean> firstUpdate = new HashMap<>();
+    private static final Map<UUID, String> lastRecipe = new HashMap<>();
+    private static final Map<UUID, Boolean> firstUpdate = new HashMap<>();
 
     public static void registerItemCraftedSystem() {
-        PacketAdapters.registerOutbound((PlayerPacketWatcher) ( player, packet) -> {
+        PacketAdapters.registerOutbound((PlayerPacketWatcher) (player, packet) -> {
             if (packet instanceof PlaySoundEvent2D p) {
                 if (p.soundEventIndex == 682) {
                     increaseCrafting(player);
                 }
-            }else if(packet instanceof UpdateWindow p) {
-                if(firstUpdate.getOrDefault(player.getUuid(),true)) {
-                    firstUpdate.put(player.getUuid(),false);
+            } else if (packet instanceof UpdateWindow p) {
+                if (firstUpdate.getOrDefault(player.getUuid(), true)) {
+                    firstUpdate.put(player.getUuid(), false);
                     return;
                 }
                 String json = p.windowData;
-                if(json == null) return;
+                if (json == null) return;
                 int idx = json.indexOf("\"progress\":");
                 if (idx == -1) return;
                 boolean done = json.startsWith("1", idx + 11);
-                if(done) {
+                if (done) {
                     increaseCrafting(player);
                 }
 
             }
         });
-        PacketAdapters.registerInbound((PlayerPacketWatcher) ( player,  packet) -> {
+        PacketAdapters.registerInbound((PlayerPacketWatcher) (player, packet) -> {
             if (packet instanceof SendWindowAction inv) {
                 if (inv.action.getTypeId() == 0) {
                     CraftRecipeAction action = (CraftRecipeAction) inv.action;
@@ -55,15 +55,15 @@ public class ItemCraftedSystem {
     }
 
     private static void increaseCrafting(PlayerRef player) {
-        String recipeId = lastRecipe.getOrDefault(player.getUuid(),"");
-        if(recipeId.isEmpty()) return;
+        String recipeId = lastRecipe.getOrDefault(player.getUuid(), "");
+        if (recipeId.isEmpty()) return;
         CraftingRecipe cr = CraftingRecipe.getAssetMap().getAsset(recipeId);
-        if(cr == null) return;
+        if (cr == null) return;
         MaterialQuantity[] outputs = cr.getOutputs();
-        if(outputs == null || outputs.length == 0) return;
+        if (outputs == null || outputs.length == 0) return;
         for (MaterialQuantity output : cr.getOutputs()) {
-            if(output.getItemId() == null) return;
-            ItemStatsHandler.get().increaseCrafted(player.getUuid(), Murmur3.hash64(output.getItemId()),output.getQuantity());
+            if (output.getItemId() == null) return;
+            ItemStatsHandler.get().increaseCrafted(player.getUuid(), Murmur3.hash64(output.getItemId()), output.getQuantity());
         }
         lastRecipe.remove(player.getUuid());
     }

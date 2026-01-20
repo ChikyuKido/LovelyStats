@@ -11,10 +11,11 @@ public class PlayerStatsStorage implements StatsStorage<PlayerStats> {
     private static final File DATA_FOLDER = new File("playerstats");
     private static final int VERSION = 1;
 
-    private PlayerStatsStorage() {}
-
     static {
         DATA_FOLDER.mkdirs();
+    }
+
+    private PlayerStatsStorage() {
     }
 
     @Override
@@ -25,9 +26,7 @@ public class PlayerStatsStorage implements StatsStorage<PlayerStats> {
     @Override
     public PlayerStats load(UUID uuid) throws IOException {
         File file = new File(DATA_FOLDER, uuid.toString() + ".bin");
-        PlayerStats player = new PlayerStats(uuid.toString());
-
-        if (!file.exists()) return player;
+        if (!file.exists()) return new PlayerStats(uuid.toString());
 
         try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
             int version = in.readInt();
@@ -35,25 +34,35 @@ public class PlayerStatsStorage implements StatsStorage<PlayerStats> {
                 throw new IOException("Unsupported player stats file version: " + version);
             }
 
-            player.addDistanceWalked(in.readDouble());
-            player.addDistanceRun(in.readDouble());
-            player.addDistanceSwam(in.readDouble());
-            player.addDistanceFallen(in.readDouble());
-            player.addDistanceClimbed(in.readDouble());
-            player.addDistanceSneaked(in.readDouble());
-            player.addElevationUp(in.readDouble());
-            player.addElevationDown(in.readDouble());
+            double distanceWalked = in.readDouble();
+            double distanceRun = in.readDouble();
+            double distanceSwam = in.readDouble();
+            double distanceFallen = in.readDouble();
+            double distanceClimbed = in.readDouble();
+            double distanceSneaked = in.readDouble();
+            double elevationUp = in.readDouble();
+            double elevationDown = in.readDouble();
 
             long chatMessages = in.readLong();
-            for (long i = 0; i < chatMessages; i++) player.incrementChatMessages();
-
             long deaths = in.readLong();
-            for (long i = 0; i < deaths; i++) player.incrementDeaths();
             long jumps = in.readLong();
-            for (long i = 0; i < jumps; i++) player.incrementJumps();
-        }
 
-        return player;
+            PlayerStats player = new PlayerStats(
+                    uuid.toString(),
+                    distanceWalked,
+                    distanceRun,
+                    distanceSwam,
+                    distanceFallen,
+                    distanceClimbed,
+                    distanceSneaked,
+                    elevationUp,
+                    elevationDown,
+                    chatMessages,
+                    deaths,
+                    jumps
+            );
+            return player;
+        }
     }
 
     @Override

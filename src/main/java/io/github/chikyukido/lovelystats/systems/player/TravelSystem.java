@@ -6,14 +6,10 @@ import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
-import com.hypixel.hytale.math.vector.Transform;
 import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.protocol.MovementStates;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.movement.MovementStatesComponent;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
-import com.hypixel.hytale.server.core.modules.entity.player.PlayerInput;
-import com.hypixel.hytale.server.core.modules.entity.player.PlayerSettings;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import io.github.chikyukido.lovelystats.handler.PlayerStatsHandler;
@@ -42,7 +38,7 @@ public class TravelSystem extends EntityTickingSystem<EntityStore> {
 
 
         double distance = lastPosition.distanceTo(currentPosition);
-        if(distance <= 0.0 || Double.isNaN(distance)) return;
+        if (distance <= 0.0 || Double.isNaN(distance)) return;
         double elevation = currentPosition.getY() - lastPosition.getY();
         PlayerStats stats = PlayerStatsHandler.get().getPlayerStats(player.getUuid());
 
@@ -61,12 +57,12 @@ public class TravelSystem extends EntityTickingSystem<EntityStore> {
             stats.addDistanceSwam(distance);
         } else if (states.sprinting) {
             stats.addDistanceRun(distance);
-        }else {
+        } else {
             stats.addDistanceWalked(distance);
         }
 
         if (states.climbing || states.mantling) stats.addDistanceClimbed(Math.max(0, elevation));
-        if (states.falling) stats.addDistanceFallen( Math.max(0, -elevation));
+        if (states.falling) stats.addDistanceFallen(Math.max(0, -elevation));
         if (lastState.jumping && !states.jumping) {
             stats.incrementJumps();
         }
@@ -78,6 +74,6 @@ public class TravelSystem extends EntityTickingSystem<EntityStore> {
     @Nullable
     @Override
     public Query<EntityStore> getQuery() {
-        return Archetype.of(PlayerRef.getComponentType(), TransformComponent.getComponentType(),MovementStatesComponent.getComponentType());
+        return Archetype.of(PlayerRef.getComponentType(), TransformComponent.getComponentType(), MovementStatesComponent.getComponentType());
     }
 }

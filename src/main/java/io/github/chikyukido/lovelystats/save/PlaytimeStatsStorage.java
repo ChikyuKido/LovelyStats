@@ -1,7 +1,7 @@
 package io.github.chikyukido.lovelystats.save;
 
-import io.github.chikyukido.lovelystats.types.PlaytimeStats;
 import io.github.chikyukido.lovelystats.types.PlaytimeSession;
+import io.github.chikyukido.lovelystats.types.PlaytimeStats;
 
 import java.io.*;
 import java.util.List;
@@ -12,10 +12,11 @@ public class PlaytimeStatsStorage implements StatsStorage<PlaytimeStats> {
     private static final int VERSION = 1;
     private static final File DATA_FOLDER = new File("mods/LovelyStats/playtime");
 
-    private PlaytimeStatsStorage() {}
-
     static {
         DATA_FOLDER.mkdirs();
+    }
+
+    private PlaytimeStatsStorage() {
     }
 
     @Override
@@ -81,7 +82,7 @@ public class PlaytimeStatsStorage implements StatsStorage<PlaytimeStats> {
             long currentIdlePlaytime = in.readLong();
 
             if (currentStartTime > 0) {
-                PlaytimeSession session = new PlaytimeSession(currentStartTime, currentStopTime, currentActivePlaytime,currentIdlePlaytime);
+                PlaytimeSession session = new PlaytimeSession(currentStartTime, currentStopTime, currentActivePlaytime, currentIdlePlaytime);
                 player.getSessions().add(session);
             }
 
@@ -92,13 +93,14 @@ public class PlaytimeStatsStorage implements StatsStorage<PlaytimeStats> {
                 long activeTime = in.readLong();
                 long idleTime = in.readLong();
 
-                PlaytimeSession session = new PlaytimeSession(startTime,stopTime,activeTime,idleTime);
+                PlaytimeSession session = new PlaytimeSession(startTime, stopTime, activeTime, idleTime);
                 player.getSessions().add(session);
             }
         }
 
         return player;
     }
+
     @Override
     public File getDataFolder() {
         return DATA_FOLDER;

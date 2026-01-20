@@ -26,10 +26,10 @@ public class ItemDroppedSystem extends EntityEventSystem<EntityStore, DropItemEv
     public void handle(int i, @Nonnull ArchetypeChunk<EntityStore> archetypeChunk, @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer, @Nonnull DropItemEvent.Drop event) {
         ItemStack is = event.getItemStack();
         Item item = is.getItem();
-        if(item == Item.UNKNOWN) return;
+        if (item == Item.UNKNOWN) return;
         PlayerRef player = archetypeChunk.getComponent(i, PlayerRef.getComponentType());
-        if(player == null) return;
-        ItemStatsHandler.get().increaseDropped(player.getUuid(), Murmur3.hash64(item.getBlockId()),is.getQuantity());
+        if (player == null) return;
+        ItemStatsHandler.get().increaseDropped(player.getUuid(), Murmur3.hash64(item.getBlockId()), is.getQuantity());
     }
 
     @Nullable

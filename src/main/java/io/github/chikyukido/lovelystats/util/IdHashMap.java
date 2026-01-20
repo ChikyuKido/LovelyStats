@@ -13,7 +13,7 @@ public class IdHashMap {
     public static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
 
-    private static final Map<Long,String> ITEM_HASHMAP = new HashMap<>();
+    private static final Map<Long, String> ITEM_HASHMAP = new HashMap<>();
 
     public static void init() {
         long startTime = System.nanoTime();
@@ -38,7 +38,8 @@ public class IdHashMap {
         long durationMs = (endTime - startTime) / 1_000_000;
         LOGGER.atInfo().log("Loaded block names in %dms", durationMs);
     }
+
     public static String realName(long hash) {
-        return ITEM_HASHMAP.getOrDefault(hash,"Unknown Block");
+        return ITEM_HASHMAP.getOrDefault(hash, "Unknown Block");
     }
 }

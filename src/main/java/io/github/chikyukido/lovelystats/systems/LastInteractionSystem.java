@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LastInteractionSystem {
     private static final Map<UUID, Long> lastInteraction = new ConcurrentHashMap<>();
     private static final long IDLE_MS = 5 * 60 * 1000;
+
     public static void registerLastInteractionSystem() {
         PacketAdapters.registerInbound((PlayerPacketWatcher) (playerRef, packet) -> {
             if (packet instanceof ClientMovement || packet instanceof SyncInteractionChains) {
@@ -20,10 +21,12 @@ public class LastInteractionSystem {
             }
         });
     }
+
     public static boolean isPlayerIdle(UUID uuid) {
         long last = lastInteraction.getOrDefault(uuid, Long.MAX_VALUE);
         return System.currentTimeMillis() - last > IDLE_MS;
     }
+
     public static void onPlayerConnect(PlayerConnectEvent event) {
         lastInteraction.put(event.getPlayerRef().getUuid(), System.currentTimeMillis());
     }

@@ -12,27 +12,32 @@ public class PlaytimeStats {
     public PlaytimeStats(UUID uuid) {
         this.uuid = uuid;
     }
-    public void startPlaytimeSession () {
+
+    public void startPlaytimeSession() {
         currentSession = new PlaytimeSession();
     }
-    public void endPlaytimeSession () {
-        if(currentSession == null) return;
+
+    public void endPlaytimeSession() {
+        if (currentSession == null) return;
         currentSession.stopSession();
         sessions.add(currentSession);
         currentSession = null;
     }
+
     public void increaseActivePlaytime(long playtime) {
-        if(currentSession == null) {
+        if (currentSession == null) {
             startPlaytimeSession();
         }
         currentSession.increaseActiveTime(playtime);
     }
+
     public void increaseIdlePlaytime(long playtime) {
-        if(currentSession == null) {
+        if (currentSession == null) {
             startPlaytimeSession();
         }
         currentSession.increaseIdleTime(playtime);
     }
+
     public UUID getUuid() {
         return uuid;
     }

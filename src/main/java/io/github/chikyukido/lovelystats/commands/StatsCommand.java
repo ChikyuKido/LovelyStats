@@ -15,11 +15,11 @@ import javax.annotation.Nonnull;
 
 public class StatsCommand extends AbstractPlayerCommand {
 
+    RequiredArg<String> typeArg = this.withRequiredArg("type", "The type of statistic you want to see", ArgTypes.STRING);
+
     public StatsCommand() {
         super("stats", "overiew of your statistics");
     }
-
-    RequiredArg<String> typeArg = this.withRequiredArg("type","The type of statistic you want to see", ArgTypes.STRING);
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
@@ -28,11 +28,11 @@ public class StatsCommand extends AbstractPlayerCommand {
             PlaytimeCommand.run(playerRef);
         } else if (type.equals("block")) {
             BlockCommand.run(playerRef);
-        } else if(type.equals("item")) {
+        } else if (type.equals("item")) {
             ItemCommand.run(playerRef);
-        }else if(type.equals("player")) {
+        } else if (type.equals("player")) {
             PlayerCommand.run(playerRef);
-        }else {
+        } else {
             playerRef.sendMessage(Message.raw("Unknown type: " + type));
         }
     }

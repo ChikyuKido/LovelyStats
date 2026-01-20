@@ -5,10 +5,12 @@ import com.hypixel.hytale.server.core.HytaleServer;
 import io.github.chikyukido.lovelystats.handler.ItemStatsHandler;
 import io.github.chikyukido.lovelystats.handler.PlayerStatsHandler;
 import io.github.chikyukido.lovelystats.handler.PlaytimeStatsHandler;
+
 import java.util.concurrent.TimeUnit;
 
 public class SaveSystem {
     public static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
+
     public static void run() {
         HytaleServer.SCHEDULED_EXECUTOR.scheduleAtFixedRate(() -> {
             long startTime = System.nanoTime(); // start timing

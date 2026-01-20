@@ -2,13 +2,16 @@ package io.github.chikyukido.lovelystats.save;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public interface StatsStorage<T> {
 
     File getDataFolder();
 
     T load(UUID uuid) throws IOException;
+
     void store(T player) throws IOException;
 
     default List<T> loadAll() throws IOException {

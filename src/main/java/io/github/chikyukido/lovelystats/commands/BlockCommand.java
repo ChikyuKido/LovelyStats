@@ -9,7 +9,9 @@ import io.github.chikyukido.lovelystats.handler.ItemStatsHandler;
 import io.github.chikyukido.lovelystats.types.ItemStats;
 import io.github.chikyukido.lovelystats.util.IdHashMap;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Map;
 
 public class BlockCommand {
 
@@ -34,11 +36,12 @@ public class BlockCommand {
         for (String id : allBlocks.keySet()) {
             BlockType block = allBlocks.get(id);
             Item item = block.getItem();
-            if(item == null) continue;
+            if (item == null) continue;
             playerRef.sendMessage(Message.translation(item.getTranslationKey()));
             break;
         }
     }
+
     private static String formatTop(Map<Long, Long> map) {
         return map.entrySet().stream()
                 .sorted(Collections.reverseOrder(Comparator.comparingLong(Map.Entry::getValue)))

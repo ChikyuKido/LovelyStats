@@ -3,7 +3,8 @@ package io.github.chikyukido.lovelystats.save;
 import io.github.chikyukido.lovelystats.types.ItemStats;
 
 import java.io.*;
-import java.util.*;
+import java.util.Map;
+import java.util.UUID;
 
 public class ItemStatsStorage implements StatsStorage<ItemStats> {
     public static final ItemStatsStorage INSTANCE = new ItemStatsStorage();
@@ -11,9 +12,11 @@ public class ItemStatsStorage implements StatsStorage<ItemStats> {
     private static final int VERSION = 1;
     private static final File DATA_FOLDER = new File("mods/LovelyStats/block");
 
-    private ItemStatsStorage() {}
     static {
         DATA_FOLDER.mkdirs();
+    }
+
+    private ItemStatsStorage() {
     }
 
     @Override

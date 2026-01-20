@@ -27,19 +27,19 @@ public class ItemStats {
         blocksPlaced.merge(blockId, 1L, Long::sum);
     }
 
-    public void increaseCollected(long itemId,long quantity) {
+    public void increaseCollected(long itemId, long quantity) {
         collected.merge(itemId, quantity, Long::sum);
     }
 
-    public void increaseDropped(long itemId,long quantity) {
+    public void increaseDropped(long itemId, long quantity) {
         dropped.merge(itemId, quantity, Long::sum);
     }
 
-    public void increaseUsed(long itemId,long quantity) {
+    public void increaseUsed(long itemId, long quantity) {
         used.merge(itemId, quantity, Long::sum);
     }
 
-    public void increaseCrafted(long itemId,long quantity) {
+    public void increaseCrafted(long itemId, long quantity) {
         crafted.merge(itemId, quantity, Long::sum);
     }
 

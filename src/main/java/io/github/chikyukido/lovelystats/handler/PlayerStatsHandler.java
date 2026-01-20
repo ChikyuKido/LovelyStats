@@ -12,7 +12,8 @@ public class PlayerStatsHandler {
     private static final PlayerStatsHandler INSTANCE = new PlayerStatsHandler();
     private final ConcurrentHashMap<UUID, PlayerStats> players = new ConcurrentHashMap<>();
 
-    private PlayerStatsHandler() {}
+    private PlayerStatsHandler() {
+    }
 
     public static PlayerStatsHandler get() {
         return INSTANCE;
@@ -24,7 +25,8 @@ public class PlayerStatsHandler {
             for (PlayerStats player : loadedPlayers) {
                 INSTANCE.players.put(UUID.fromString(player.getUuid()), player);
             }
-        } catch (IOException e) {}
+        } catch (IOException e) {
+        }
     }
 
     public void savePlayer(UUID uuid) {
@@ -32,7 +34,8 @@ public class PlayerStatsHandler {
         if (player != null) {
             try {
                 PlayerStatsStorage.INSTANCE.store(player);
-            } catch (IOException e) {}
+            } catch (IOException e) {
+            }
         }
     }
 

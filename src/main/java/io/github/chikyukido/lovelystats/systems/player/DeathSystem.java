@@ -21,7 +21,7 @@ public class DeathSystem extends EntityEventSystem<EntityStore, KillFeedEvent.De
     @Override
     public void handle(int i, @Nonnull ArchetypeChunk<EntityStore> archetypeChunk, @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer, @Nonnull KillFeedEvent.DecedentMessage decedentMessage) {
         PlayerRef player = archetypeChunk.getComponent(i, PlayerRef.getComponentType());
-        if(player == null) {
+        if (player == null) {
             return;
         }
         PlayerStatsHandler.get().incrementDeaths(player.getUuid());
