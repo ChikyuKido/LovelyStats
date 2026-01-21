@@ -89,14 +89,17 @@ public class ItemCraftedSystem {
                     CraftingRecipe cr = CraftingRecipe.getAssetMap().getAsset(action.recipeId);
                     if (cr == null) return;
                     if(cr.getTimeSeconds() == 0.0) {
-                        lastRecipe.put(player.getUuid(), new LastRecipe(action.recipeId, 1));
-                        increaseCrafting(player);
+                        //TODO: make it a batch operation
+                        for (int i = 0; i < action.quantity; i++) {
+                            lastRecipe.put(player.getUuid(), new LastRecipe(action.recipeId, 1));
+                            increaseCrafting(player);
+                        }
                         return;
                     }
                     if(lastRecipe.containsKey(player.getUuid()) && lastRecipe.get(player.getUuid()).recipeId.equals(action.recipeId)) {
-                        lastRecipe.get(player.getUuid()).quantity+=1;
+                        lastRecipe.get(player.getUuid()).quantity+= action.quantity;
                     }else {
-                        lastRecipe.put(player.getUuid(), new LastRecipe(action.recipeId, 1));
+                        lastRecipe.put(player.getUuid(), new LastRecipe(action.recipeId, action.quantity));
                     }
                     firstUpdate.put(player.getUuid(), true);
                 }
