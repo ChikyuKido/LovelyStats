@@ -1,7 +1,6 @@
 ### Introduction
-LovelyStats is there to track your in-game infos. Currently there is no page for viewing the stats. Instead you have commands.
-I tried to make it as efficient as possible so there is no perfomance impact. 
-
+LovelyStats is a server side plugin to track your in-game infos
+I tried to make it as efficient as possible so there is no perfomance impact.
 ### Screenshots
 | | |
 |---|---|
