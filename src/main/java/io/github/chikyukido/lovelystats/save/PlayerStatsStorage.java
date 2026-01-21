@@ -43,9 +43,9 @@ public class PlayerStatsStorage implements StatsStorage<PlayerStats> {
             double elevationUp = in.readDouble();
             double elevationDown = in.readDouble();
 
+            long jumps = in.readLong();
             long chatMessages = in.readLong();
             long deaths = in.readLong();
-            long jumps = in.readLong();
 
             PlayerStats player = new PlayerStats(
                     uuid.toString(),

@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class DeathSystem extends EntityEventSystem<EntityStore, KillFeedEvent.DecedentMessage> {
-    protected DeathSystem() {
+    public DeathSystem() {
         super(KillFeedEvent.DecedentMessage.class);
     }
 

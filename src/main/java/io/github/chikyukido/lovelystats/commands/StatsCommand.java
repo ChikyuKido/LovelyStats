@@ -12,6 +12,8 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import io.github.chikyukido.lovelystats.pages.ItemStatsPage;
+import io.github.chikyukido.lovelystats.pages.PlayerStatsPage;
+import io.github.chikyukido.lovelystats.pages.StatsPage;
 
 import javax.annotation.Nonnull;
 
@@ -32,9 +34,11 @@ public class StatsCommand extends AbstractPlayerCommand {
         } else if (type.equals("item")) {
             player.getPageManager().openCustomPage(ref,store,new ItemStatsPage(playerRef));
         } else if (type.equals("player")) {
-            PlayerCommand.run(playerRef);
+//            PlayerCommand.run(playerRef);
+            player.getPageManager().openCustomPage(ref,store,new PlayerStatsPage(playerRef));
         } else {
-            playerRef.sendMessage(Message.raw("Unknown type: " + type));
+
+            player.getPageManager().openCustomPage(ref,store,new StatsPage(playerRef));
         }
     }
 }

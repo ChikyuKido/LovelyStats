@@ -13,6 +13,7 @@ import io.github.chikyukido.lovelystats.systems.LastInteractionSystem;
 import io.github.chikyukido.lovelystats.systems.SaveSystem;
 import io.github.chikyukido.lovelystats.systems.item.*;
 import io.github.chikyukido.lovelystats.systems.player.ChatSystem;
+import io.github.chikyukido.lovelystats.systems.player.DeathSystem;
 import io.github.chikyukido.lovelystats.systems.player.TravelSystem;
 import io.github.chikyukido.lovelystats.systems.playtime.PlaytimePlayerSystem;
 import io.github.chikyukido.lovelystats.util.IdHashMap;
@@ -35,6 +36,8 @@ public class Main extends JavaPlugin {
         this.getEntityStoreRegistry().registerSystem(new BlockBreakSystem());
         this.getEntityStoreRegistry().registerSystem(new BlockPlacedSystem());
         this.getEntityStoreRegistry().registerSystem(new ItemDroppedSystem());
+        this.getEntityStoreRegistry().registerSystem(new DeathSystem());
+
         this.getCommandRegistry().registerCommand(new StatsCommand());
 
         this.getEntityStoreRegistry().registerSystem(new TravelSystem());
