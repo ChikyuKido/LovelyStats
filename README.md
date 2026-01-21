@@ -12,10 +12,7 @@ I tried to make it as efficient as possible so there is no perfomance impact.
 - Tools broken (not implemented yet)
 
 ### Displaying stats
-Yeah so currently there is no UI for it actually and I will make one soon but currently we have commands
-- /stats playtime
-- /stats block
-- /stats item
+Use the /stats command to open the ui and see your stats. 
 
 ### Implementation
 I tried to use events as much as possible. But some things are not possible with it. <br> 
