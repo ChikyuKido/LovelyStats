@@ -1,0 +1,42 @@
+$C = "Common.ui";
+
+$C.@PageOverlay {}
+
+$C.@Panel {
+    Anchor: (Width: 780, Height: 750);
+    Padding: (Full: 15);
+    LayoutMode: Top;
+
+    $C.@TitleLabel {
+        Text: "Block Stats";
+        Anchor: (Top: 0, Height: 50);
+    }
+
+    Group #StatsGrid {
+        FlexWeight: 1;
+        LayoutMode: TopScrolling;
+        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+
+        Group #HeaderRow {
+            LayoutMode: Left;
+            Padding: (Top: 5, Bottom: 5, Left: 30);
+
+            TextButton #Name { Text: "Name";      Anchor: (Width: 140); }
+            TextButton #Placed { Text: "Placed";    Anchor: (Width: 120); }
+            TextButton #Destroyed { Text: "Destroyed"; Anchor: (Width: 120); }
+            TextButton #Collected { Text: "Collected"; Anchor: (Width: 120); }
+            TextButton #Dropped { Text: "Dropped";   Anchor: (Width: 100); }
+            TextButton #Crafted { Text: "Crafted";   Anchor: (Width: 100); }
+        }
+
+        Group #BlockStatsGrid {
+            FlexWeight: 1;
+            LayoutMode: Top;
+        }
+    }
+
+    $C.@BackButton {
+        Anchor: (Bottom: 5, Left: 5);
+        Padding: (Top: 10);
+    }
+}
