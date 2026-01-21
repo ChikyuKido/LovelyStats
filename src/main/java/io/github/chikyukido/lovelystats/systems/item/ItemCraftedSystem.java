@@ -1,10 +1,14 @@
 package io.github.chikyukido.lovelystats.systems.item;
 
+import com.hypixel.hytale.protocol.packets.interaction.SyncInteractionChains;
 import com.hypixel.hytale.protocol.packets.window.CraftRecipeAction;
+import com.hypixel.hytale.protocol.packets.window.SelectSlotAction;
 import com.hypixel.hytale.protocol.packets.window.SendWindowAction;
 import com.hypixel.hytale.protocol.packets.window.UpdateWindow;
 import com.hypixel.hytale.protocol.packets.world.PlaySoundEvent2D;
+import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.asset.type.item.config.CraftingRecipe;
+import com.hypixel.hytale.server.core.asset.type.item.config.FieldcraftCategory;
 import com.hypixel.hytale.server.core.inventory.MaterialQuantity;
 import com.hypixel.hytale.server.core.io.adapter.PacketAdapters;
 import com.hypixel.hytale.server.core.io.adapter.PlayerPacketWatcher;
@@ -47,6 +51,7 @@ public class ItemCraftedSystem {
             if (packet instanceof SendWindowAction inv) {
                 if (inv.action.getTypeId() == 0) {
                     CraftRecipeAction action = (CraftRecipeAction) inv.action;
+                    if (action.recipeId == null) return;
                     lastRecipe.put(player.getUuid(), action.recipeId);
                     firstUpdate.put(player.getUuid(), true);
                 }
@@ -56,8 +61,9 @@ public class ItemCraftedSystem {
 
     private static void increaseCrafting(PlayerRef player) {
         String recipeId = lastRecipe.getOrDefault(player.getUuid(), "");
-        if (recipeId.isEmpty()) return;
+        if (recipeId == null || recipeId.isEmpty()) return;
         CraftingRecipe cr = CraftingRecipe.getAssetMap().getAsset(recipeId);
+
         if (cr == null) return;
         MaterialQuantity[] outputs = cr.getOutputs();
         if (outputs == null || outputs.length == 0) return;

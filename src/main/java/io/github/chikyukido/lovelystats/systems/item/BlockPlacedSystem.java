@@ -31,7 +31,11 @@ public class BlockPlacedSystem extends EntityEventSystem<EntityStore, PlaceBlock
         if (item == Item.UNKNOWN) return;
         PlayerRef player = archetypeChunk.getComponent(i, PlayerRef.getComponentType());
         if (player == null) return;
-        ItemStatsHandler.get().increaseBlockPlace(player.getUuid(), Murmur3.hash64(item.getBlockId()));
+        String blockId = item.getBlockId();
+        if (blockId == null) {
+            blockId = is.getItemId();
+        }
+        ItemStatsHandler.get().increaseBlockPlace(player.getUuid(), Murmur3.hash64(blockId));
     }
 
     @Nullable

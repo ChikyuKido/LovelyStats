@@ -28,8 +28,9 @@ public class BlockBreakSystem extends EntityEventSystem<EntityStore, BreakBlockE
 
         PlayerRef player = archetypeChunk.getComponent(i, PlayerRef.getComponentType());
         if (player == null) return;
-
-        ItemStatsHandler.get().increaseBlockBreak(player.getUuid(), Murmur3.hash64(item.getBlockId()));
+        String blockId = item.getBlockId();
+        if (blockId == null) return;
+        ItemStatsHandler.get().increaseBlockBreak(player.getUuid(), Murmur3.hash64(blockId));
     }
 
     @Nullable
