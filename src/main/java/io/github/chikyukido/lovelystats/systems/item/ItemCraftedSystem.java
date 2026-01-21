@@ -86,6 +86,13 @@ public class ItemCraftedSystem {
                         }
                         return;
                     }
+                    CraftingRecipe cr = CraftingRecipe.getAssetMap().getAsset(action.recipeId);
+                    if (cr == null) return;
+                    if(cr.getTimeSeconds() == 0.0) {
+                        lastRecipe.put(player.getUuid(), new LastRecipe(action.recipeId, 1));
+                        increaseCrafting(player);
+                        return;
+                    }
                     if(lastRecipe.containsKey(player.getUuid()) && lastRecipe.get(player.getUuid()).recipeId.equals(action.recipeId)) {
                         lastRecipe.get(player.getUuid()).quantity+=1;
                     }else {
@@ -105,7 +112,6 @@ public class ItemCraftedSystem {
             return;
         }
         CraftingRecipe cr = CraftingRecipe.getAssetMap().getAsset(recipe.recipeId);
-
         if (cr == null) return;
         MaterialQuantity[] outputs = cr.getOutputs();
         if (outputs == null || outputs.length == 0) return;

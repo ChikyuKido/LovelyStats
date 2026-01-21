@@ -52,6 +52,8 @@ public class Main extends JavaPlugin {
         this.getCommandRegistry().registerCommand(new StatsCommand());
 
         this.getEntityStoreRegistry().registerSystem(new TravelSystem());
+
+
         ItemStatsHandler.init();
         PlaytimeStatsHandler.init();
         PlayerStatsHandler.init();
