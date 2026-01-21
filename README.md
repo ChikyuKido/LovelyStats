@@ -2,6 +2,11 @@
 LovelyStats is there to track your in-game infos. Currently there is no page for viewing the stats. Instead you have commands.
 I tried to make it as efficient as possible so there is no perfomance impact. 
 
+### Screenshots
+| | |
+|---|---|
+| ![Player](.github/Player.png) | ![Blocks](.github/Blocks.png) |
+
 ### Stats tracked
 - Playtime is tracked as sessions with active and idle time
 - Blocks placed
