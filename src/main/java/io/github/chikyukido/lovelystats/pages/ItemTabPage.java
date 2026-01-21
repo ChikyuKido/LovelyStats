@@ -54,12 +54,6 @@ public class ItemTabPage extends TabPage{
     }
 
     @Override
-    public void cleanup() {
-        UIEventBuilder event = new UIEventBuilder();
-
-    }
-
-    @Override
     public void handleEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull StatsPage.Data data) {
         if(data.value != null) {
             sortAndRefreshGrid(data.value,new UICommandBuilder());
@@ -87,7 +81,6 @@ public class ItemTabPage extends TabPage{
 
     private void rebuildGrid(UICommandBuilder cb) {
         cb.clear("#BlockStatsGrid");
-        cb.appendInline("#StatsGrid", "Group #BlockStatsGrid { FlexWeight: 1; LayoutMode: Top; }");
 
         for (int row = 0; row < statsList.size(); row++) {
             ItemTabPage.ItemStatsData stats = statsList.get(row);

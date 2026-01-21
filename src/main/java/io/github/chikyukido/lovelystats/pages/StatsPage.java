@@ -57,7 +57,6 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> {
         UICommandBuilder cb = new UICommandBuilder();
         UIEventBuilder event = new UIEventBuilder();
         cb.clear("#TabPages");
-        cb.appendInline("#Base", "Group #TabPages { FlexWeight: 1; LayoutMode: Top; }");
 
         currentPage.build(cb,event);
         super.sendUpdate(cb,event,false);

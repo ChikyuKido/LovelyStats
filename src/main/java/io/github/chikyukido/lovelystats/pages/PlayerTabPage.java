@@ -107,9 +107,6 @@ public class PlayerTabPage extends TabPage{
     }
 
     @Override
-    public void cleanup() {}
-
-    @Override
     public void handleEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull StatsPage.Data data) {}
 
     private String formatDistance(String label, double meters) {
