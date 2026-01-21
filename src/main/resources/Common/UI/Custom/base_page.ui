@@ -7,7 +7,7 @@ $C.@Panel {
     Padding: (Full: 15);
     LayoutMode: Top;
 
-    Group {
+    Group #Base {
         FlexWeight: 1;
         LayoutMode: Top;
 
@@ -15,23 +15,22 @@ $C.@Panel {
             LayoutMode: Left;
             Padding: (Top: 10, Left: 10, Bottom: 16);
 
-            Button #BlocksTab {
+            Button #PlayersTab {
                 Padding: (Right: 15);
                 Group {
-                    Background: "blocks.png";
-                    Anchor: (Width: 80, Height: 80);
+                    Background: "player.png";
+                    Anchor: (Width: 60, Height: 60);
                 }
             }
             Group {
                 Anchor: (Width: 2, Height: 70);
                 Background: #FFFFFF;
             }
-
-            Button #PlayersTab1 {
+            Button #BlocksTab {
                 Padding: (Left: 15, Right: 15);
                 Group {
-                    Background: "player.png";
-                    Anchor: (Width: 80, Height: 80);
+                    Background: "blocks.png";
+                    Anchor: (Width: 60, Height: 60);
                 }
             }
         }

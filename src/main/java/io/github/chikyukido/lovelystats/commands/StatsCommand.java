@@ -11,15 +11,11 @@ import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import io.github.chikyukido.lovelystats.pages.ItemStatsPage;
-import io.github.chikyukido.lovelystats.pages.PlayerStatsPage;
 import io.github.chikyukido.lovelystats.pages.StatsPage;
 
 import javax.annotation.Nonnull;
 
 public class StatsCommand extends AbstractPlayerCommand {
-
-    RequiredArg<String> typeArg = this.withRequiredArg("type", "The type of statistic you want to see", ArgTypes.STRING);
 
     public StatsCommand() {
         super("stats", "overiew of your statistics");
@@ -27,18 +23,8 @@ public class StatsCommand extends AbstractPlayerCommand {
 
     @Override
     protected void execute(@Nonnull CommandContext commandContext, @Nonnull Store<EntityStore> store, @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        String type = typeArg.get(commandContext);
         Player player = commandContext.senderAs(Player.class);
-        if (type.equals("playtime")) {
-            PlaytimeCommand.run(playerRef);
-        } else if (type.equals("item")) {
-            player.getPageManager().openCustomPage(ref,store,new ItemStatsPage(playerRef));
-        } else if (type.equals("player")) {
-//            PlayerCommand.run(playerRef);
-            player.getPageManager().openCustomPage(ref,store,new PlayerStatsPage(playerRef));
-        } else {
+        player.getPageManager().openCustomPage(ref,store,new StatsPage(playerRef));
 
-            player.getPageManager().openCustomPage(ref,store,new StatsPage(playerRef));
-        }
     }
 }

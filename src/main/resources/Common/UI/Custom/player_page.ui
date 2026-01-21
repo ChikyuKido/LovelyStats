@@ -1,130 +1,112 @@
 $C = "Common.ui";
 
-$C.@PageOverlay {}
+Group #PlayerStatsGrid {
+    FlexWeight: 1;
+    LayoutMode: Left;
 
-$C.@Panel {
-    Anchor: (Width: 780, Height: 750);
-    Padding: (Full: 15);
-    LayoutMode: Top;
-
-    $C.@TitleLabel {
-        Text: "Player Stats";
-        Anchor: (Top: 0, Height: 50);
-    }
-
-    Group #StatsGrid {
+    Group #LeftStats {
         FlexWeight: 1;
-        LayoutMode: Left;
+        LayoutMode: Top;
+        Padding: (Left: 10);
 
-        Group #LeftStats {
-            FlexWeight: 1;
+        $C.@TitleLabel {
+            Text: "Activity";
+            Anchor: (Top: 0, Height: 50);
+        }
+
+        Label #DistanceLabel {
+            Style: (FontSize: 20);
+            Text: "Distance";
+            Padding: (Top: 5, Bottom: 5);
+        }
+
+        Group #DistanceStats {
             LayoutMode: Top;
             Padding: (Left: 10);
 
-            $C.@TitleLabel {
-                Text: "Activity";
-                Anchor: (Top: 0, Height: 50);
-            }
-
-            Label #DistanceLabel {
-                Style: (FontSize: 20);
-                Text: "Distance";
-                Padding: (Top: 5, Bottom: 5);
-            }
-
-            Group #DistanceStats {
-                LayoutMode: Top;
-                Padding: (Left: 10);
-
-                Label #DistanceWalked { Text: "Distance Walked: 0 km"; }
-                Label #DistanceRun { Text: "Distance Run: 0 km"; }
-                Label #DistanceSwam { Text: "Distance Swam: 0 km"; }
-                Label #DistanceFallen { Text: "Distance Fallen: 0 km"; }
-                Label #DistanceClimbed { Text: "Distance Climbed: 0 km"; }
-                Label #DistanceSneaked { Text: "Distance Sneaked: 0 km"; }
-                Label #ElevationUp { Text: "Elevation Up: 0 m"; }
-                Label #ElevationDown { Text: "Elevation Down: 0 m"; }
-            }
-
-            Label #PlayerLabel {
-                Text: "Player";
-                Style: (FontSize: 20);
-                Padding: (Top: 15, Bottom: 5);
-            }
-
-            Group #PlayerStats {
-                LayoutMode: Top;
-                Padding: (Left: 10);
-
-                Label #Deaths { Text: "Deaths: 0"; }
-                Label #ChatMessages { Text: "Chat Messages: 0"; }
-                Label #Jumps { Text: "Jumps: 0"; }
-            }
+            Label #DistanceWalked { Text: "Distance Walked: 0 km"; }
+            Label #DistanceRun { Text: "Distance Run: 0 km"; }
+            Label #DistanceSwam { Text: "Distance Swam: 0 km"; }
+            Label #DistanceFallen { Text: "Distance Fallen: 0 km"; }
+            Label #DistanceClimbed { Text: "Distance Climbed: 0 km"; }
+            Label #DistanceSneaked { Text: "Distance Sneaked: 0 km"; }
+            Label #ElevationUp { Text: "Elevation Up: 0 m"; }
+            Label #ElevationDown { Text: "Elevation Down: 0 m"; }
         }
 
-        Group #RightStats {
-            FlexWeight: 1;
+        Label #PlayerLabel {
+            Text: "Player";
+            Style: (FontSize: 20);
+            Padding: (Top: 15, Bottom: 5);
+        }
+
+        Group #PlayerStats {
             LayoutMode: Top;
-            Padding: (Left: 20);
+            Padding: (Left: 10);
 
-            $C.@TitleLabel {
-                Text: "Playtime";
-                Anchor: (Top: 0, Height: 50);
-            }
-
-            Label #TotalsLabel {
-                Text: "Totals";
-                Style: (FontSize: 20);
-                Padding: (Top: 5, Bottom: 5);
-            }
-
-            Group #TotalsStats {
-                LayoutMode: Top;
-                Padding: (Left: 10);
-
-                Label #TotalPlaytime { Text: "Total Playtime: 0h"; }
-                Label #TotalActiveTime { Text: "Total Active Time: 0h"; }
-                Label #TotalIdleTime { Text: "Total Idle Time: 0h"; }
-                Label #TotalSessions { Text: "Sessions: 0"; }
-            }
-
-            Label #CurrentSessionLabel {
-                Text: "Current Session";
-                Style: (FontSize: 20);
-                Padding: (Top: 15, Bottom: 5);
-            }
-
-            Group #CurrentSessionStats {
-                LayoutMode: Top;
-                Padding: (Left: 10);
-
-                Label #CurrentStarted { Text: "Started: --"; }
-                Label #CurrentPlaytime { Text: "Playtime: 0h"; }
-                Label #CurrentActive { Text: "Active: 0h"; }
-                Label #CurrentIdle { Text: "Idle: 0h"; }
-            }
-
-            Label #LongestSessionLabel {
-                Text: "Longest Session";
-                Style: (FontSize: 20);
-                Padding: (Top: 15, Bottom: 5);
-            }
-
-            Group #LongestSessionStats {
-                LayoutMode: Top;
-                Padding: (Left: 10);
-
-                Label #LongestStarted { Text: "Started: --"; }
-                Label #LongestEnded { Text: "Ended: --"; }
-                Label #LongestPlaytime { Text: "Playtime: 0h"; }
-                Label #LongestActive { Text: "Active: 0h"; }
-                Label #LongestIdle { Text: "Idle: 0h"; }
-            }
+            Label #Deaths { Text: "Deaths: 0"; }
+            Label #ChatMessages { Text: "Chat Messages: 0"; }
+            Label #Jumps { Text: "Jumps: 0"; }
         }
     }
 
-    $C.@BackButton {
-        Anchor: (Bottom: 5, Left: 5);
-        Padding: (Top: 10);
+    Group #RightStats {
+        FlexWeight: 1;
+        LayoutMode: Top;
+        Padding: (Left: 20);
+
+        $C.@TitleLabel {
+            Text: "Playtime";
+            Anchor: (Top: 0, Height: 50);
+        }
+
+        Label #TotalsLabel {
+            Text: "Totals";
+            Style: (FontSize: 20);
+            Padding: (Top: 5, Bottom: 5);
+        }
+
+        Group #TotalsStats {
+            LayoutMode: Top;
+            Padding: (Left: 10);
+
+            Label #TotalPlaytime { Text: "Total Playtime: 0h"; }
+            Label #TotalActiveTime { Text: "Total Active Time: 0h"; }
+            Label #TotalIdleTime { Text: "Total Idle Time: 0h"; }
+            Label #TotalSessions { Text: "Sessions: 0"; }
+        }
+
+        Label #CurrentSessionLabel {
+            Text: "Current Session";
+            Style: (FontSize: 20);
+            Padding: (Top: 15, Bottom: 5);
+        }
+
+        Group #CurrentSessionStats {
+            LayoutMode: Top;
+            Padding: (Left: 10);
+
+            Label #CurrentStarted { Text: "Started: --"; }
+            Label #CurrentPlaytime { Text: "Playtime: 0h"; }
+            Label #CurrentActive { Text: "Active: 0h"; }
+            Label #CurrentIdle { Text: "Idle: 0h"; }
+        }
+
+        Label #LongestSessionLabel {
+            Text: "Longest Session";
+            Style: (FontSize: 20);
+            Padding: (Top: 15, Bottom: 5);
+        }
+
+        Group #LongestSessionStats {
+            LayoutMode: Top;
+            Padding: (Left: 10);
+
+            Label #LongestStarted { Text: "Started: --"; }
+            Label #LongestEnded { Text: "Ended: --"; }
+            Label #LongestPlaytime { Text: "Playtime: 0h"; }
+            Label #LongestActive { Text: "Active: 0h"; }
+            Label #LongestIdle { Text: "Idle: 0h"; }
+        }
     }
 }

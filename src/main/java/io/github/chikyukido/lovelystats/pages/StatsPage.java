@@ -1,9 +1,15 @@
 package io.github.chikyukido.lovelystats.pages;
 
+import com.hypixel.hytale.codec.Codec;
+import com.hypixel.hytale.codec.KeyedCodec;
+import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
+import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.CustomUIPage;
+import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
+import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -11,15 +17,59 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
 import javax.annotation.Nonnull;
 
-public class StatsPage extends CustomUIPage {
+public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> {
+
+    private TabPage currentPage;
+    private String currentPageName = "player";
+
     public StatsPage(@Nonnull PlayerRef playerRef) {
-        super(playerRef, CustomPageLifetime.CanDismiss);
+        super(playerRef, CustomPageLifetime.CanDismiss,Data.CODEX);
     }
 
     @Override
-    public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder cb, @Nonnull UIEventBuilder uiEventBuilder, @Nonnull Store<EntityStore> store) {
+    public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder cb, @Nonnull UIEventBuilder event, @Nonnull Store<EntityStore> store) {
         cb.append("base_page.ui");
+        event.addEventBinding(CustomUIEventBindingType.Activating,"#PlayersTab", EventData.of("Button","player"),false);
+        event.addEventBinding(CustomUIEventBindingType.Activating,"#BlocksTab", EventData.of("Button","block"),false);
+        currentPage = new PlayerTabPage(this,playerRef);
+        currentPage.build(cb,event);
+    }
 
+    @Override
+    public void handleDataEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull Data data) {
+        super.handleDataEvent(ref, store, data);
 
+        if(data.value.equals("player") || data.value.equals("block")) {
+            rebuild(data.value);
+            return;
+        }
+
+        if(currentPage != null) currentPage.handleEvent(ref,store,data);
+    }
+
+    private void rebuild(String page) {
+        if(currentPageName.equals(page)) return;
+        currentPageName = page;
+        switch (page) {
+            case "player" -> currentPage = new PlayerTabPage(this,playerRef);
+            case "block" -> currentPage = new ItemTabPage(this,playerRef);
+        }
+        UICommandBuilder cb = new UICommandBuilder();
+        UIEventBuilder event = new UIEventBuilder();
+        cb.clear("#TabPages");
+        cb.appendInline("#Base", "Group #TabPages { FlexWeight: 1; LayoutMode: Top; }");
+
+        currentPage.build(cb,event);
+        super.sendUpdate(cb,event,false);
+    }
+    protected void sendUpdate(UICommandBuilder cb) {
+        super.sendUpdate(cb);
+    }
+
+    public static class Data {
+        public static final BuilderCodec<StatsPage.Data> CODEX = BuilderCodec.builder(StatsPage.Data.class, StatsPage.Data::new)
+                .append(new KeyedCodec<>("Button", Codec.STRING),(data, s) -> data.value = s, data -> data.value).add()
+                .build();
+        public String value;
     }
 }

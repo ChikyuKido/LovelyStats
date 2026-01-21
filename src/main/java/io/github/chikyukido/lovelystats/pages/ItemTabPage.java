@@ -1,16 +1,8 @@
 package io.github.chikyukido.lovelystats.pages;
 
-import com.hypixel.hytale.codec.Codec;
-import com.hypixel.hytale.codec.KeyedCodec;
-import com.hypixel.hytale.codec.builder.BuilderCodec;
-import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.Message;
-import com.hypixel.hytale.server.core.entity.entities.player.pages.CustomUIPage;
-import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
@@ -23,21 +15,19 @@ import io.github.chikyukido.lovelystats.util.IdHashMap;
 import javax.annotation.Nonnull;
 import java.util.*;
 
-public class ItemStatsPage extends InteractiveCustomUIPage<ItemStatsPage.Data> {
-    private List<ItemStatsData> statsList = new ArrayList<>();
+public class ItemTabPage extends TabPage{
+    private List<ItemTabPage.ItemStatsData> statsList = new ArrayList<>();
     private String currentSort = "name";
     private boolean ascending = true;
 
-    public ItemStatsPage(PlayerRef playerRef) {
-        super(playerRef, CustomPageLifetime.CanDismiss,Data.CODEX);
+    public ItemTabPage(StatsPage parent, PlayerRef playerRef) {
+        super(parent, playerRef);
     }
 
+
     @Override
-    public void build(@Nonnull Ref<EntityStore> ref,
-                      @Nonnull UICommandBuilder cb,
-                      @Nonnull UIEventBuilder event,
-                      @Nonnull Store<EntityStore> store) {
-        cb.append("items_page.ui");
+    public void build(UICommandBuilder cb, UIEventBuilder event) {
+        cb.append("#TabPages","items_page.ui");
         event.addEventBinding(CustomUIEventBindingType.Activating,"#Name", EventData.of("Button","name"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#Placed", EventData.of("Button","placed"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#Destroyed", EventData.of("Button","destroyed"),false);
@@ -50,7 +40,7 @@ public class ItemStatsPage extends InteractiveCustomUIPage<ItemStatsPage.Data> {
         statsList = aggregate(uuid);
 
         for (int row = 0; row < statsList.size(); row++) {
-            ItemStatsData stats = statsList.get(row);
+            ItemTabPage.ItemStatsData stats = statsList.get(row);
             cb.append("#BlockStatsGrid", "items_page_entry.ui");
             String base = "#BlockStatsGrid[" + row + "]";
             cb.set(base + " #StatName.Text", IdHashMap.realName(stats.blockId()));
@@ -63,6 +53,18 @@ public class ItemStatsPage extends InteractiveCustomUIPage<ItemStatsPage.Data> {
         }
     }
 
+    @Override
+    public void cleanup() {
+        UIEventBuilder event = new UIEventBuilder();
+
+    }
+
+    @Override
+    public void handleEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull StatsPage.Data data) {
+        if(data.value != null) {
+            sortAndRefreshGrid(data.value,new UICommandBuilder());
+        }
+    }
     private void sortAndRefreshGrid(String sortBy,UICommandBuilder cb) {
         switch (sortBy) {
             case "placed" -> statsList.sort(Comparator.comparingLong(s -> s.placed));
@@ -82,19 +84,13 @@ public class ItemStatsPage extends InteractiveCustomUIPage<ItemStatsPage.Data> {
         currentSort = sortBy;
         rebuildGrid(cb);
     }
-    @Override
-    public void handleDataEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull Data rawData) {
-        super.handleDataEvent(ref, store, rawData);
-        if(rawData.value != null) {
-            sortAndRefreshGrid(rawData.value,new UICommandBuilder());
-        }
-    }
+
     private void rebuildGrid(UICommandBuilder cb) {
         cb.clear("#BlockStatsGrid");
         cb.appendInline("#StatsGrid", "Group #BlockStatsGrid { FlexWeight: 1; LayoutMode: Top; }");
 
         for (int row = 0; row < statsList.size(); row++) {
-            ItemStatsData stats = statsList.get(row);
+            ItemTabPage.ItemStatsData stats = statsList.get(row);
             cb.append("#BlockStatsGrid", "items_page_entry.ui");
 
             String base = "#BlockStatsGrid[" + row + "]";
@@ -106,11 +102,11 @@ public class ItemStatsPage extends InteractiveCustomUIPage<ItemStatsPage.Data> {
             cb.set(base + " #Crafted.Text", "" + stats.crafted);
             cb.set(base + " #Image.AssetPath", IdHashMap.realIcon(stats.blockId()));
         }
-        sendUpdate(cb);
+        parent.sendUpdate(cb);
     }
 
 
-    public static List<ItemStatsData> aggregate(UUID playerUuid) {
+    public static List<ItemTabPage.ItemStatsData> aggregate(UUID playerUuid) {
         ItemStats itemPlayer = ItemStatsHandler.get().getBlockPlayer(playerUuid);
 
         Set<Long> allBlockIds = new HashSet<>();
@@ -122,7 +118,7 @@ public class ItemStatsPage extends InteractiveCustomUIPage<ItemStatsPage.Data> {
         allBlockIds.addAll(itemPlayer.getDropped().keySet());
         allBlockIds.addAll(itemPlayer.getCollected().keySet());
 
-        List<ItemStatsData> result = new ArrayList<>();
+        List<ItemTabPage.ItemStatsData> result = new ArrayList<>();
         for (long blockId : allBlockIds) {
             long placed = itemPlayer.getBlocksPlaced().getOrDefault(blockId, 0L);
             long broken = itemPlayer.getBlocksBroken().getOrDefault(blockId, 0L);
@@ -130,7 +126,7 @@ public class ItemStatsPage extends InteractiveCustomUIPage<ItemStatsPage.Data> {
             long dropped = itemPlayer.getDropped().getOrDefault(blockId, 0L);
             long crafted = itemPlayer.getCrafted().getOrDefault(blockId, 0L);
 
-            result.add(new ItemStatsData(blockId, placed, broken, collected, dropped,crafted));
+            result.add(new ItemTabPage.ItemStatsData(blockId, placed, broken, collected, dropped,crafted));
         }
 
         return result;
@@ -138,11 +134,5 @@ public class ItemStatsPage extends InteractiveCustomUIPage<ItemStatsPage.Data> {
 
 
     private record ItemStatsData(long blockId, long placed, long broken, long collected, long dropped, long crafted) {
-    }
-    public static class Data {
-        public static final BuilderCodec<Data> CODEX = BuilderCodec.builder(Data.class,Data::new)
-                .append(new KeyedCodec<>("Button", Codec.STRING),(data, s) -> data.value = s, data -> data.value).add()
-                .build();
-        public String value;
     }
 }

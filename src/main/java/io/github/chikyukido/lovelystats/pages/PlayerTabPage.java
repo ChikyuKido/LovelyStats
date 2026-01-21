@@ -2,8 +2,6 @@ package io.github.chikyukido.lovelystats.pages;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
-import com.hypixel.hytale.server.core.entity.entities.player.pages.CustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -20,18 +18,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-
-public class PlayerStatsPage extends CustomUIPage {
-
+public class PlayerTabPage extends TabPage{
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
 
-    public PlayerStatsPage(@Nonnull PlayerRef playerRef) {
-        super(playerRef, CustomPageLifetime.CanDismiss);
+    public PlayerTabPage(StatsPage parent, PlayerRef playerRef) {
+        super(parent, playerRef);
     }
 
+
     @Override
-    public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder cb, @Nonnull UIEventBuilder uiEventBuilder, @Nonnull Store<EntityStore> store) {
-        cb.append("player_page.ui");
+    public void build(UICommandBuilder cb, UIEventBuilder event) {
+        cb.append("#TabPages","player_page.ui");
 
         PlayerStats playerStats = PlayerStatsHandler.get().getPlayerStats(playerRef.getUuid());
         PlaytimeStats playtimeStats = PlaytimeStatsHandler.get().getPlaytimeForPlayer(playerRef.getUuid());
@@ -108,6 +105,12 @@ public class PlayerStatsPage extends CustomUIPage {
             cb.set("#RightStats #LongestIdle.Text", "Idle: --");
         }
     }
+
+    @Override
+    public void cleanup() {}
+
+    @Override
+    public void handleEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull StatsPage.Data data) {}
 
     private String formatDistance(String label, double meters) {
         if (meters >= 1000) {
