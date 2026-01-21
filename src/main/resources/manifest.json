@@ -1,7 +1,7 @@
 {
   "Group": "LovelyStats",
   "Name": "LovelyStats",
-  "Version": "0.0.1",
+  "Version": "1.0.0",
   "Description": "Advanced statistics tracking",
   "Authors": [
     {
@@ -11,9 +11,7 @@
   "Website": "https://github.com/ChikyuKido/LovelyStats",
   "Main": "io.github.chikyukido.lovelystats.Main",
   "ServerVersion": "*",
-  "Dependencies": {
-    "Zoltus:TinyMessage": "*"
-  },
+  "Dependencies": {},
   "OptionalDependencies": {},
   "DisabledByDefault": false,
   "IncludesAssetPack": true

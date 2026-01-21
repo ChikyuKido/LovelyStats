@@ -5,6 +5,7 @@ import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.CustomUIPage;
@@ -18,7 +19,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import javax.annotation.Nonnull;
 
 public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> {
-
+    public static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     private TabPage currentPage;
     private String currentPageName = "player";
 
@@ -48,6 +49,7 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> {
     }
 
     private void rebuild(String page) {
+        long start = System.currentTimeMillis();
         if(currentPageName.equals(page)) return;
         currentPageName = page;
         switch (page) {
@@ -60,6 +62,8 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> {
 
         currentPage.build(cb,event);
         super.sendUpdate(cb,event,false);
+        long end = System.currentTimeMillis();
+        LOGGER.atInfo().log("Rebuild Stats page in %dms", end-start);
     }
     protected void sendUpdate(UICommandBuilder cb) {
         super.sendUpdate(cb);
