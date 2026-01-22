@@ -16,8 +16,8 @@ public class IdHashMap {
 
     private static final Map<Long, String> ITEM_HASHMAP = new HashMap<>();
     private static final Map<Long, String> ITEM_ICON_HASHMAP = new HashMap<>();
-    public static final Map<Long, String> ENTITY_HASHMAP = new HashMap<>();
-    public static final Map<Long, String> ENTITY_ICON_HASHMAP = new HashMap<>();
+    private static final Map<Long, String> ENTITY_HASHMAP = new HashMap<>();
+    private static final Map<Long, String> ENTITY_ICON_HASHMAP = new HashMap<>();
 
     public static void init() {
         long startTime = System.nanoTime();

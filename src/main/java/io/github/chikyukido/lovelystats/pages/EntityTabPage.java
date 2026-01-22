@@ -64,7 +64,7 @@ public class EntityTabPage extends TabPage{
             case "killedBy" -> statsList.sort(Comparator.comparingLong(EntityStats.SingleEntityStats::getKilledBy));
             case "damageDealt" -> statsList.sort(Comparator.comparingDouble(EntityStats.SingleEntityStats::getDamageDealt));
             case "damageReceived" -> statsList.sort(Comparator.comparingDouble(EntityStats.SingleEntityStats::getDamageReceived));
-            case "name" -> statsList.sort(Comparator.comparingLong(EntityStats.SingleEntityStats::getEntityID));
+            case "name" -> statsList.sort(Comparator.comparing(s -> IdHashMap.realNameEntity(s.getEntityID())));
         }
 
         if (currentSort.equals(sortBy) && ascending) {
