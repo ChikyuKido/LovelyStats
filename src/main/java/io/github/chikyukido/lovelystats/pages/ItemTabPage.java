@@ -27,7 +27,7 @@ public class ItemTabPage extends TabPage{
 
     @Override
     public void build(UICommandBuilder cb, UIEventBuilder event) {
-        cb.append("#TabPages","items_page.ui");
+        cb.append("#TabPages","items/items_page.ui");
         event.addEventBinding(CustomUIEventBindingType.Activating,"#Name", EventData.of("Button","name"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#Placed", EventData.of("Button","placed"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#Destroyed", EventData.of("Button","destroyed"),false);
@@ -41,7 +41,7 @@ public class ItemTabPage extends TabPage{
 
         for (int row = 0; row < statsList.size(); row++) {
             ItemTabPage.ItemStatsData stats = statsList.get(row);
-            cb.append("#BlockStatsGrid", "items_page_entry.ui");
+            cb.append("#BlockStatsGrid", "items/items_page_entry.ui");
             String base = "#BlockStatsGrid[" + row + "]";
             cb.set(base + " #StatName.Text", IdHashMap.realName(stats.blockId()));
             cb.set(base + " #Placed.Text", "" + stats.placed);
@@ -84,7 +84,7 @@ public class ItemTabPage extends TabPage{
 
         for (int row = 0; row < statsList.size(); row++) {
             ItemTabPage.ItemStatsData stats = statsList.get(row);
-            cb.append("#BlockStatsGrid", "items_page_entry.ui");
+            cb.append("#BlockStatsGrid", "items/items_page_entry.ui");
 
             String base = "#BlockStatsGrid[" + row + "]";
             cb.set(base + " #StatName.Text", IdHashMap.realName(stats.blockId()));

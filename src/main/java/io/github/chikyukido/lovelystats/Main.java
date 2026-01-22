@@ -6,11 +6,13 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import io.github.chikyukido.lovelystats.commands.StatsCommand;
+import io.github.chikyukido.lovelystats.handler.EntityStatsHandler;
 import io.github.chikyukido.lovelystats.handler.ItemStatsHandler;
 import io.github.chikyukido.lovelystats.handler.PlayerStatsHandler;
 import io.github.chikyukido.lovelystats.handler.PlaytimeStatsHandler;
 import io.github.chikyukido.lovelystats.systems.LastInteractionSystem;
 import io.github.chikyukido.lovelystats.systems.SaveSystem;
+import io.github.chikyukido.lovelystats.systems.entity.EntityDamageSystem;
 import io.github.chikyukido.lovelystats.systems.item.*;
 import io.github.chikyukido.lovelystats.systems.player.ChatSystem;
 import io.github.chikyukido.lovelystats.systems.player.DeathSystem;
@@ -37,6 +39,7 @@ public class Main extends JavaPlugin {
         this.getEntityStoreRegistry().registerSystem(new BlockPlacedSystem());
         this.getEntityStoreRegistry().registerSystem(new ItemDroppedSystem());
         this.getEntityStoreRegistry().registerSystem(new DeathSystem());
+        this.getEntityStoreRegistry().registerSystem(new EntityDamageSystem());
 
         this.getCommandRegistry().registerCommand(new StatsCommand());
 
@@ -46,6 +49,7 @@ public class Main extends JavaPlugin {
         ItemStatsHandler.init();
         PlaytimeStatsHandler.init();
         PlayerStatsHandler.init();
+        EntityStatsHandler.init();
 
         PlaytimePlayerSystem.registerPlaytimeSystem();
         LastInteractionSystem.registerLastInteractionSystem();

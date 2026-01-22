@@ -2,6 +2,7 @@ package io.github.chikyukido.lovelystats.systems;
 
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.HytaleServer;
+import io.github.chikyukido.lovelystats.handler.EntityStatsHandler;
 import io.github.chikyukido.lovelystats.handler.ItemStatsHandler;
 import io.github.chikyukido.lovelystats.handler.PlayerStatsHandler;
 import io.github.chikyukido.lovelystats.handler.PlaytimeStatsHandler;
@@ -23,6 +24,7 @@ public class SaveSystem {
         PlaytimeStatsHandler.get().saveAllPlayers();
         ItemStatsHandler.get().saveAllPlayers();
         PlayerStatsHandler.get().saveAllPlayers();
+        EntityStatsHandler.get().saveAllPlayers();
     }
     private static String formatDuration(long nanos) {
         long ms = nanos / 1_000_000;

@@ -7,6 +7,7 @@ import java.util.UUID;
 public class ItemStats {
     private final UUID uuid;
 
+    // separate maps because not each item/block has all stat types
     private final Map<Long, Long> blocksBroken = new HashMap<>();
     private final Map<Long, Long> blocksPlaced = new HashMap<>();
     private final Map<Long, Long> collected = new HashMap<>();

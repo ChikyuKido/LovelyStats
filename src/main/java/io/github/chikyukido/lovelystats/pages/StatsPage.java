@@ -31,6 +31,7 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> {
         cb.append("base_page.ui");
         event.addEventBinding(CustomUIEventBindingType.Activating,"#PlayersTab", EventData.of("Button","player"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#BlocksTab", EventData.of("Button","block"),false);
+        event.addEventBinding(CustomUIEventBindingType.Activating,"#EntityTab", EventData.of("Button","entity"),false);
         currentPage = new PlayerTabPage(this,playerRef);
         currentPage.build(cb,event);
     }
@@ -39,7 +40,7 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> {
     public void handleDataEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull Data data) {
         super.handleDataEvent(ref, store, data);
 
-        if(data.value.equals("player") || data.value.equals("block")) {
+        if(data.value.equals("player") || data.value.equals("block") || data.value.equals("entity")) {
             rebuild(data.value);
             return;
         }
@@ -54,6 +55,7 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> {
         switch (page) {
             case "player" -> currentPage = new PlayerTabPage(this,playerRef);
             case "block" -> currentPage = new ItemTabPage(this,playerRef);
+            case "entity" -> currentPage = new EntityTabPage(this,playerRef);
         }
         UICommandBuilder cb = new UICommandBuilder();
         UIEventBuilder event = new UIEventBuilder();

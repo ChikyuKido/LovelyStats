@@ -4,6 +4,7 @@ import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.asset.type.item.config.Item;
+import com.hypixel.hytale.server.npc.NPCPlugin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,8 @@ public class IdHashMap {
 
     private static final Map<Long, String> ITEM_HASHMAP = new HashMap<>();
     private static final Map<Long, String> ITEM_ICON_HASHMAP = new HashMap<>();
+    public static final Map<Long, String> ENTITY_HASHMAP = new HashMap<>();
+    public static final Map<Long, String> ENTITY_ICON_HASHMAP = new HashMap<>();
 
     public static void init() {
         long startTime = System.nanoTime();
@@ -46,13 +49,26 @@ public class IdHashMap {
             ITEM_ICON_HASHMAP.put(Murmur3.hash64(item.getId()),item.getIcon());
         }
 
+        for (String id : NPCPlugin.get().getBuilderManager().getTemplateNames()) {
+            if(ENTITY_HASHMAP.containsKey(Murmur3.hash64(id))) continue;
+            ENTITY_HASHMAP.put(Murmur3.hash64(id),Message.translation("server.npcRoles."+id+".name").getAnsiMessage());
+            ENTITY_ICON_HASHMAP.put(Murmur3.hash64(id),"UI/Custom/Pages/Memories/npcs/"+id+".png");
+        }
+
         long endTime = System.nanoTime();
         long durationMs = (endTime - startTime) / 1_000_000;
         LOGGER.atInfo().log("Loaded %d block names in %dms",ITEM_HASHMAP.size(), durationMs);
     }
 
+
     public static String realName(long hash) {
         return ITEM_HASHMAP.getOrDefault(hash, "Unknown Block");
+    }
+    public static String realNameEntity(long hash) {
+        return ENTITY_HASHMAP.getOrDefault(hash, "Unknown Entity");
+    }
+    public static String realNameEntityIcon(long hash) {
+        return ENTITY_ICON_HASHMAP.getOrDefault(hash, "Unknown Entity");
     }
     public static String realIcon(long hash) {
         return ITEM_ICON_HASHMAP.getOrDefault(hash, "Unknown Block");

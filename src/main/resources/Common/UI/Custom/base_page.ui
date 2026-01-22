@@ -33,6 +33,17 @@ $C.@Panel {
                     Anchor: (Width: 60, Height: 60);
                 }
             }
+            Group {
+                Anchor: (Width: 2, Height: 70);
+                Background: #FFFFFF;
+            }
+            Button #EntityTab {
+                Padding: (Left: 15, Right: 15);
+                Group {
+                    Background: "entity.png";
+                    Anchor: (Width: 60, Height: 60);
+                }
+            }
         }
 
         Group {

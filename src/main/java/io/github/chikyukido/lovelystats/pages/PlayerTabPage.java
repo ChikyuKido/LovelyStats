@@ -28,7 +28,7 @@ public class PlayerTabPage extends TabPage{
 
     @Override
     public void build(UICommandBuilder cb, UIEventBuilder event) {
-        cb.append("#TabPages","player_page.ui");
+        cb.append("#TabPages","player/player_page.ui");
 
         PlayerStats playerStats = PlayerStatsHandler.get().getPlayerStats(playerRef.getUuid());
         PlaytimeStats playtimeStats = PlaytimeStatsHandler.get().getPlaytimeForPlayer(playerRef.getUuid());
