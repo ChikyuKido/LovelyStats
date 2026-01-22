@@ -2,9 +2,9 @@
 LovelyStats is a server side plugin to track your in-game infos
 I tried to make it as efficient as possible so there is no perfomance impact.
 ### Screenshots
-| | |
-|---|---|
-| ![Player](.github/Player.png) | ![Blocks](.github/Blocks.png) |
+| | |                               | 
+|---|---|-------------------------------|
+| ![Player](.github/Player.png) | ![Blocks](.github/Blocks.png) | ![Entity](.github/Entity.png) |
 
 ### Stats tracked
 - Playtime is tracked as sessions with active and idle time
@@ -13,6 +13,7 @@ I tried to make it as efficient as possible so there is no perfomance impact.
 - Items collected
 - Items dropped
 - Items crafted
+- Entities killed, killed by, damage dealt, damage received
 - Tools broken (not implemented yet)
 
 ### Displaying stats
