@@ -49,4 +49,29 @@ public class PlaytimeStats {
     public PlaytimeSession getCurrentSession() {
         return currentSession;
     }
+
+    public long getTotalPlaytime() {
+        long playtime = 0;
+        for (PlaytimeSession session : sessions) {
+            playtime += session.getActiveTime()+session.getIdleTime();
+        }
+        if(currentSession != null) playtime += currentSession.getActiveTime()+currentSession.getIdleTime();
+        return playtime;
+    }
+    public long getTotalActivePlaytime() {
+        long playtime = 0;
+        for (PlaytimeSession session : sessions) {
+            playtime += session.getActiveTime();
+        }
+        if(currentSession != null) playtime += currentSession.getActiveTime();
+        return playtime;
+    }
+    public long getTotalIdlePlaytime() {
+        long playtime = 0;
+        for (PlaytimeSession session : sessions) {
+            playtime += session.getIdleTime();
+        }
+        if(currentSession != null) playtime += currentSession.getIdleTime();
+        return playtime;
+    }
 }

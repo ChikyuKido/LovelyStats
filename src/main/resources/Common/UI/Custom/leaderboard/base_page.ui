@@ -1,4 +1,4 @@
-$C = "Common.ui";
+$C = "../Common.ui";
 
 $C.@PageOverlay {}
 
@@ -18,7 +18,7 @@ $C.@Panel {
             Button #PlayersTab {
                 Padding: (Right: 15);
                 Group {
-                    Background: "player.png";
+                    Background: "../player.png";
                     Anchor: (Width: 60, Height: 60);
                 }
             }
@@ -29,7 +29,7 @@ $C.@Panel {
             Button #BlocksTab {
                 Padding: (Left: 15, Right: 15);
                 Group {
-                    Background: "blocks.png";
+                    Background: "../blocks.png";
                     Anchor: (Width: 60, Height: 60);
                 }
             }
@@ -40,7 +40,7 @@ $C.@Panel {
             Button #EntityTab {
                 Padding: (Left: 15, Right: 15);
                 Group {
-                    Background: "entity.png";
+                    Background: "../entity.png";
                     Anchor: (Width: 60, Height: 60);
                 }
             }

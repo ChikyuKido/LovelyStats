@@ -1,4 +1,4 @@
-package io.github.chikyukido.lovelystats.pages;
+package io.github.chikyukido.lovelystats.pages.stats;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -8,13 +8,14 @@ import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import io.github.chikyukido.lovelystats.handler.ItemStatsHandler;
+import io.github.chikyukido.lovelystats.pages.TabPage;
 import io.github.chikyukido.lovelystats.types.ItemStats;
 import io.github.chikyukido.lovelystats.util.IdHashMap;
 
 import javax.annotation.Nonnull;
 import java.util.*;
 
-public class ItemTabPage extends TabPage{
+public class ItemTabPage extends TabPage {
     private List<ItemTabPage.ItemStatsData> statsList = new ArrayList<>();
     private String currentSort = "name";
     private boolean ascending = true;
@@ -26,7 +27,7 @@ public class ItemTabPage extends TabPage{
 
     @Override
     public void build(UICommandBuilder cb, UIEventBuilder event) {
-        cb.append("#TabPages","items/items_page.ui");
+        cb.append("#TabPages","stats/items/items_page.ui");
         event.addEventBinding(CustomUIEventBindingType.Activating,"#Name", EventData.of("Button","name"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#Placed", EventData.of("Button","placed"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#Destroyed", EventData.of("Button","destroyed"),false);
@@ -39,7 +40,7 @@ public class ItemTabPage extends TabPage{
 
         for (int row = 0; row < statsList.size(); row++) {
             ItemTabPage.ItemStatsData stats = statsList.get(row);
-            cb.append("#BlockStatsGrid", "items/items_page_entry.ui");
+            cb.append("#BlockStatsGrid", "stats/items/items_page_entry.ui");
             String base = "#BlockStatsGrid[" + row + "]";
             cb.set(base + " #StatName.Text", IdHashMap.realName(stats.blockId()));
             cb.set(base + " #Placed.Text", "" + stats.placed);
@@ -52,10 +53,8 @@ public class ItemTabPage extends TabPage{
     }
 
     @Override
-    public void handleEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull StatsPage.Data data) {
-        if(data.value != null) {
-            sortAndRefreshGrid(data.value,new UICommandBuilder());
-        }
+    public void handleEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull String data) {
+        sortAndRefreshGrid(data,new UICommandBuilder());
     }
     private void sortAndRefreshGrid(String sortBy,UICommandBuilder cb) {
         switch (sortBy) {
@@ -82,7 +81,7 @@ public class ItemTabPage extends TabPage{
 
         for (int row = 0; row < statsList.size(); row++) {
             ItemTabPage.ItemStatsData stats = statsList.get(row);
-            cb.append("#BlockStatsGrid", "items/items_page_entry.ui");
+            cb.append("#BlockStatsGrid", "stats/items/items_page_entry.ui");
 
             String base = "#BlockStatsGrid[" + row + "]";
             cb.set(base + " #StatName.Text", IdHashMap.realName(stats.blockId()));

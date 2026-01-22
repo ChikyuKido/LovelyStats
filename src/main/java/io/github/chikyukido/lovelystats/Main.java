@@ -5,11 +5,9 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import io.github.chikyukido.lovelystats.commands.LeaderboardCommand;
 import io.github.chikyukido.lovelystats.commands.StatsCommand;
-import io.github.chikyukido.lovelystats.handler.EntityStatsHandler;
-import io.github.chikyukido.lovelystats.handler.ItemStatsHandler;
-import io.github.chikyukido.lovelystats.handler.PlayerStatsHandler;
-import io.github.chikyukido.lovelystats.handler.PlaytimeStatsHandler;
+import io.github.chikyukido.lovelystats.handler.*;
 import io.github.chikyukido.lovelystats.systems.LastInteractionSystem;
 import io.github.chikyukido.lovelystats.systems.SaveSystem;
 import io.github.chikyukido.lovelystats.systems.entity.EntityDamageSystem;
@@ -33,6 +31,7 @@ public class Main extends JavaPlugin {
         this.getEventRegistry().registerGlobal(PlayerConnectEvent.class, PlaytimePlayerSystem::onPlayerConnect);
         this.getEventRegistry().registerGlobal(PlayerDisconnectEvent.class, PlaytimePlayerSystem::onPlayerDisconnect);
         this.getEventRegistry().registerGlobal(PlayerConnectEvent.class, LastInteractionSystem::onPlayerConnect);
+        this.getEventRegistry().registerGlobal(PlayerConnectEvent.class, RecordedPlayerHandler::onPlayerConnect);
         this.getEventRegistry().registerGlobal(PlayerChatEvent.class, ChatSystem::onPlayerChatEvent);
 
         this.getEntityStoreRegistry().registerSystem(new BlockBreakSystem());
@@ -42,6 +41,7 @@ public class Main extends JavaPlugin {
         this.getEntityStoreRegistry().registerSystem(new EntityDamageSystem());
 
         this.getCommandRegistry().registerCommand(new StatsCommand());
+        this.getCommandRegistry().registerCommand(new LeaderboardCommand());
 
         this.getEntityStoreRegistry().registerSystem(new TravelSystem());
 
@@ -50,6 +50,7 @@ public class Main extends JavaPlugin {
         PlaytimeStatsHandler.init();
         PlayerStatsHandler.init();
         EntityStatsHandler.init();
+        RecordedPlayerHandler.init();
 
         PlaytimePlayerSystem.registerPlaytimeSystem();
         LastInteractionSystem.registerLastInteractionSystem();

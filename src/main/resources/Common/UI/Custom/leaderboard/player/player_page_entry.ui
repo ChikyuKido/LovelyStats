@@ -1,0 +1,11 @@
+Group #StatContainer {
+    LayoutMode: Left;
+    Padding: (Top: 5, Bottom: 10);
+
+    TextButton #Name { Text: "Name";      Anchor: (Width: 140); }
+    TextButton #Playtime { Text: "Playtime";    Anchor: (Width: 120); }
+    TextButton #Active { Text: "Active";   Anchor: (Width: 120); }
+    TextButton #Idle { Text: "Idle";   Anchor: (Width: 120); }
+    TextButton #Chat { Text: "Chat"; Anchor: (Width: 120); }
+    TextButton #Deaths { Text: "Deaths"; Anchor: (Width: 120); }
+}

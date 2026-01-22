@@ -10,14 +10,14 @@ import javax.annotation.Nonnull;
 import java.util.UUID;
 
 public abstract class TabPage {
-    protected StatsPage parent;
+    protected UpdateHandler parent;
     protected final UUID playerUUID;
-    public TabPage(StatsPage parent, UUID playerUUID) {
+    public TabPage(UpdateHandler parent, UUID playerUUID) {
         this.parent = parent;
         this.playerUUID = playerUUID;
     }
 
 
     public abstract void build(UICommandBuilder cb, UIEventBuilder event);
-    public abstract void handleEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull StatsPage.Data data);
+    public abstract void handleEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull String data);
 }

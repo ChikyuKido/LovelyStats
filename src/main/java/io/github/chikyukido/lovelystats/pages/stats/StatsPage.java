@@ -1,4 +1,4 @@
-package io.github.chikyukido.lovelystats.pages;
+package io.github.chikyukido.lovelystats.pages.stats;
 
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
@@ -14,15 +14,17 @@ import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import io.github.chikyukido.lovelystats.pages.TabPage;
+import io.github.chikyukido.lovelystats.pages.UpdateHandler;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
 
-public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> {
+public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> implements UpdateHandler {
     public static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     private TabPage currentPage;
     private String currentPageName = "player";
-    private UUID playerUUID;
+    private final UUID playerUUID;
 
     public StatsPage(@Nonnull PlayerRef playerRef, UUID playerUUID) {
         super(playerRef, CustomPageLifetime.CanDismiss,Data.CODEX);
@@ -31,11 +33,11 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> {
 
     @Override
     public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder cb, @Nonnull UIEventBuilder event, @Nonnull Store<EntityStore> store) {
-        cb.append("base_page.ui");
+        cb.append("stats/base_page.ui");
         event.addEventBinding(CustomUIEventBindingType.Activating,"#PlayersTab", EventData.of("Button","player"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#BlocksTab", EventData.of("Button","block"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#EntityTab", EventData.of("Button","entity"),false);
-        currentPage = new PlayerTabPage(this,playerRef.getUuid());
+        currentPage = new PlayerTabPage(this,playerUUID);
         currentPage.build(cb,event);
     }
 
@@ -48,7 +50,7 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> {
             return;
         }
 
-        if(currentPage != null) currentPage.handleEvent(ref,store,data);
+        if(currentPage != null) currentPage.handleEvent(ref,store,data.value);
     }
 
     private void rebuild(String page) {
@@ -56,9 +58,9 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> {
         if(currentPageName.equals(page)) return;
         currentPageName = page;
         switch (page) {
-            case "player" -> currentPage = new PlayerTabPage(this,playerRef.getUuid());
-            case "block" -> currentPage = new ItemTabPage(this,playerRef.getUuid());
-            case "entity" -> currentPage = new EntityTabPage(this,playerRef.getUuid());
+            case "player" -> currentPage = new PlayerTabPage(this,playerUUID);
+            case "block" -> currentPage = new ItemTabPage(this,playerUUID);
+            case "entity" -> currentPage = new EntityTabPage(this,playerUUID);
         }
         UICommandBuilder cb = new UICommandBuilder();
         UIEventBuilder event = new UIEventBuilder();
@@ -69,7 +71,8 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> {
         long end = System.currentTimeMillis();
         LOGGER.atInfo().log("Rebuild Stats page in %dms", end-start);
     }
-    protected void sendUpdate(UICommandBuilder cb) {
+    @Override
+    public void sendUpdate(UICommandBuilder cb) {
         super.sendUpdate(cb);
     }
 

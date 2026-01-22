@@ -1,4 +1,4 @@
-$C = "../Common.ui";
+$C = "../../Common.ui";
 
 Group #StatsGrid {
     Anchor: (Width: 780, Height: 580);
