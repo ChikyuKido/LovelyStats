@@ -67,6 +67,11 @@ public class Main extends JavaPlugin {
     }
 
     @Override
+    protected void shutdown() {
+        SaveSystem.save();
+    }
+
+    @Override
     protected void start() {
         IdHashMap.init();
     }
