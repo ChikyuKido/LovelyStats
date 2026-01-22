@@ -16,14 +16,17 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
 import javax.annotation.Nonnull;
+import java.util.UUID;
 
 public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> {
     public static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     private TabPage currentPage;
     private String currentPageName = "player";
+    private UUID playerUUID;
 
-    public StatsPage(@Nonnull PlayerRef playerRef) {
+    public StatsPage(@Nonnull PlayerRef playerRef, UUID playerUUID) {
         super(playerRef, CustomPageLifetime.CanDismiss,Data.CODEX);
+        this.playerUUID = playerUUID;
     }
 
     @Override
@@ -32,7 +35,7 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> {
         event.addEventBinding(CustomUIEventBindingType.Activating,"#PlayersTab", EventData.of("Button","player"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#BlocksTab", EventData.of("Button","block"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#EntityTab", EventData.of("Button","entity"),false);
-        currentPage = new PlayerTabPage(this,playerRef);
+        currentPage = new PlayerTabPage(this,playerRef.getUuid());
         currentPage.build(cb,event);
     }
 
@@ -53,9 +56,9 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> {
         if(currentPageName.equals(page)) return;
         currentPageName = page;
         switch (page) {
-            case "player" -> currentPage = new PlayerTabPage(this,playerRef);
-            case "block" -> currentPage = new ItemTabPage(this,playerRef);
-            case "entity" -> currentPage = new EntityTabPage(this,playerRef);
+            case "player" -> currentPage = new PlayerTabPage(this,playerRef.getUuid());
+            case "block" -> currentPage = new ItemTabPage(this,playerRef.getUuid());
+            case "entity" -> currentPage = new EntityTabPage(this,playerRef.getUuid());
         }
         UICommandBuilder cb = new UICommandBuilder();
         UIEventBuilder event = new UIEventBuilder();

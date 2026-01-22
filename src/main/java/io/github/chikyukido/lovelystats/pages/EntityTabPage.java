@@ -6,7 +6,6 @@ import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
-import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import io.github.chikyukido.lovelystats.handler.EntityStatsHandler;
 import io.github.chikyukido.lovelystats.types.EntityStats;
@@ -20,10 +19,9 @@ public class EntityTabPage extends TabPage{
     private String currentSort = "name";
     private boolean ascending = true;
 
-    public EntityTabPage(StatsPage parent, PlayerRef playerRef) {
-        super(parent, playerRef);
+    public EntityTabPage(StatsPage parent, UUID playerUUID) {
+        super(parent,playerUUID);
     }
-
 
     @Override
     public void build(UICommandBuilder cb, UIEventBuilder event) {
@@ -35,8 +33,7 @@ public class EntityTabPage extends TabPage{
         event.addEventBinding(CustomUIEventBindingType.Activating,"#DamageReceived", EventData.of("Button","damageReceived"),false);
 
 
-        UUID uuid = playerRef.getUuid();
-        EntityStats statsMap = EntityStatsHandler.get().getEntityStatsFor(uuid);
+        EntityStats statsMap = EntityStatsHandler.get().getEntityStatsFor(playerUUID);
         statsMap.getEntities().forEach((_, singleEntityStats) -> statsList.add(singleEntityStats));
 
         for (int row = 0; row < statsList.size(); row++) {

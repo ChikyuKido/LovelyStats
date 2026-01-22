@@ -6,7 +6,6 @@ import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
-import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import io.github.chikyukido.lovelystats.handler.ItemStatsHandler;
 import io.github.chikyukido.lovelystats.types.ItemStats;
@@ -20,8 +19,8 @@ public class ItemTabPage extends TabPage{
     private String currentSort = "name";
     private boolean ascending = true;
 
-    public ItemTabPage(StatsPage parent, PlayerRef playerRef) {
-        super(parent, playerRef);
+    public ItemTabPage(StatsPage parent, UUID playerUUID) {
+        super(parent,playerUUID);
     }
 
 
@@ -36,8 +35,7 @@ public class ItemTabPage extends TabPage{
         event.addEventBinding(CustomUIEventBindingType.Activating,"#Crafted", EventData.of("Button","crafted"),false);
 
 
-        UUID uuid = playerRef.getUuid();
-        statsList = aggregate(uuid);
+        statsList = aggregate(playerUUID);
 
         for (int row = 0; row < statsList.size(); row++) {
             ItemTabPage.ItemStatsData stats = statsList.get(row);

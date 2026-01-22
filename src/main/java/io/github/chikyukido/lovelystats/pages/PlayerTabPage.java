@@ -4,7 +4,6 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
-import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import io.github.chikyukido.lovelystats.handler.PlayerStatsHandler;
 import io.github.chikyukido.lovelystats.handler.PlaytimeStatsHandler;
@@ -16,13 +15,14 @@ import javax.annotation.Nonnull;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerTabPage extends TabPage{
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
 
-    public PlayerTabPage(StatsPage parent, PlayerRef playerRef) {
-        super(parent, playerRef);
+    public PlayerTabPage(StatsPage parent,  UUID playerUUID) {
+        super(parent,playerUUID);
     }
 
 
@@ -30,8 +30,8 @@ public class PlayerTabPage extends TabPage{
     public void build(UICommandBuilder cb, UIEventBuilder event) {
         cb.append("#TabPages","player/player_page.ui");
 
-        PlayerStats playerStats = PlayerStatsHandler.get().getPlayerStats(playerRef.getUuid());
-        PlaytimeStats playtimeStats = PlaytimeStatsHandler.get().getPlaytimeForPlayer(playerRef.getUuid());
+        PlayerStats playerStats = PlayerStatsHandler.get().getPlayerStats(playerUUID);
+        PlaytimeStats playtimeStats = PlaytimeStatsHandler.get().getPlaytimeForPlayer(playerUUID);
 
         cb.set("#LeftStats #DistanceWalked.Text", formatDistance("Walked", playerStats.getDistanceWalked()));
         cb.set("#LeftStats #DistanceRun.Text", formatDistance("Run", playerStats.getDistanceRun()));
