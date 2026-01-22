@@ -61,8 +61,8 @@ public class LeaderboardPage extends InteractiveCustomUIPage<LeaderboardPage.Dat
         currentPageName = page;
         switch (page) {
             case "player" -> currentPage = new LeaderboardPlayerTabPage(this,playerRef.getUuid());
-//            case "block" -> currentPage = new ItemTabPage(this,playerUUID);
-//            case "entity" -> currentPage = new EntityTabPage(this,playerUUID);
+            case "block" -> currentPage = new LeaderboardItemTabPage(this,playerRef.getUuid());
+            case "entity" -> currentPage = new LeaderboardEntityTabPage(this,playerRef.getUuid());
         }
         UICommandBuilder cb = new UICommandBuilder();
         UIEventBuilder event = new UIEventBuilder();

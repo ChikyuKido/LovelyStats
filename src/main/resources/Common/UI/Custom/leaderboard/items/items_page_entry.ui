@@ -1,0 +1,17 @@
+Group #StatContainer {
+    LayoutMode: Left;
+    Padding: (Top: 5, Bottom: 5, Left: 10);
+
+
+    Label #Name { Text: "";      Anchor: (Width: 120); }
+
+    Label #Placed { Text: "Placed";    Anchor: (Width: 120); }
+
+    Label #Destroyed { Text: "Destroyed"; Anchor: (Width: 120); }
+
+    Label #Collected { Text: "Collected"; Anchor: (Width: 120); }
+
+    Label #Dropped { Text: "Dropped";   Anchor: (Width: 100); }
+
+    Label #Crafted { Text: "Crafted";   Anchor: (Width: 100); }
+}

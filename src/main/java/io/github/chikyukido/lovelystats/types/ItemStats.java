@@ -76,6 +76,32 @@ public class ItemStats {
         return toolsBroken;
     }
 
+    public long getTotalBlocksBroken() {
+        return blocksBroken.values().stream().mapToLong(Long::longValue).sum();
+    }
+    public long getTotalBlocksPlaced() {
+        return blocksPlaced.values().stream().mapToLong(Long::longValue).sum();
+    }
+    public long getTotalCollected() {
+        return collected.values().stream().mapToLong(Long::longValue).sum();
+    }
+    public long getTotalDropped() {
+        return dropped.values().stream().mapToLong(Long::longValue).sum();
+    }
+    public long getTotalUsed() {
+        return used.values().stream().mapToLong(Long::longValue).sum();
+    }
+    public long getTotalCrafted() {
+        return crafted.values().stream().mapToLong(Long::longValue).sum();
+    }
+    public long getTotalToolsBroken() {
+        return toolsBroken.values().stream().mapToLong(Long::longValue).sum();
+    }
+    public long getTotalItemsCrafted() {
+        return crafted.values().stream().mapToLong(Long::longValue).sum();
+    }
+
+
     public UUID getUuid() {
         return uuid;
     }

@@ -22,6 +22,18 @@ public class EntityStats {
     public SingleEntityStats getEntityStats(long entityId) {
         return entities.computeIfAbsent(entityId, _ -> new SingleEntityStats(entityId));
     }
+    public long getTotalKilled() {
+        return entities.values().stream().mapToLong(SingleEntityStats::getKilled).sum();
+    }
+    public long getTotalKilledBy() {
+        return entities.values().stream().mapToLong(SingleEntityStats::getKilledBy).sum();
+    }
+    public double getTotalDamageDealt() {
+        return entities.values().stream().mapToDouble(SingleEntityStats::getDamageDealt).sum();
+    }
+    public double getTotalDamageReceived() {
+        return entities.values().stream().mapToDouble(SingleEntityStats::getDamageReceived).sum();
+    }
     public static class SingleEntityStats {
         private final long entityID;
         private long killed;

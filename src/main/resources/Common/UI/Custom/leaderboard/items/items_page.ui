@@ -11,11 +11,11 @@ Group #StatsGrid {
         Padding: (Top: 5, Bottom: 5, Left: 10);
 
         TextButton #Name { Text: "Name";      Anchor: (Width: 120); }
-        TextButton #Playtime { Text: "Playtime";    Anchor: (Width: 120); }
-        TextButton #Active { Text: "Active";   Anchor: (Width: 120); }
-        TextButton #Idle { Text: "Idle";   Anchor: (Width: 120); }
-        TextButton #Chat { Text: "Chat Msg"; Anchor: (Width: 120); }
-        TextButton #Deaths { Text: "Deaths"; Anchor: (Width: 120); }
+        TextButton #Placed { Text: "Placed";    Anchor: (Width: 120); }
+        TextButton #Destroyed { Text: "Destroyed"; Anchor: (Width: 120); }
+        TextButton #Collected { Text: "Collected"; Anchor: (Width: 120); }
+        TextButton #Dropped { Text: "Dropped";   Anchor: (Width: 100); }
+        TextButton #Crafted { Text: "Crafted";   Anchor: (Width: 100); }
     }
 
     Group #BlockStatsGrid {

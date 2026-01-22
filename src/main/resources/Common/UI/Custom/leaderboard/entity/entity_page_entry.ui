@@ -1,0 +1,11 @@
+Group #StatContainer {
+    LayoutMode: Left;
+    Padding: (Top: 5, Bottom: 5, Left: 10);
+
+
+    TextButton #Name { Text: "Name";      Anchor: (Width: 120); }
+    TextButton #Killed { Text: "Killed";    Anchor: (Width: 120); }
+    TextButton #KilledBy { Text: "Killed By"; Anchor: (Width: 120); }
+    TextButton #DamageDealt { Text: "Damage Dealt"; Anchor: (Width: 140); }
+    TextButton #DamageReceived { Text: "Damage Received";   Anchor: (Width: 140); }
+}
