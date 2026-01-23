@@ -50,8 +50,8 @@ public class TablePage extends TabPage {
         TablePageRowType type = row.type();
 
         Arrays.sort(config.getValues(), (a, b) -> {
-            Object v1 = a[sortByRowIndex];
-            Object v2 = b[sortByRowIndex];
+            Object v1 = a[sortByRowIndex+(config.isWithIcon()?1:0)];
+            Object v2 = b[sortByRowIndex+(config.isWithIcon()?1:0)];
 
             if (v1 == null && v2 == null) return 0;
             if (v1 == null) return -1;
