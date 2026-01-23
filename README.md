@@ -1,10 +1,12 @@
 ### Introduction
-LovelyStats is a server side plugin to track your in-game infos
+LovelyStats is a server side plugin to track your in-game infos.
+It also provides a leaderboard to see the top stats on the server. 
 I tried to make it as efficient as possible so there is no perfomance impact.
 ### Screenshots
-| | |                               | 
-|---|---|-------------------------------|
-| ![Player](.github/Player.png) | ![Blocks](.github/Blocks.png) | ![Entity](.github/Entity.png) |
+|                                          |                                          |                                          | 
+|------------------------------------------|------------------------------------------|------------------------------------------|
+| ![Player](.github/Player.png)            | ![Blocks](.github/Blocks.png)            | ![Entity](.github/Entity.png)            |
+| ![Player](.github/LeaderboardPlayer.png) | ![Blocks](.github/LeaderboardBlocks.png) | ![Entity](.github/LeaderboardEntity.png) |
 
 ### Stats tracked
 - Playtime is tracked as sessions with active and idle time
@@ -18,6 +20,8 @@ I tried to make it as efficient as possible so there is no perfomance impact.
 
 ### Displaying stats
 Use the /stats command to open the ui and see your stats. 
+Use the /stats --player=<name or uuid> command to open the stats of another player
+Use the /leaderboardStats command to see the leaderboard
 
 ### Implementation
 I tried to use events as much as possible. But some things are not possible with it. <br> 
