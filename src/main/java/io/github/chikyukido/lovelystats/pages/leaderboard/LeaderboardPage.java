@@ -65,6 +65,14 @@ public class LeaderboardPage extends InteractiveCustomUIPage<LeaderboardPage.Dat
             case "entity" -> currentPage = new LeaderboardEntityTabPage(this,playerRef.getUuid());
         }
         UICommandBuilder cb = new UICommandBuilder();
+        cb.set("#EntityTabImage.Background","entity.png");
+        cb.set("#BlocksTabImage.Background","blocks.png");
+        cb.set("#PlayersTabImage.Background","player.png");
+        switch (page) {
+            case "player" -> cb.set("#PlayersTabImage.Background","player_selected.png");
+            case "block" -> cb.set("#BlocksTabImage.Background","blocks_selected.png");
+            case "entity" -> cb.set("#EntityTabImage.Background","entity_selected.png");
+        }
         UIEventBuilder event = new UIEventBuilder();
         cb.clear("#TabPages");
 

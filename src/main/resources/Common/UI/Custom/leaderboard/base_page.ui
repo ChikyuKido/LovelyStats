@@ -13,11 +13,11 @@ $C.@Panel {
 
         Group #TabButtons {
             LayoutMode: Left;
-            Padding: (Top: 10, Left: 10, Bottom: 16);
+            Padding: (Top: 10, Left: 10, Bottom: 10);
 
             Button #PlayersTab {
                 Padding: (Right: 15);
-                Group {
+                Group #PlayersTabImage {
                     Background: "../player.png";
                     Anchor: (Width: 60, Height: 60);
                 }
@@ -28,7 +28,7 @@ $C.@Panel {
             }
             Button #BlocksTab {
                 Padding: (Left: 15, Right: 15);
-                Group {
+                Group #BlocksTabImage{
                     Background: "../blocks.png";
                     Anchor: (Width: 60, Height: 60);
                 }
@@ -39,7 +39,7 @@ $C.@Panel {
             }
             Button #EntityTab {
                 Padding: (Left: 15, Right: 15);
-                Group {
+                Group #EntityTabImage {
                     Background: "../entity.png";
                     Anchor: (Width: 60, Height: 60);
                 }

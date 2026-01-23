@@ -48,15 +48,16 @@ public class TablePage extends TabPage {
 
             event.addEventBinding(CustomUIEventBindingType.Activating,"#Header"+i, EventData.of("Button",config.getId()+"_"+i),false);
         }
-        buildRows(cb);
+        currentSort = "1";
+        sortAndRefreshGrid(config.getId()+"_"+1,cb,false);
 
     }
 
     @Override
     public void handleEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull String data) {
-        sortAndRefreshGrid(data,new UICommandBuilder());
+        sortAndRefreshGrid(data,new UICommandBuilder(),true);
     }
-    private void sortAndRefreshGrid(String sortBy,UICommandBuilder cb) {
+    private void sortAndRefreshGrid(String sortBy,UICommandBuilder cb,boolean sendUpdate) {
         sortBy = sortBy.split("_")[1];
         int sortByRowIndex = Integer.parseInt(sortBy);
         TablePageRow row = config.getRows().get(sortByRowIndex);
@@ -92,7 +93,7 @@ public class TablePage extends TabPage {
         }
         currentSort = sortBy;
         buildRows(cb);
-        parent.sendUpdate(cb);
+        if(sendUpdate) parent.sendUpdate(cb);
     }
 
     private void buildRows(UICommandBuilder cb) {
