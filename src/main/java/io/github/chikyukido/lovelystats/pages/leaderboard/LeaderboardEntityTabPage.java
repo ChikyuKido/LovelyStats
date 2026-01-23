@@ -14,13 +14,13 @@ public class LeaderboardEntityTabPage extends TablePage {
     public LeaderboardEntityTabPage(UpdateHandler parent, UUID playerUUID) {
         super(parent, playerUUID, new TablePageConfig("LeaderboardEntityTab", 10, false));
 
-        config.getRows().add(new TablePageRow("Name", 120, TablePageRowType.STRING, TablePageRowVisualizeType.STRING));
+        config.getRows().add(new TablePageRow("Name", 140, TablePageRowType.STRING, TablePageRowVisualizeType.STRING));
         config.getRows().add(new TablePageRow("Killed", 120, TablePageRowType.LONG, TablePageRowVisualizeType.STRING));
         config.getRows().add(new TablePageRow("KilledBy", 120, TablePageRowType.LONG, TablePageRowVisualizeType.STRING));
-        config.getRows().add(new TablePageRow("DamageDealt", 120, TablePageRowType.DOUBLE, TablePageRowVisualizeType.STRING));
-        config.getRows().add(new TablePageRow("DamageReceived", 120, TablePageRowType.DOUBLE, TablePageRowVisualizeType.STRING));
+        config.getRows().add(new TablePageRow("DamageDealt", 140, TablePageRowType.DOUBLE, TablePageRowVisualizeType.STRING));
+        config.getRows().add(new TablePageRow("DamageReceived", 140, TablePageRowType.DOUBLE, TablePageRowVisualizeType.STRING));
 
-        List<UUID> players = RecordedPlayerHandler.get().getPlayers();
+        List<UUID> players = RecordedPlayerHandler.get().getPlayersList();
         Object[][] values = new Object[players.size()][config.getRows().size()];
         for (int i = 0; i < players.size(); i++) {
             values[i] = aggregate(players.get(i));

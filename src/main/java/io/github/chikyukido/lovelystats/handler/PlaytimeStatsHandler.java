@@ -64,5 +64,7 @@ public class PlaytimeStatsHandler {
         return players.computeIfAbsent(uuid, PlaytimeStats::new);
     }
 
-
+    public ConcurrentHashMap<UUID, PlaytimeStats> getPlayers() {
+        return players;
+    }
 }

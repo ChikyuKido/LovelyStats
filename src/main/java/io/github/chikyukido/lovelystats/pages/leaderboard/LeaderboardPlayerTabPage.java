@@ -16,13 +16,13 @@ public class LeaderboardPlayerTabPage extends TablePage {
 
     public LeaderboardPlayerTabPage(UpdateHandler parent, UUID playerUUID) {
         super(parent, playerUUID, new TablePageConfig("LeaderboardPlayerTab",10,false));
-        config.getRows().add(new TablePageRow("Name",120, TablePageRowType.STRING, TablePageRowVisualizeType.STRING));
-        config.getRows().add(new TablePageRow("Playtime",120, TablePageRowType.LONG,TablePageRowVisualizeType.TIME));
-        config.getRows().add(new TablePageRow("Active",120, TablePageRowType.LONG,TablePageRowVisualizeType.TIME));
-        config.getRows().add(new TablePageRow("Idle",120, TablePageRowType.LONG,TablePageRowVisualizeType.TIME));
+        config.getRows().add(new TablePageRow("Name",140, TablePageRowType.STRING, TablePageRowVisualizeType.STRING));
+        config.getRows().add(new TablePageRow("Playtime",130, TablePageRowType.LONG,TablePageRowVisualizeType.TIME));
+        config.getRows().add(new TablePageRow("Active",130, TablePageRowType.LONG,TablePageRowVisualizeType.TIME));
+        config.getRows().add(new TablePageRow("Idle",130, TablePageRowType.LONG,TablePageRowVisualizeType.TIME));
         config.getRows().add(new TablePageRow("Chat Msg",120, TablePageRowType.LONG,TablePageRowVisualizeType.STRING));
         config.getRows().add(new TablePageRow("Deaths",120, TablePageRowType.LONG,TablePageRowVisualizeType.STRING));
-        List<UUID> players = RecordedPlayerHandler.get().getPlayers();
+        List<UUID> players = RecordedPlayerHandler.get().getPlayersList();
         Object[][] values = new Object[players.size()][config.getRows().size()];
         for (int i = 0; i < players.size(); i++) {
             values[i] = aggregate(players.get(i));

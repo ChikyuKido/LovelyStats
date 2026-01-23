@@ -63,5 +63,9 @@ public class EntityStatsHandler {
     public EntityStats getEntityStatsFor(UUID uuid) {
         return players.computeIfAbsent(uuid, EntityStats::new);
     }
+
+    public ConcurrentHashMap<UUID, EntityStats> getPlayers() {
+        return players;
+    }
 }
 

@@ -23,7 +23,7 @@ public class PlayerStatsHandler {
         try {
             var loadedPlayers = PlayerStatsStorage.INSTANCE.loadAll();
             for (PlayerStats player : loadedPlayers) {
-                INSTANCE.players.put(UUID.fromString(player.getUuid()), player);
+                INSTANCE.players.put(player.getUuid(), player);
             }
         } catch (IOException e) {
         }
@@ -41,7 +41,7 @@ public class PlayerStatsHandler {
 
     public void saveAllPlayers() {
         for (PlayerStats player : players.values()) {
-            savePlayer(UUID.fromString(player.getUuid()));
+            savePlayer(player.getUuid());
         }
     }
 
@@ -86,6 +86,9 @@ public class PlayerStatsHandler {
     }
 
     public PlayerStats getPlayerStats(UUID uuid) {
-        return players.computeIfAbsent(uuid, id -> new PlayerStats(id.toString()));
+        return players.computeIfAbsent(uuid, PlayerStats::new);
+    }
+    public ConcurrentHashMap<UUID, PlayerStats> getPlayers() {
+        return players;
     }
 }

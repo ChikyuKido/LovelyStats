@@ -23,6 +23,10 @@ public class RecordedPlayerHandler {
         return INSTANCE;
     }
 
+    public ConcurrentHashMap<UUID, String> getPlayers() {
+        return players;
+    }
+
     public static void init() {
         DATA_FOLDER.mkdirs();
         try {
@@ -58,7 +62,7 @@ public class RecordedPlayerHandler {
     public String getUsername(UUID player)  {
         return players.get(player);
     }
-    public List<UUID> getPlayers() {
+    public List<UUID> getPlayersList() {
         return new ArrayList<>(players.keySet());
     }
 
@@ -66,5 +70,6 @@ public class RecordedPlayerHandler {
         INSTANCE.players.put(event.getPlayerRef().getUuid(),event.getPlayerRef().getUsername());
         INSTANCE.savePlayer(event.getPlayerRef().getUuid());
     }
+
 
 }

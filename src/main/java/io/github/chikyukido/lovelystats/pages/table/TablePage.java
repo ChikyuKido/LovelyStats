@@ -106,9 +106,18 @@ public class TablePage extends TabPage {
                 TablePageRow row = rows.get(j);
                 Object value = valueRow[j+(config.isWithIcon()?1:0)];
 
-                String text;
+                String text = "";
                 switch (row.visualizeType()) {
-                    case STRING -> text = value != null ? value.toString() : "";
+                    case STRING -> {
+                        if (value == null) {
+                            text = "";
+                        } else {
+                            switch (row.type()) {
+                                case STRING, LONG -> text = value.toString();
+                                case DOUBLE -> text = String.format("%.2f", (Double) value);
+                            }
+                        }
+                    }
                     case DATE -> text = value != null ? Format.formatDate((long) value) : "-";
                     case TIME -> text = value != null ? Format.formatTime((long) value)  : "-";
                     case DISTANCE -> text = value != null ? Format.formatDistance((double) value)  : "-";

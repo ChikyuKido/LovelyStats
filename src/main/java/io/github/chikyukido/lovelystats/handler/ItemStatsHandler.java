@@ -77,5 +77,9 @@ public class ItemStatsHandler {
     public ItemStats getBlockPlayer(UUID uuid) {
         return players.computeIfAbsent(uuid, ItemStats::new);
     }
+
+    public ConcurrentHashMap<UUID, ItemStats> getPlayers() {
+        return players;
+    }
 }
 

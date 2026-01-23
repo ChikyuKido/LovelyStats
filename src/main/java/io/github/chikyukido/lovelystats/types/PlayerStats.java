@@ -1,7 +1,9 @@
 package io.github.chikyukido.lovelystats.types;
 
+import java.util.UUID;
+
 public class PlayerStats {
-    private final String uuid;
+    private final UUID uuid;
     private double distanceWalked;
     private double distanceRun;
     private double distanceSwam;
@@ -14,7 +16,7 @@ public class PlayerStats {
     private long deaths;
     private long jumps;
 
-    public PlayerStats(String uuid, double distanceWalked, double distanceRun, double distanceSwam, double distanceFallen, double distanceClimbed, double distanceSneaked, double elevationUp, double elevationDown, long chatMessages, long deaths, long jumps) {
+    public PlayerStats(UUID uuid, double distanceWalked, double distanceRun, double distanceSwam, double distanceFallen, double distanceClimbed, double distanceSneaked, double elevationUp, double elevationDown, long chatMessages, long deaths, long jumps) {
         this.uuid = uuid;
         this.distanceWalked = distanceWalked;
         this.distanceRun = distanceRun;
@@ -29,7 +31,7 @@ public class PlayerStats {
         this.jumps = jumps;
     }
 
-    public PlayerStats(String uuid) {
+    public PlayerStats(UUID uuid) {
         this.uuid = uuid;
     }
 
@@ -77,7 +79,7 @@ public class PlayerStats {
         jumps++;
     }
 
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid;
     }
 

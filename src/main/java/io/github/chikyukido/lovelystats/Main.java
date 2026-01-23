@@ -68,6 +68,21 @@ public class Main extends JavaPlugin {
     @Override
     protected void start() {
         IdHashMap.init();
+//        List<UUID> uuids = new ArrayList<>();
+//        for (int i = 0; i <2000; i++) {
+//            uuids.add(UUID.randomUUID());
+//        }
+//        List<PlayerStats> playerStats = GenerateData.generateRandomPlayerStats(uuids);
+//        List<ItemStats> itemStats = GenerateData.generateRandomItemStats(uuids);
+//        List<EntityStats> entityStats = GenerateData.generateRandomEntityStats(uuids);
+//        List<PlaytimeStats> playtimeStats = GenerateData.generateRandomStats(uuids);
+//        Map<UUID, String> playerNames = GenerateData.generateRandomNames(uuids);
+//
+//        playerStats.forEach(p -> PlayerStatsHandler.get().getPlayers().put(p.getUuid(),p));
+//        itemStats.forEach(p -> ItemStatsHandler.get().getPlayers().put(p.getUuid(),p));
+//        entityStats.forEach(p -> EntityStatsHandler.get().getPlayers().put(p.getUuid(),p));
+//        playtimeStats.forEach(p -> PlaytimeStatsHandler.get().getPlayers().put(p.getUuid(),p));
+//        playerNames.forEach((uuid, s) -> RecordedPlayerHandler.get().getPlayers().put(uuid,s));
     }
 
 }

@@ -26,7 +26,7 @@ public class PlayerStatsStorage implements StatsStorage<PlayerStats> {
     @Override
     public PlayerStats load(UUID uuid) throws IOException {
         File file = new File(DATA_FOLDER, uuid.toString() + ".bin");
-        if (!file.exists()) return new PlayerStats(uuid.toString());
+        if (!file.exists()) return new PlayerStats(uuid);
 
         try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
             int version = in.readInt();
@@ -48,7 +48,7 @@ public class PlayerStatsStorage implements StatsStorage<PlayerStats> {
             long deaths = in.readLong();
 
             PlayerStats player = new PlayerStats(
-                    uuid.toString(),
+                    uuid,
                     distanceWalked,
                     distanceRun,
                     distanceSwam,
