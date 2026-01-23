@@ -1,10 +1,12 @@
 package io.github.chikyukido.lovelystats.util;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
-public class Format {
+public class OwnFormat {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
 
     public static String formatDistance(double meters) {
@@ -17,26 +19,25 @@ public class Format {
 
     public static String formatTime(long seconds) {
         if (seconds >= 3600) {
-            long days = TimeUnit.SECONDS.toDays(seconds);
-            long hours = TimeUnit.SECONDS.toHours(seconds) % 24;
-            long minutes = TimeUnit.SECONDS.toMinutes(seconds) % 60;
-            long secs = seconds % 60;
-            if (days > 0) {
-                return String.format("%dd %02dh %02dm %02ds", days, hours, minutes, secs);
-            } else {
-                return String.format("%02dh %02dm %02ds", hours, minutes, secs);
-            }
-        } else if (seconds >= 60) {
+            long hours = seconds / 3600;
+            long minutes = (seconds % 3600) / 60;
+            return String.format("%dh %02dm", hours, minutes);
+        } else {
             long minutes = seconds / 60;
             long secs = seconds % 60;
-            return String.format("%02dm %02ds", minutes, secs);
-        } else {
-            return String.format("%02ds", seconds);
+            return String.format("%dm %02ds", minutes, secs);
         }
     }
+
 
     public static String formatDate(long epochSeconds) {
         Date date = new Date(epochSeconds * 1000);
         return DATE_FORMAT.format(date);
+    }
+    public static String formatDate(long unixSeconds, String pattern) {
+        if (unixSeconds <= 0) return "--";
+        Instant instant = Instant.ofEpochSecond(unixSeconds);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern).withZone(ZoneId.systemDefault());
+        return formatter.format(instant);
     }
 }

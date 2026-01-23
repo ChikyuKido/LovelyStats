@@ -91,9 +91,6 @@ public class ItemStats {
     public long getTotalUsed() {
         return used.values().stream().mapToLong(Long::longValue).sum();
     }
-    public long getTotalCrafted() {
-        return crafted.values().stream().mapToLong(Long::longValue).sum();
-    }
     public long getTotalToolsBroken() {
         return toolsBroken.values().stream().mapToLong(Long::longValue).sum();
     }

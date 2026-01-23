@@ -1,0 +1,269 @@
+$C = "../../Common.ui";
+
+@DateWidth = 70;
+@TimeWidth = 110;
+@RowPadding = 2;
+
+Group #PlayerStatsGrid {
+    FlexWeight: 1;
+    LayoutMode: Left;
+    Padding: (Top: 15);
+
+    Group #LeftStats {
+        FlexWeight: 1;
+        LayoutMode: Top;
+        Padding: (Left: 6);
+
+        Label #TotalsLabel {
+            Text: "Totals";
+            Style: (FontSize: 22, TextColor: #7fb2ff);
+            Padding: (Top: 5, Bottom: 5);
+        }
+
+        Group #TotalsStats {
+            LayoutMode: Top;
+            Padding: (Left: 10);
+
+            Group { LayoutMode: Left; Anchor: (Height: 28);
+                Label { Text: "Total Playtime:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 180, Right: 10); }
+                Label #TotalPlaytime { Text: "0h"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 140); }
+            }
+            Group { LayoutMode: Left; Anchor: (Height: 28);
+                Label { Text: "Total Active Time:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 180, Right: 10); }
+                Label #TotalActiveTime { Text: "0h"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 140); }
+            }
+            Group { LayoutMode: Left; Anchor: (Height: 28);
+                Label { Text: "Total Idle Time:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 180, Right: 10); }
+                Label #TotalIdleTime { Text: "0h"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 140); }
+            }
+            Group { LayoutMode: Left; Anchor: (Height: 28);
+                Label { Text: "Sessions:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 180, Right: 10); }
+                Label #TotalSessions { Text: "0"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 140); }
+            }
+            Group { LayoutMode: Left; Anchor: (Height: 28);
+                Label { Text: "Active Ratio:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 180, Right: 10); }
+                Label #ActiveRatio { Text: "95%"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 140); }
+            }
+
+        }
+
+
+        Label #CurrentSessionLabel {
+            Text: "Current Session";
+            Style: (FontSize: 22, TextColor: #7fb2ff);
+            Padding: (Top: 15, Bottom: 5);
+        }
+
+        Group #CurrentSessionStats {
+            LayoutMode: Top;
+            Padding: (Left: 10);
+
+            Group { LayoutMode: Left; Anchor: (Height: 28);
+                Label { Text: "Started:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 180, Right: 10); }
+                Label #CurrentStarted { Text: "--"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 140); }
+            }
+            Group { LayoutMode: Left; Anchor: (Height: 28);
+                Label { Text: "Total:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 180, Right: 10); }
+                Label #CurrentPlaytime { Text: "0h"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 140); }
+            }
+            Group { LayoutMode: Left; Anchor: (Height: 28);
+                Label { Text: "Active:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 180, Right: 10); }
+                Label #CurrentActive { Text: "0h"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 140); }
+            }
+            Group { LayoutMode: Left; Anchor: (Height: 28);
+                Label { Text: "Idle:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 180, Right: 10); }
+                Label #CurrentIdle { Text: "0h"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 140); }
+            }
+            Group { LayoutMode: Left; Anchor: (Height: 28);
+                Label { Text: "Active Ratio:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 180, Right: 10); }
+                Label #CurrentActiveRatio { Text: "95%"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 140); }
+            }
+        }
+
+        Label #LongestSessionLabel {
+            Text: "Longest Session";
+            Style: (FontSize: 22, TextColor: #7fb2ff);
+            Padding: (Top: 15, Bottom: 5);
+        }
+
+        Group #LongestSessionStats {
+            LayoutMode: Top;
+            Padding: (Left: 10);
+
+            Group { LayoutMode: Left; Anchor: (Height: 28);
+                Label { Text: "Started:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 180, Right: 10); }
+                Label #LongestStarted { Text: "--"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 140); }
+            }
+            Group { LayoutMode: Left; Anchor: (Height: 28);
+                Label { Text: "Ended:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 180, Right: 10); }
+                Label #LongestEnded { Text: "--"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 140); }
+            }
+            Group { LayoutMode: Left; Anchor: (Height: 28);
+                Label { Text: "Total:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 180, Right: 10); }
+                Label #LongestPlaytime { Text: "0h"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 140); }
+            }
+            Group { LayoutMode: Left; Anchor: (Height: 28);
+                Label { Text: "Active:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 180, Right: 10); }
+                Label #LongestActive { Text: "0h"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 140); }
+            }
+            Group { LayoutMode: Left; Anchor: (Height: 28);
+                Label { Text: "Idle:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 180, Right: 10); }
+                Label #LongestIdle { Text: "0h"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 140); }
+            }
+            Group { LayoutMode: Left; Anchor: (Height: 28);
+                Label { Text: "Active Ratio:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 180, Right: 10); }
+                Label #LongestActiveRatio { Text: "95%"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 140); }
+            }
+        }
+    }
+
+    Group #RightStats {
+        FlexWeight: 1;
+        LayoutMode: Top;
+        Padding: (Left: 10);
+
+        Group #PlaytimeOverTimeContainer {
+            LayoutMode: Top;
+
+            Label #PlaytimeOverTimeLabel {
+                Text: "Playtime Over Time";
+                Style: (FontSize: 22, TextColor: #7fb2ff);
+                Padding: (Top: 5, Bottom: 5);
+            }
+
+            Group #PlaytimeOverTimeHeader {
+                LayoutMode: Left;
+                Label #Date    { Text: "Date";    Style: (TextColor: #9aa7b4); Anchor: (Width: @DateWidth); Padding: (Left: 10); }
+                Label #Playtime{ Text: "Playtime"; Style: (TextColor: #9aa7b4); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                Label #Active  { Text: "Active";   Style: (TextColor: #9aa7b4); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                Label #Idle    { Text: "Idle";     Style: (TextColor: #9aa7b4); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+            }
+
+            Group #PlaytimeOverTimeBody {
+                LayoutMode: Top;
+                FlexWeight: 1;
+
+                Group #Row1 { LayoutMode: Left; Padding: (Top: @RowPadding, Bottom: @RowPadding);
+                    Label #Date1    { Text: "Jan 17"; Style: (TextColor: #e6edf5); Anchor: (Width: @DateWidth); Padding: (Left: 10); }
+                    Label #Playtime1{ Text: "2h 14m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Active1  { Text: "1h 49m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Idle1    { Text: "25m";    Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                }
+                Group #Row2 { LayoutMode: Left; Padding: (Top: @RowPadding, Bottom: @RowPadding);
+                    Label #Date2    { Text: "Jan 18"; Style: (TextColor: #e6edf5); Anchor: (Width: @DateWidth); Padding: (Left: 10); }
+                    Label #Playtime2{ Text: "0h 52m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Active2  { Text: "41m";    Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Idle2    { Text: "11m";    Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                }
+                Group #Row3 { LayoutMode: Left; Padding: (Top: @RowPadding, Bottom: @RowPadding);
+                    Label #Date3    { Text: "Jan 19"; Style: (TextColor: #e6edf5); Anchor: (Width: @DateWidth); Padding: (Left: 10); }
+                    Label #Playtime3{ Text: "3h 05m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Active3  { Text: "2h 33m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Idle3    { Text: "32m";    Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                }
+                Group #Row4 { LayoutMode: Left; Padding: (Top: @RowPadding, Bottom: @RowPadding);
+                    Label #Date4    { Text: "Jan 20"; Style: (TextColor: #e6edf5); Anchor: (Width: @DateWidth); Padding: (Left: 10); }
+                    Label #Playtime4{ Text: "1h 44m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Active4  { Text: "1h 21m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Idle4    { Text: "23m";    Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                }
+                Group #Row5 { LayoutMode: Left; Padding: (Top: @RowPadding, Bottom: @RowPadding);
+                    Label #Date5    { Text: "Jan 21"; Style: (TextColor: #e6edf5); Anchor: (Width: @DateWidth); Padding: (Left: 10); }
+                    Label #Playtime5{ Text: "4h 10m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Active5  { Text: "3h 38m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Idle5    { Text: "32m";    Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                }
+                Group #Row6 { LayoutMode: Left; Padding: (Top: @RowPadding, Bottom: @RowPadding);
+                    Label #Date6    { Text: "Jan 22"; Style: (TextColor: #e6edf5); Anchor: (Width: @DateWidth); Padding: (Left: 10); }
+                    Label #Playtime6{ Text: "2h 01m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Active6  { Text: "1h 35m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Idle6    { Text: "26m";    Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                }
+                Group #Row7 { LayoutMode: Left; Padding: (Top: @RowPadding, Bottom: @RowPadding);
+                    Label #Date7    { Text: "Jan 23"; Style: (TextColor: #e6edf5); Anchor: (Width: @DateWidth); Padding: (Left: 10); }
+                    Label #Playtime7{ Text: "1h 12m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Active7  { Text: "58m";    Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Idle7    { Text: "14m";    Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                }
+            }
+        }
+
+
+        Group #LastSessionsContainer {
+            LayoutMode: Top;
+            Padding: (Bottom: 15);
+
+            Label #LastSessionsLabel {
+                Text: "Last 3 Sessions";
+                Style: (FontSize: 22, TextColor: #7fb2ff);
+                Padding: (Top: 5, Bottom: 5);
+            }
+
+            Group #LastSessionsTableBodyHeader {
+                LayoutMode: Left;
+                Label    { Text: "Index";    Style: (TextColor: #9aa7b4); Anchor: (Width: @DateWidth); Padding: (Left: 10); }
+                Label    { Text: "Playtime"; Style: (TextColor: #9aa7b4); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                Label    { Text: "Active";   Style: (TextColor: #9aa7b4); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                Label    { Text: "Idle";     Style: (TextColor: #9aa7b4); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+            }
+
+            Group #LastSessionsTableBody {
+                LayoutMode: Top;
+
+                Group #SessionRow1 { LayoutMode: Left; Padding: (Top: @RowPadding, Bottom: @RowPadding);
+                    Label #Index1    { Text: "1"; Style: (TextColor: #e6edf5); Anchor: (Width: 30); Padding: (Left: 10); }
+                    Label #Playtime1 { Text: "1h 12m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Active1   { Text: "58m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Idle1     { Text: "14m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                }
+                Group #SessionRow2 { LayoutMode: Left; Padding: (Top: @RowPadding, Bottom: @RowPadding);
+                    Label #Index2    { Text: "2"; Style: (TextColor: #e6edf5); Anchor: (Width: 30); Padding: (Left: 10); }
+                    Label #Playtime2 { Text: "2h 01m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Active2   { Text: "1h 35m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Idle2     { Text: "26m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                }
+                Group #SessionRow3 { LayoutMode: Left; Padding: (Top: @RowPadding, Bottom: @RowPadding);
+                    Label #Index3    { Text: "3"; Style: (TextColor: #e6edf5); Anchor: (Width: 30); Padding: (Left: 10); }
+                    Label #Playtime3 { Text: "4h 10m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Active3   { Text: "3h 38m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                    Label #Idle3     { Text: "32m"; Style: (TextColor: #e6edf5); Anchor: (Width: @TimeWidth); Padding: (Right: 10); }
+                }
+            }
+        }
+
+        Group #SessionDistributionContainer {
+            LayoutMode: Top;
+
+            Label #SessionDistributionLabel {
+                Text: "Session Distribution";
+                Style: (FontSize: 22, TextColor: #7fb2ff);
+                Padding: (Top: 5, Bottom: 5);
+            }
+
+            Group #SessionDistribution {
+                LayoutMode: Top;
+
+                Group #Dist1Group { LayoutMode: Left; Padding: (Top: @RowPadding, Bottom: @RowPadding);
+                    Label #Dist1Label { Text: "< 15m:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 80, Right: 10); Padding: (Left: 10); }
+                    Label #Dist1Value { Text: "4"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 40); }
+                }
+                Group #Dist2Group { LayoutMode: Left; Padding: (Top: @RowPadding, Bottom: @RowPadding);
+                    Label #Dist2Label { Text: "15-30m:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 80, Right: 10); Padding: (Left: 10); }
+                    Label #Dist2Value { Text: "56"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 40); }
+                }
+                Group #Dist3Group { LayoutMode: Left; Padding: (Top: @RowPadding, Bottom: @RowPadding);
+                    Label #Dist3Label { Text: "30-60m:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 80, Right: 10); Padding: (Left: 10); }
+                    Label #Dist3Value { Text: "53"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 40); }
+                }
+                Group #Dist4Group { LayoutMode: Left; Padding: (Top: @RowPadding, Bottom: @RowPadding);
+                    Label #Dist4Label { Text: "1-2h:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 80, Right: 10); Padding: (Left: 10); }
+                    Label #Dist4Value { Text: "2"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 40); }
+                }
+                Group #Dist5Group { LayoutMode: Left; Padding: (Top: @RowPadding, Bottom: @RowPadding);
+                    Label #Dist5Label { Text: "2h+:"; Style: (TextColor: #9aa7b4); Anchor: (Width: 80, Right: 10); Padding: (Left: 10); }
+                    Label #Dist5Value { Text: "6"; Style: (TextColor: #e6edf5, HorizontalAlignment: End); Anchor: (Width: 40); }
+                }
+            }
+        }
+    }
+}

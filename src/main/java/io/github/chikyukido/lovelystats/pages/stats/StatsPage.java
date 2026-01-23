@@ -35,6 +35,7 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> implement
     public void build(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder cb, @Nonnull UIEventBuilder event, @Nonnull Store<EntityStore> store) {
         cb.append("stats/base_page.ui");
         event.addEventBinding(CustomUIEventBindingType.Activating,"#PlayersTab", EventData.of("Button","player"),false);
+        event.addEventBinding(CustomUIEventBindingType.Activating,"#PlaytimeTab", EventData.of("Button","playtime"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#BlocksTab", EventData.of("Button","block"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#EntityTab", EventData.of("Button","entity"),false);
         currentPage = new PlayerTabPage(this,playerUUID);
@@ -45,7 +46,7 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> implement
     public void handleDataEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull Data data) {
         super.handleDataEvent(ref, store, data);
 
-        if(data.value.equals("player") || data.value.equals("block") || data.value.equals("entity")) {
+        if(data.value.equals("player") || data.value.equals("block") || data.value.equals("entity") || data.value.equals("playtime")) {
             rebuild(data.value);
             return;
         }
@@ -61,8 +62,19 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> implement
             case "player" -> currentPage = new PlayerTabPage(this,playerUUID);
             case "block" -> currentPage = new ItemTabPage(this,playerUUID);
             case "entity" -> currentPage = new EntityTabPage(this,playerUUID);
+            case "playtime" -> currentPage = new PlaytimeTabPage(this,playerUUID);
         }
         UICommandBuilder cb = new UICommandBuilder();
+        cb.set("#EntityTabImage.Background","entity.png");
+        cb.set("#BlocksTabImage.Background","blocks.png");
+        cb.set("#PlayersTabImage.Background","player.png");
+        cb.set("#PlaytimeTabImage.Background","time.png");
+        switch (page) {
+            case "player" -> cb.set("#PlayersTabImage.Background","player_selected.png");
+            case "block" -> cb.set("#BlocksTabImage.Background","blocks_selected.png");
+            case "entity" -> cb.set("#EntityTabImage.Background","entity_selected.png");
+            case "playtime" -> cb.set("#PlaytimeTabImage.Background","time_selected.png");
+        }
         UIEventBuilder event = new UIEventBuilder();
         cb.clear("#TabPages");
 

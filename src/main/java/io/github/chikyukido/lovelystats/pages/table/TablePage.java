@@ -9,7 +9,7 @@ import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import io.github.chikyukido.lovelystats.pages.TabPage;
 import io.github.chikyukido.lovelystats.pages.UpdateHandler;
-import io.github.chikyukido.lovelystats.util.Format;
+import io.github.chikyukido.lovelystats.util.OwnFormat;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -32,7 +32,20 @@ public class TablePage extends TabPage {
         cb.insertBeforeInline("#BodyRow","Group #HeaderRow { LayoutMode: Left; Padding: (Top: 5, Bottom: 5, Left: "+config.getFullPaddingLeft()+"); }");
         for (int i = 0; i < config.getRows().size(); i++) {
             TablePageRow row = config.getRows().get(i);
-            cb.appendInline("#HeaderRow", "TextButton #Header"+i+" { Text: \""+row.name()+"\"; Anchor: (Width: "+row.width()+"); }");
+            cb.appendInline("#HeaderRow",
+                    "Button #Header" + i + " { " +
+                            "Anchor: (Width: " + row.width() + "); " +
+                            "Padding: (Right: 5); " +
+                            "Group #HeaderLabelGroup { " +
+                            "LayoutMode: Left; " +
+                            "Label #HeaderLabel" + i + " { " +
+                            "Text: \"" + row.name() + "\"; " +
+                            "Style: (TextColor: #9aa7b4, FontSize: 16); " +
+                            "} " +
+                            "} " +
+                            "}"
+            );
+
             event.addEventBinding(CustomUIEventBindingType.Activating,"#Header"+i, EventData.of("Button",config.getId()+"_"+i),false);
         }
         buildRows(cb);
@@ -118,18 +131,16 @@ public class TablePage extends TabPage {
                             }
                         }
                     }
-                    case DATE -> text = value != null ? Format.formatDate((long) value) : "-";
-                    case TIME -> text = value != null ? Format.formatTime((long) value)  : "-";
-                    case DISTANCE -> text = value != null ? Format.formatDistance((double) value)  : "-";
+                    case DATE -> text = value != null ? OwnFormat.formatDate((long) value) : "-";
+                    case TIME -> text = value != null ? OwnFormat.formatTime((long) value)  : "-";
+                    case DISTANCE -> text = value != null ? OwnFormat.formatDistance((double) value)  : "-";
                     default -> text = "-";
                 }
 
-                sb.append("Label")
-                        .append(" { Text: \"")
-                        .append(text)
-                        .append("\"; Anchor: (Width: ")
-                        .append(row.width())
-                        .append("); } ");
+                sb.append("Label { ")
+                        .append("Text: \"").append(text).append("\"; ")
+                        .append("Style: (TextColor: #e6edf5); ")
+                        .append("Anchor: (Width: ").append(row.width()).append("); } ");
             }
 
             sb.append("}");

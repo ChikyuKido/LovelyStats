@@ -57,7 +57,9 @@ public class TravelSystem extends EntityTickingSystem<EntityStore> {
             stats.addDistanceSwam(distance);
         } else if (states.sprinting) {
             stats.addDistanceRun(distance);
-        } else {
+        } else if (states.flying){
+            stats.addDistanceWalked(distance);
+        }else {
             stats.addDistanceWalked(distance);
         }
 
