@@ -8,10 +8,14 @@ import java.util.UUID;
 public class PlayerStatsStorage implements StatsStorage<PlayerStats> {
 
     public static final PlayerStatsStorage INSTANCE = new PlayerStatsStorage();
-    private static final File DATA_FOLDER = new File("playerstats");
+    private static final File DATA_FOLDER = new File("mods/LovelyStats/playerstats");
+    private static final File OLD_DATA_FOLDER = new File("playerstats");
     private static final int VERSION = 1;
 
     static {
+        if (OLD_DATA_FOLDER.exists()) {
+            OLD_DATA_FOLDER.renameTo(DATA_FOLDER);
+        }
         DATA_FOLDER.mkdirs();
     }
 
