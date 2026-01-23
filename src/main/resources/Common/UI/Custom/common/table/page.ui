@@ -1,0 +1,14 @@
+$C = "../../Common.ui";
+
+Group #StatsGrid {
+    Anchor: (Width: 780, Height: 580);
+    LayoutMode: TopScrolling;
+    ScrollbarStyle: $C.@DefaultScrollbarStyle;
+    Padding: (Full: 15);
+
+    Group #BodyRow {
+        FlexWeight: 1;
+        LayoutMode: Top;
+    }
+}
+

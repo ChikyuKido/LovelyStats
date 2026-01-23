@@ -7,11 +7,11 @@ import java.util.concurrent.TimeUnit;
 public class Format {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
 
-    public static String formatDistance(String label, double meters) {
+    public static String formatDistance(double meters) {
         if (meters >= 1000) {
-            return String.format("%s: %.2f km", label, meters / 1000.0);
+            return String.format("%.2f km", meters / 1000.0);
         } else {
-            return String.format("%s: %.0f m", label, meters);
+            return String.format("%.0f m", meters);
         }
     }
 

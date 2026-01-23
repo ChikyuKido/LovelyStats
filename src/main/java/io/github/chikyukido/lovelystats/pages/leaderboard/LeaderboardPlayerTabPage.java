@@ -1,117 +1,44 @@
 package io.github.chikyukido.lovelystats.pages.leaderboard;
 
-import com.hypixel.hytale.component.Ref;
-import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.ui.builder.EventData;
-import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
-import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
-import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import io.github.chikyukido.lovelystats.handler.PlayerStatsHandler;
 import io.github.chikyukido.lovelystats.handler.PlaytimeStatsHandler;
 import io.github.chikyukido.lovelystats.handler.RecordedPlayerHandler;
-import io.github.chikyukido.lovelystats.pages.TabPage;
+import io.github.chikyukido.lovelystats.pages.UpdateHandler;
+import io.github.chikyukido.lovelystats.pages.table.*;
 import io.github.chikyukido.lovelystats.types.PlayerStats;
 import io.github.chikyukido.lovelystats.types.PlaytimeStats;
-import io.github.chikyukido.lovelystats.util.Format;
 
-import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
-public class LeaderboardPlayerTabPage extends TabPage {
-    private List<LeaderboardPlayerTabPage.PlayerData> statsList = new ArrayList<>();
-    private String currentSort = "name";
-    private boolean ascending = true;
-
-    public LeaderboardPlayerTabPage(LeaderboardPage parent, UUID playerUUID) {
-        super(parent, playerUUID);
-    }
+public class LeaderboardPlayerTabPage extends TablePage {
 
 
-    @Override
-    public void build(UICommandBuilder cb, UIEventBuilder event) {
-        cb.append("#TabPages","leaderboard/player/player_page.ui");
-        event.addEventBinding(CustomUIEventBindingType.Activating,"#Name", EventData.of("Button","name"),false);
-        event.addEventBinding(CustomUIEventBindingType.Activating,"#Playtime", EventData.of("Button","playtime"),false);
-        event.addEventBinding(CustomUIEventBindingType.Activating,"#Active", EventData.of("Button","active"),false);
-        event.addEventBinding(CustomUIEventBindingType.Activating,"#Idle", EventData.of("Button","idle"),false);
-        event.addEventBinding(CustomUIEventBindingType.Activating,"#Chat", EventData.of("Button","chat"),false);
-        event.addEventBinding(CustomUIEventBindingType.Activating,"#Deaths", EventData.of("Button","deaths"),false);
-
-        for (UUID player : RecordedPlayerHandler.get().getPlayers()) {
-            statsList.add(aggregate(player));
+    public LeaderboardPlayerTabPage(UpdateHandler parent, UUID playerUUID) {
+        super(parent, playerUUID, new TablePageConfig("LeaderboardPlayerTab",10,false));
+        config.getRows().add(new TablePageRow("Name",120, TablePageRowType.STRING, TablePageRowVisualizeType.STRING));
+        config.getRows().add(new TablePageRow("Playtime",120, TablePageRowType.LONG,TablePageRowVisualizeType.TIME));
+        config.getRows().add(new TablePageRow("Active",120, TablePageRowType.LONG,TablePageRowVisualizeType.TIME));
+        config.getRows().add(new TablePageRow("Idle",120, TablePageRowType.LONG,TablePageRowVisualizeType.TIME));
+        config.getRows().add(new TablePageRow("Chat Msg",120, TablePageRowType.LONG,TablePageRowVisualizeType.STRING));
+        config.getRows().add(new TablePageRow("Deaths",120, TablePageRowType.LONG,TablePageRowVisualizeType.STRING));
+        List<UUID> players = RecordedPlayerHandler.get().getPlayers();
+        Object[][] values = new Object[players.size()][config.getRows().size()];
+        for (int i = 0; i < players.size(); i++) {
+            values[i] = aggregate(players.get(i));
         }
-
-        for (int row = 0; row < statsList.size(); row++) {
-            LeaderboardPlayerTabPage.PlayerData stats = statsList.get(row);
-            cb.append("#BlockStatsGrid", "leaderboard/player/player_page_entry.ui");
-            String base = "#BlockStatsGrid[" + row + "]";
-            cb.set(base + " #Name.Text", stats.name);
-            cb.set(base + " #Playtime.Text", Format.formatTime(stats.playtime));
-            cb.set(base + " #Active.Text", Format.formatTime(stats.active));
-            cb.set(base + " #Idle.Text", Format.formatTime(stats.idle));
-            cb.set(base + " #Chat.Text", "" + stats.chat);
-            cb.set(base + " #Deaths.Text", "" + stats.deaths);
-        }
+        config.setValues(values);
     }
-
-    @Override
-    public void handleEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull String data) {
-        sortAndRefreshGrid(data,new UICommandBuilder());
-    }
-    private void sortAndRefreshGrid(String sortBy,UICommandBuilder cb) {
-        switch (sortBy) {
-            case "playtime" -> statsList.sort(Comparator.comparingLong(s -> s.playtime));
-            case "active" -> statsList.sort(Comparator.comparingLong(s -> s.active));
-            case "idle" -> statsList.sort(Comparator.comparingLong(s -> s.idle));
-            case "chat" -> statsList.sort(Comparator.comparingLong(s -> s.chat));
-            case "death" -> statsList.sort(Comparator.comparingLong(s -> s.deaths));
-            case "name" -> statsList.sort(Comparator.comparing(s -> s.name));
-        }
-
-        if (currentSort.equals(sortBy) && ascending) {
-            Collections.reverse(statsList);
-            ascending = false;
-        } else {
-            ascending = true;
-        }
-        currentSort = sortBy;
-        rebuildGrid(cb);
-    }
-
-    private void rebuildGrid(UICommandBuilder cb) {
-        cb.clear("#BlockStatsGrid");
-
-        for (int row = 0; row < statsList.size(); row++) {
-            LeaderboardPlayerTabPage.PlayerData stats = statsList.get(row);
-            cb.append("#BlockStatsGrid", "leaderboard/player/player_page_entry.ui");
-
-            String base = "#BlockStatsGrid[" + row + "]";
-            cb.set(base + " #Name.Text", stats.name);
-            cb.set(base + " #Playtime.Text", Format.formatTime(stats.playtime));
-            cb.set(base + " #Active.Text", Format.formatTime(stats.active));
-            cb.set(base + " #Idle.Text", Format.formatTime(stats.idle));
-            cb.set(base + " #Chat.Text", "" + stats.chat);
-            cb.set(base + " #Deaths.Text", "" + stats.deaths);
-        }
-        parent.sendUpdate(cb);
-    }
-
-
-    private static LeaderboardPlayerTabPage.PlayerData aggregate(UUID playerUuid) {
+    private Object[] aggregate(UUID playerUuid) {
         PlaytimeStats playtimeStats = PlaytimeStatsHandler.get().getPlaytimeForPlayer(playerUuid);
         PlayerStats playerStats = PlayerStatsHandler.get().getPlayerStats(playerUuid);
-        PlayerData p = new PlayerData(RecordedPlayerHandler.get().getUsername(playerUuid),
-                playtimeStats.getTotalPlaytime(),
-                playtimeStats.getTotalActivePlaytime(),
-                playtimeStats.getTotalIdlePlaytime(),
-                playerStats.getChatMessages(),
-                playerStats.getDeaths()
-        );
+        Object[] p = new Object[config.getRows().size()];
+        p[0] = RecordedPlayerHandler.get().getUsername(playerUuid);
+        p[1] = playtimeStats.getTotalPlaytime();
+        p[2] = playtimeStats.getTotalActivePlaytime();
+        p[3] = playtimeStats.getTotalIdlePlaytime();
+        p[4] = playerStats.getChatMessages();
+        p[5] = playerStats.getDeaths();
         return p;
-    }
-
-
-    private record PlayerData(String name, long playtime, long active, long idle, long chat, long deaths) {
     }
 }

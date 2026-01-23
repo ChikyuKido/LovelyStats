@@ -30,14 +30,14 @@ public class PlayerTabPage extends TabPage {
         PlayerStats playerStats = PlayerStatsHandler.get().getPlayerStats(playerUUID);
         PlaytimeStats playtimeStats = PlaytimeStatsHandler.get().getPlaytimeForPlayer(playerUUID);
 
-        cb.set("#LeftStats #DistanceWalked.Text", Format.formatDistance("Walked", playerStats.getDistanceWalked()));
-        cb.set("#LeftStats #DistanceRun.Text", Format.formatDistance("Run", playerStats.getDistanceRun()));
-        cb.set("#LeftStats #DistanceSwam.Text", Format.formatDistance("Swam", playerStats.getDistanceSwam()));
-        cb.set("#LeftStats #DistanceFallen.Text", Format.formatDistance("Fallen", playerStats.getDistanceFallen()));
-        cb.set("#LeftStats #DistanceClimbed.Text", Format.formatDistance("Climbed", playerStats.getDistanceClimbed()));
-        cb.set("#LeftStats #DistanceSneaked.Text", Format.formatDistance("Sneaked", playerStats.getDistanceSneaked()));
-        cb.set("#LeftStats #ElevationUp.Text", Format.formatDistance("Elevation Up", playerStats.getElevationUp()));
-        cb.set("#LeftStats #ElevationDown.Text", Format.formatDistance("Elevation Down", playerStats.getElevationDown()));
+        cb.set("#LeftStats #DistanceWalked.Text", "Walked: "+Format.formatDistance(playerStats.getDistanceWalked()));
+        cb.set("#LeftStats #DistanceRun.Text", "Run: "+Format.formatDistance( playerStats.getDistanceRun()));
+        cb.set("#LeftStats #DistanceSwam.Text", "Swam: "+Format.formatDistance( playerStats.getDistanceSwam()));
+        cb.set("#LeftStats #DistanceFallen.Text", "Fallen: "+Format.formatDistance(playerStats.getDistanceFallen()));
+        cb.set("#LeftStats #DistanceClimbed.Text", "Climbed: "+Format.formatDistance(playerStats.getDistanceClimbed()));
+        cb.set("#LeftStats #DistanceSneaked.Text", "Sneaked: "+Format.formatDistance(playerStats.getDistanceSneaked()));
+        cb.set("#LeftStats #ElevationUp.Text", "Elevation Up: " +Format.formatDistance(playerStats.getElevationUp()));
+        cb.set("#LeftStats #ElevationDown.Text","Elevation Down: " +Format.formatDistance( playerStats.getElevationDown()));
 
         cb.set("#LeftStats #Deaths.Text", "Deaths: " + playerStats.getDeaths());
         cb.set("#LeftStats #ChatMessages.Text", "Chat Messages: " + playerStats.getChatMessages());
