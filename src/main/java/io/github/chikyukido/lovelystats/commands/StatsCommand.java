@@ -3,6 +3,7 @@ package io.github.chikyukido.lovelystats.commands;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.logger.HytaleLogger;
+import com.hypixel.hytale.protocol.GameMode;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.arguments.system.OptionalArg;
@@ -23,6 +24,7 @@ public class StatsCommand extends AbstractPlayerCommand {
     public static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     public StatsCommand() {
         super("stats", "overiew of your statistics");
+        setPermissionGroup(GameMode.Adventure);
     }
 
     OptionalArg<UUID> playerArg = this.withOptionalArg("player","The player to display the stats for", ArgTypes.PLAYER_UUID);
@@ -43,4 +45,5 @@ public class StatsCommand extends AbstractPlayerCommand {
         long end = System.currentTimeMillis();
         LOGGER.atInfo().log("Opened Stats page in %dms", end-start);
     }
+
 }

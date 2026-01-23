@@ -2,6 +2,7 @@ package io.github.chikyukido.lovelystats.commands;
 
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.protocol.GameMode;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
 import com.hypixel.hytale.server.core.entity.entities.Player;
@@ -15,6 +16,7 @@ import javax.annotation.Nonnull;
 public class LeaderboardCommand extends AbstractPlayerCommand {
     public LeaderboardCommand() {
         super("leaderboardStats","Show the stats leaderboard");
+        setPermissionGroup(GameMode.Adventure);
     }
 
     @Override
