@@ -12,8 +12,7 @@ public class ItemStatsHandler {
     private static final ItemStatsHandler INSTANCE = new ItemStatsHandler();
     private final ConcurrentHashMap<UUID, ItemStats> players = new ConcurrentHashMap<>();
 
-    private ItemStatsHandler() {
-    }
+    private ItemStatsHandler() {}
 
     public static ItemStatsHandler get() {
         return INSTANCE;
@@ -21,65 +20,80 @@ public class ItemStatsHandler {
 
     public static void init() {
         try {
-            var players = ItemStatsStorage.INSTANCE.loadAll();
-            for (ItemStats player : players) {
-                INSTANCE.players.put(player.getUuid(), player);
+            var loaded = ItemStatsStorage.INSTANCE.loadAll();
+            for (ItemStats stats : loaded) {
+                INSTANCE.players.put(stats.getUuid(), stats);
             }
-        } catch (IOException _) {
-
+        } catch (IOException ignored) {
         }
     }
 
     public void savePlayer(UUID uuid) {
-        if (players.containsKey(uuid)) {
-            ItemStats player = players.get(uuid);
+        ItemStats stats = players.get(uuid);
+        if (stats != null && stats.isDirty()) {
             try {
-                ItemStatsStorage.INSTANCE.store(player);
-            } catch (Exception _) {
+                ItemStatsStorage.INSTANCE.store(stats);
+                stats.clearDirty();
+            } catch (Exception ignored) {
             }
         }
     }
 
     public void saveAllPlayers() {
-        for (ItemStats player : players.values()) {
-            savePlayer(player.getUuid());
+        for (ItemStats stats : players.values()) {
+            if (stats.isDirty()) {
+                try {
+                    ItemStatsStorage.INSTANCE.store(stats);
+                    stats.clearDirty();
+                } catch (Exception ignored) {
+                }
+            }
         }
     }
 
     public void increaseBlockBreak(UUID uuid, long blockId) {
-        getBlockPlayer(uuid).increaseBlockBreak(blockId);
+        ItemStats is = getBlockPlayer(uuid);
+        is.increaseBlockBreak(blockId);
+        is.markDirty();
     }
 
     public void increaseBlockPlace(UUID uuid, long blockId) {
-        getBlockPlayer(uuid).increaseBlockPlace(blockId);
+        ItemStats is = getBlockPlayer(uuid);
+        is.increaseBlockPlace(blockId);
+        is.markDirty();
     }
 
     public void increaseCollected(UUID uuid, long itemId, long quantity) {
-        getBlockPlayer(uuid).increaseCollected(itemId, quantity);
+        ItemStats is = getBlockPlayer(uuid);
+        is.increaseCollected(itemId, quantity);
+        is.markDirty();
     }
 
     public void increaseDropped(UUID uuid, long itemId, long quantity) {
-        getBlockPlayer(uuid).increaseDropped(itemId, quantity);
+        ItemStats is = getBlockPlayer(uuid);
+        is.increaseDropped(itemId, quantity);
+        is.markDirty();
     }
 
     public void increaseUsed(UUID uuid, long itemId, long quantity) {
-        getBlockPlayer(uuid).increaseUsed(itemId, quantity);
+        ItemStats is = getBlockPlayer(uuid);
+        is.increaseUsed(itemId, quantity);
+        is.markDirty();
     }
 
     public void increaseCrafted(UUID uuid, long itemId, long quantity) {
-        getBlockPlayer(uuid).increaseCrafted(itemId, quantity);
+        ItemStats is = getBlockPlayer(uuid);
+        is.increaseCrafted(itemId, quantity);
+        is.markDirty();
     }
 
     public void increaseToolBroken(UUID uuid, long toolId) {
-        getBlockPlayer(uuid).increaseToolBroken(toolId);
+        ItemStats is = getBlockPlayer(uuid);
+        is.increaseToolBroken(toolId);
+        is.markDirty();
     }
 
     public ItemStats getBlockPlayer(UUID uuid) {
         return players.computeIfAbsent(uuid, ItemStats::new);
     }
-
-    public ConcurrentHashMap<UUID, ItemStats> getPlayers() {
-        return players;
-    }
 }
-

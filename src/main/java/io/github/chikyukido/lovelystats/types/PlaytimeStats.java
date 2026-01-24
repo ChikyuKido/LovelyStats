@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class PlaytimeStats {
+public class PlaytimeStats extends SaveStat{
     private final UUID uuid;
     private final List<PlaytimeSession> sessions = new ArrayList<>();
     private PlaytimeSession currentSession = null;

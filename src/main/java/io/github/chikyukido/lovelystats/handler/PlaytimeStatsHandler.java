@@ -8,11 +8,11 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PlaytimeStatsHandler {
+
     private static final PlaytimeStatsHandler INSTANCE = new PlaytimeStatsHandler();
     private final ConcurrentHashMap<UUID, PlaytimeStats> players = new ConcurrentHashMap<>();
 
-    private PlaytimeStatsHandler() {
-    }
+    private PlaytimeStatsHandler() {}
 
     public static PlaytimeStatsHandler get() {
         return INSTANCE;
@@ -20,51 +20,59 @@ public class PlaytimeStatsHandler {
 
     public static void init() {
         try {
-            var players = PlaytimeStatsStorage.INSTANCE.loadAll();
-            for (PlaytimeStats player : players) {
-                INSTANCE.players.put(player.getUuid(), player);
+            var loaded = PlaytimeStatsStorage.INSTANCE.loadAll();
+            for (PlaytimeStats stats : loaded) {
+                INSTANCE.players.put(stats.getUuid(), stats);
             }
-        } catch (IOException _) {
-        }
+        } catch (IOException ignored) {}
     }
 
     public void savePlayer(UUID uuid) {
-        if (players.containsKey(uuid)) {
-            PlaytimeStats player = players.get(uuid);
+        PlaytimeStats stats = players.get(uuid);
+        if (stats != null && stats.isDirty()) {
             try {
-                PlaytimeStatsStorage.INSTANCE.store(player);
-            } catch (Exception _) {
-            }
+                PlaytimeStatsStorage.INSTANCE.store(stats);
+                stats.clearDirty();
+            } catch (Exception ignored) {}
         }
     }
 
     public void saveAllPlayers() {
-        for (PlaytimeStats player : players.values()) {
-            savePlayer(player.getUuid());
+        for (PlaytimeStats stats : players.values()) {
+            if (stats.isDirty()) {
+                try {
+                    PlaytimeStatsStorage.INSTANCE.store(stats);
+                    stats.clearDirty();
+                } catch (Exception ignored) {}
+            }
         }
     }
 
     public void startPlaytimeSession(UUID uuid) {
-        players.computeIfAbsent(uuid, PlaytimeStats::new).startPlaytimeSession();
+        PlaytimeStats stats = players.computeIfAbsent(uuid, PlaytimeStats::new);
+        stats.startPlaytimeSession();
+        stats.markDirty();
     }
 
     public void endPlaytimeSession(UUID uuid) {
-        players.computeIfAbsent(uuid, PlaytimeStats::new).endPlaytimeSession();
+        PlaytimeStats stats = players.computeIfAbsent(uuid, PlaytimeStats::new);
+        stats.endPlaytimeSession();
+        stats.markDirty();
     }
 
     public void increaseActivePlaytime(UUID uuid, long playtime) {
-        players.computeIfAbsent(uuid, PlaytimeStats::new).increaseActivePlaytime(playtime);
+        PlaytimeStats stats = players.computeIfAbsent(uuid, PlaytimeStats::new);
+        stats.increaseActivePlaytime(playtime);
+        stats.markDirty();
     }
 
     public void increaseIdlePlaytime(UUID uuid, long playtime) {
-        players.computeIfAbsent(uuid, PlaytimeStats::new).increaseIdlePlaytime(playtime);
+        PlaytimeStats stats = players.computeIfAbsent(uuid, PlaytimeStats::new);
+        stats.increaseIdlePlaytime(playtime);
+        stats.markDirty();
     }
 
     public PlaytimeStats getPlaytimeForPlayer(UUID uuid) {
         return players.computeIfAbsent(uuid, PlaytimeStats::new);
-    }
-
-    public ConcurrentHashMap<UUID, PlaytimeStats> getPlayers() {
-        return players;
     }
 }

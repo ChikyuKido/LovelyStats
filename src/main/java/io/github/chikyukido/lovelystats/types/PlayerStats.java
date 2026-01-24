@@ -2,7 +2,7 @@ package io.github.chikyukido.lovelystats.types;
 
 import java.util.UUID;
 
-public class PlayerStats {
+public class PlayerStats extends SaveStat{
     private final UUID uuid;
     private double distanceWalked;
     private double distanceRun;

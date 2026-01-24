@@ -23,10 +23,6 @@ public class RecordedPlayerHandler {
         return INSTANCE;
     }
 
-    public ConcurrentHashMap<UUID, String> getPlayers() {
-        return players;
-    }
-
     public static void init() {
         DATA_FOLDER.mkdirs();
         try {

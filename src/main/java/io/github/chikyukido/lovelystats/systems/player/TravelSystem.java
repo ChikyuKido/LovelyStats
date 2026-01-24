@@ -13,7 +13,6 @@ import com.hypixel.hytale.server.core.modules.entity.component.TransformComponen
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import io.github.chikyukido.lovelystats.handler.PlayerStatsHandler;
-import io.github.chikyukido.lovelystats.types.PlayerStats;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -40,33 +39,32 @@ public class TravelSystem extends EntityTickingSystem<EntityStore> {
         double distance = lastPosition.distanceTo(currentPosition);
         if (distance <= 0.0 || Double.isNaN(distance)) return;
         double elevation = currentPosition.getY() - lastPosition.getY();
-        PlayerStats stats = PlayerStatsHandler.get().getPlayerStats(player.getUuid());
 
         if (elevation > 0) {
-            stats.addElevationUp(elevation);
+            PlayerStatsHandler.get().addElevationUp(player.getUuid(),elevation);
         } else if (elevation < 0) {
-            stats.addElevationDown(-elevation);
+            PlayerStatsHandler.get().addElevationDown(player.getUuid(),-elevation);
         }
 
         MovementStates states = state.getMovementStates();
         MovementStates lastState = lastStates.computeIfAbsent(player.getUuid(), _ -> new MovementStates());
 
         if (states.crouching || states.forcedCrouching) {
-            stats.addDistanceSneaked(distance);
+            PlayerStatsHandler.get().addDistanceSneaked(player.getUuid(),distance);
         } else if (states.swimming || states.inFluid || states.swimJumping) {
-            stats.addDistanceSwam(distance);
+            PlayerStatsHandler.get().addDistanceSwam(player.getUuid(),distance);
         } else if (states.sprinting) {
-            stats.addDistanceRun(distance);
+            PlayerStatsHandler.get().addDistanceRun(player.getUuid(),distance);
         } else if (states.flying){
-            stats.addDistanceWalked(distance);
+            PlayerStatsHandler.get().addDistanceWalked(player.getUuid(),distance);
         }else {
-            stats.addDistanceWalked(distance);
+            PlayerStatsHandler.get().addDistanceWalked(player.getUuid(),distance);
         }
 
-        if (states.climbing || states.mantling) stats.addDistanceClimbed(Math.max(0, elevation));
-        if (states.falling) stats.addDistanceFallen(Math.max(0, -elevation));
+        if (states.climbing || states.mantling) PlayerStatsHandler.get().addDistanceClimbed(player.getUuid(),Math.max(0, elevation));
+        if (states.falling) PlayerStatsHandler.get().addDistanceFallen(player.getUuid(),Math.max(0, -elevation));
         if (lastState.jumping && !states.jumping) {
-            stats.incrementJumps();
+            PlayerStatsHandler.get().incrementJumps(player.getUuid());
         }
 
         lastPosition.assign(currentPosition);

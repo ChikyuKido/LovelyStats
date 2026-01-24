@@ -1,6 +1,5 @@
 package io.github.chikyukido.lovelystats.handler;
 
-
 import io.github.chikyukido.lovelystats.save.EntityStatsStorage;
 import io.github.chikyukido.lovelystats.types.EntityStats;
 
@@ -13,8 +12,7 @@ public class EntityStatsHandler {
     private static final EntityStatsHandler INSTANCE = new EntityStatsHandler();
     private final ConcurrentHashMap<UUID, EntityStats> players = new ConcurrentHashMap<>();
 
-    private EntityStatsHandler() {
-    }
+    private EntityStatsHandler() {}
 
     public static EntityStatsHandler get() {
         return INSTANCE;
@@ -22,50 +20,62 @@ public class EntityStatsHandler {
 
     public static void init() {
         try {
-            var players = EntityStatsStorage.INSTANCE.loadAll();
-            for (EntityStats player : players) {
-                INSTANCE.players.put(player.getUuid(), player);
+            var loaded = EntityStatsStorage.INSTANCE.loadAll();
+            for (EntityStats stats : loaded) {
+                INSTANCE.players.put(stats.getUuid(), stats);
             }
-        } catch (IOException _) {
-
+        } catch (IOException ignored) {
         }
     }
 
     public void savePlayer(UUID uuid) {
-        if (players.containsKey(uuid)) {
-            EntityStats player = players.get(uuid);
+        EntityStats stats = players.get(uuid);
+        if (stats != null && stats.isDirty()) {
             try {
-                EntityStatsStorage.INSTANCE.store(player);
-            } catch (Exception _) {
+                EntityStatsStorage.INSTANCE.store(stats);
+                stats.clearDirty();
+            } catch (Exception ignored) {
             }
         }
     }
 
     public void saveAllPlayers() {
-        for (EntityStats player : players.values()) {
-            savePlayer(player.getUuid());
+        for (EntityStats stats : players.values()) {
+            if (stats.isDirty()) {
+                try {
+                    EntityStatsStorage.INSTANCE.store(stats);
+                    stats.clearDirty();
+                } catch (Exception ignored) {
+                }
+            }
         }
     }
 
     public void increaseKilled(UUID uuid, long entityId) {
-        getEntityStatsFor(uuid).getEntityStats(entityId).increaseKilled();
+        EntityStats es = getEntityStatsFor(uuid);
+        es.getEntityStats(entityId).increaseKilled();
+        es.markDirty();
     }
+
     public void increaseKilledBY(UUID uuid, long entityId) {
-        getEntityStatsFor(uuid).getEntityStats(entityId).increaseKilledBy();
+        EntityStats es = getEntityStatsFor(uuid);
+        es.getEntityStats(entityId).increaseKilledBy();
+        es.markDirty();
     }
-    public void increaseDamageDealt(UUID uuid, long entityId,double damage) {
-        getEntityStatsFor(uuid).getEntityStats(entityId).increaseDamageDealt(damage);
+
+    public void increaseDamageDealt(UUID uuid, long entityId, double damage) {
+        EntityStats es = getEntityStatsFor(uuid);
+        es.getEntityStats(entityId).increaseDamageDealt(damage);
+        es.markDirty();
     }
-    public void increaseDamageReceived(UUID uuid, long entityId,double damage) {
-        getEntityStatsFor(uuid).getEntityStats(entityId).increaseDamageReceived(damage);
+
+    public void increaseDamageReceived(UUID uuid, long entityId, double damage) {
+        EntityStats es = getEntityStatsFor(uuid);
+        es.getEntityStats(entityId).increaseDamageReceived(damage);
+        es.markDirty();
     }
 
     public EntityStats getEntityStatsFor(UUID uuid) {
         return players.computeIfAbsent(uuid, EntityStats::new);
     }
-
-    public ConcurrentHashMap<UUID, EntityStats> getPlayers() {
-        return players;
-    }
 }
-

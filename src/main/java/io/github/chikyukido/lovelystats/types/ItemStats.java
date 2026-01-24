@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class ItemStats {
+public class ItemStats extends SaveStat{
     private final UUID uuid;
 
     // separate maps because not each item/block has all stat types

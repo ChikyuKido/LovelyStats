@@ -12,8 +12,7 @@ public class PlayerStatsHandler {
     private static final PlayerStatsHandler INSTANCE = new PlayerStatsHandler();
     private final ConcurrentHashMap<UUID, PlayerStats> players = new ConcurrentHashMap<>();
 
-    private PlayerStatsHandler() {
-    }
+    private PlayerStatsHandler() {}
 
     public static PlayerStatsHandler get() {
         return INSTANCE;
@@ -25,70 +24,100 @@ public class PlayerStatsHandler {
             for (PlayerStats player : loadedPlayers) {
                 INSTANCE.players.put(player.getUuid(), player);
             }
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
     }
 
     public void savePlayer(UUID uuid) {
         PlayerStats player = players.get(uuid);
-        if (player != null) {
+        if (player != null && player.isDirty()) {
             try {
                 PlayerStatsStorage.INSTANCE.store(player);
-            } catch (IOException e) {
+                player.clearDirty();
+            } catch (IOException ignored) {
             }
         }
     }
 
     public void saveAllPlayers() {
         for (PlayerStats player : players.values()) {
-            savePlayer(player.getUuid());
+            if (player.isDirty()) {
+                try {
+                    PlayerStatsStorage.INSTANCE.store(player);
+                    player.clearDirty();
+                } catch (IOException ignored) {
+                }
+            }
         }
     }
 
     public void addDistanceWalked(UUID uuid, double amount) {
-        getPlayerStats(uuid).addDistanceWalked(amount);
+        PlayerStats ps = getPlayerStats(uuid);
+        ps.addDistanceWalked(amount);
+        ps.markDirty();
     }
 
     public void addDistanceRun(UUID uuid, double amount) {
-        getPlayerStats(uuid).addDistanceRun(amount);
+        PlayerStats ps = getPlayerStats(uuid);
+        ps.addDistanceRun(amount);
+        ps.markDirty();
     }
 
     public void addDistanceSwam(UUID uuid, double amount) {
-        getPlayerStats(uuid).addDistanceSwam(amount);
+        PlayerStats ps = getPlayerStats(uuid);
+        ps.addDistanceSwam(amount);
+        ps.markDirty();
     }
 
     public void addDistanceFallen(UUID uuid, double amount) {
-        getPlayerStats(uuid).addDistanceFallen(amount);
+        PlayerStats ps = getPlayerStats(uuid);
+        ps.addDistanceFallen(amount);
+        ps.markDirty();
     }
 
     public void addDistanceClimbed(UUID uuid, double amount) {
-        getPlayerStats(uuid).addDistanceClimbed(amount);
+        PlayerStats ps = getPlayerStats(uuid);
+        ps.addDistanceClimbed(amount);
+        ps.markDirty();
     }
 
     public void addDistanceSneaked(UUID uuid, double amount) {
-        getPlayerStats(uuid).addDistanceSneaked(amount);
+        PlayerStats ps = getPlayerStats(uuid);
+        ps.addDistanceSneaked(amount);
+        ps.markDirty();
     }
 
     public void addElevationUp(UUID uuid, double amount) {
-        getPlayerStats(uuid).addElevationUp(amount);
+        PlayerStats ps = getPlayerStats(uuid);
+        ps.addElevationUp(amount);
+        ps.markDirty();
     }
 
     public void addElevationDown(UUID uuid, double amount) {
-        getPlayerStats(uuid).addElevationDown(amount);
+        PlayerStats ps = getPlayerStats(uuid);
+        ps.addElevationDown(amount);
+        ps.markDirty();
     }
 
     public void incrementChatMessages(UUID uuid) {
-        getPlayerStats(uuid).incrementChatMessages();
+        PlayerStats ps = getPlayerStats(uuid);
+        ps.incrementChatMessages();
+        ps.markDirty();
     }
 
     public void incrementDeaths(UUID uuid) {
-        getPlayerStats(uuid).incrementDeaths();
+        PlayerStats ps = getPlayerStats(uuid);
+        ps.incrementDeaths();
+        ps.markDirty();
+    }
+
+    public void incrementJumps(UUID uuid) {
+        PlayerStats ps = getPlayerStats(uuid);
+        ps.incrementJumps();
+        ps.markDirty();
     }
 
     public PlayerStats getPlayerStats(UUID uuid) {
         return players.computeIfAbsent(uuid, PlayerStats::new);
-    }
-    public ConcurrentHashMap<UUID, PlayerStats> getPlayers() {
-        return players;
     }
 }
