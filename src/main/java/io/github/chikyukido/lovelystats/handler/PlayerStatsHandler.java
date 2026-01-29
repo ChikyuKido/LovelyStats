@@ -2,6 +2,8 @@ package io.github.chikyukido.lovelystats.handler;
 
 import io.github.chikyukido.lovelystats.save.PlayerStatsStorage;
 import io.github.chikyukido.lovelystats.types.PlayerStats;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -11,6 +13,7 @@ public class PlayerStatsHandler {
 
     private static final PlayerStatsHandler INSTANCE = new PlayerStatsHandler();
     private final ConcurrentHashMap<UUID, PlayerStats> players = new ConcurrentHashMap<>();
+    private final Long2ObjectMap<PlayerStats> playersFast = new Long2ObjectOpenHashMap<>();
 
     private PlayerStatsHandler() {}
 
@@ -23,6 +26,7 @@ public class PlayerStatsHandler {
             var loadedPlayers = PlayerStatsStorage.INSTANCE.loadAll();
             for (PlayerStats player : loadedPlayers) {
                 INSTANCE.players.put(player.getUuid(), player);
+                INSTANCE.playersFast.put(player.getUuid().getMostSignificantBits(), player);
             }
         } catch (IOException ignored) {
         }
@@ -51,53 +55,7 @@ public class PlayerStatsHandler {
         }
     }
 
-    public void addDistanceWalked(UUID uuid, double amount) {
-        PlayerStats ps = getPlayerStats(uuid);
-        ps.addDistanceWalked(amount);
-        ps.markDirty();
-    }
 
-    public void addDistanceRun(UUID uuid, double amount) {
-        PlayerStats ps = getPlayerStats(uuid);
-        ps.addDistanceRun(amount);
-        ps.markDirty();
-    }
-
-    public void addDistanceSwam(UUID uuid, double amount) {
-        PlayerStats ps = getPlayerStats(uuid);
-        ps.addDistanceSwam(amount);
-        ps.markDirty();
-    }
-
-    public void addDistanceFallen(UUID uuid, double amount) {
-        PlayerStats ps = getPlayerStats(uuid);
-        ps.addDistanceFallen(amount);
-        ps.markDirty();
-    }
-
-    public void addDistanceClimbed(UUID uuid, double amount) {
-        PlayerStats ps = getPlayerStats(uuid);
-        ps.addDistanceClimbed(amount);
-        ps.markDirty();
-    }
-
-    public void addDistanceSneaked(UUID uuid, double amount) {
-        PlayerStats ps = getPlayerStats(uuid);
-        ps.addDistanceSneaked(amount);
-        ps.markDirty();
-    }
-
-    public void addElevationUp(UUID uuid, double amount) {
-        PlayerStats ps = getPlayerStats(uuid);
-        ps.addElevationUp(amount);
-        ps.markDirty();
-    }
-
-    public void addElevationDown(UUID uuid, double amount) {
-        PlayerStats ps = getPlayerStats(uuid);
-        ps.addElevationDown(amount);
-        ps.markDirty();
-    }
 
     public void incrementChatMessages(UUID uuid) {
         PlayerStats ps = getPlayerStats(uuid);
@@ -111,11 +69,6 @@ public class PlayerStatsHandler {
         ps.markDirty();
     }
 
-    public void incrementJumps(UUID uuid) {
-        PlayerStats ps = getPlayerStats(uuid);
-        ps.incrementJumps();
-        ps.markDirty();
-    }
     public void incrementPlayerDeaths(UUID uuid) {
         PlayerStats ps = getPlayerStats(uuid);
         ps.incrementPlayerDeaths();
@@ -142,6 +95,14 @@ public class PlayerStatsHandler {
 
 
     public PlayerStats getPlayerStats(UUID uuid) {
-        return players.computeIfAbsent(uuid, PlayerStats::new);
+        long key = uuid.getMostSignificantBits();
+        PlayerStats stats = playersFast.get(key);
+        if (stats != null) return stats;
+
+        stats = new PlayerStats(uuid);
+        players.putIfAbsent(uuid, stats);
+        playersFast.put(key, stats);
+        return stats;
     }
+
 }

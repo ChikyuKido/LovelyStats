@@ -1,5 +1,6 @@
 package io.github.chikyukido.lovelystats;
 
+import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
@@ -19,8 +20,10 @@ import io.github.chikyukido.lovelystats.systems.player.DeathSystem;
 import io.github.chikyukido.lovelystats.systems.player.TravelSystem;
 import io.github.chikyukido.lovelystats.systems.playtime.PlaytimePlayerSystem;
 import io.github.chikyukido.lovelystats.util.IdHashMap;
+import io.github.chikyukido.lovelystats.util.Instrumenter;
 
 import javax.annotation.Nonnull;
+import java.util.concurrent.TimeUnit;
 
 public class Main extends JavaPlugin {
     public static Config<PlayerConfig> PLAYER_CONFIG;
@@ -61,6 +64,11 @@ public class Main extends JavaPlugin {
         ItemCraftedSystem.registerItemCraftedSystem();
 
         SaveSystem.run();
+        if(Instrumenter.ENABLED) {
+            HytaleServer.SCHEDULED_EXECUTOR.scheduleAtFixedRate(() -> {
+                System.out.println(Instrumenter.get());
+            }, 1, 1000, TimeUnit.MILLISECONDS);
+        }
     }
 
     @Override
