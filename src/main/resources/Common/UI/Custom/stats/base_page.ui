@@ -56,6 +56,17 @@ $C.@Panel {
                     Anchor: (Width: 60, Height: 60);
                 }
             }
+            Group {
+                Anchor: (Width: 2, Height: 70);
+                Background: #FFFFFF;
+            }
+            Button #ConfigTab {
+                Padding: (Left: 15, Right: 15);
+                Group #ConfigTabImage {
+                    Background: "../config.png";
+                    Anchor: (Width: 60, Height: 60);
+                }
+            }
         }
 
         Group {

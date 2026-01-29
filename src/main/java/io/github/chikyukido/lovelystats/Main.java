@@ -5,8 +5,10 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import com.hypixel.hytale.server.core.util.Config;
 import io.github.chikyukido.lovelystats.commands.LeaderboardCommand;
 import io.github.chikyukido.lovelystats.commands.StatsCommand;
+import io.github.chikyukido.lovelystats.config.PlayerConfig;
 import io.github.chikyukido.lovelystats.handler.*;
 import io.github.chikyukido.lovelystats.systems.LastInteractionSystem;
 import io.github.chikyukido.lovelystats.systems.SaveSystem;
@@ -21,9 +23,10 @@ import io.github.chikyukido.lovelystats.util.IdHashMap;
 import javax.annotation.Nonnull;
 
 public class Main extends JavaPlugin {
-
+    public static Config<PlayerConfig> PLAYER_CONFIG;
     public Main(@Nonnull JavaPluginInit init) {
         super(init);
+        PLAYER_CONFIG = this.withConfig("PlayerConfig", PlayerConfig.CODEC);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package io.github.chikyukido.lovelystats.pages.leaderboard;
 
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import io.github.chikyukido.lovelystats.handler.ItemStatsHandler;
 import io.github.chikyukido.lovelystats.handler.RecordedPlayerHandler;
 import io.github.chikyukido.lovelystats.pages.UpdateHandler;
@@ -11,8 +12,8 @@ import java.util.UUID;
 
 public class LeaderboardItemTabPage extends TablePage {
 
-    public LeaderboardItemTabPage(UpdateHandler parent, UUID playerUUID) {
-        super(parent, playerUUID, new TablePageConfig("LeaderboardItemTab", 10, false));
+    public LeaderboardItemTabPage(UpdateHandler parent, PlayerRef playerRef) {
+        super(parent, playerRef, new TablePageConfig("LeaderboardItemTab", 10, false));
 
         config.getRows().add(new TablePageRow("Name", 140, TablePageRowType.STRING, TablePageRowVisualizeType.STRING));
         config.getRows().add(new TablePageRow("Placed", 120, TablePageRowType.LONG, TablePageRowVisualizeType.STRING));

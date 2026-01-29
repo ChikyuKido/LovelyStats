@@ -1,5 +1,6 @@
 package io.github.chikyukido.lovelystats.pages.stats;
 
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import io.github.chikyukido.lovelystats.handler.EntityStatsHandler;
 import io.github.chikyukido.lovelystats.pages.UpdateHandler;
 import io.github.chikyukido.lovelystats.pages.table.*;
@@ -7,12 +8,11 @@ import io.github.chikyukido.lovelystats.types.EntityStats;
 import io.github.chikyukido.lovelystats.util.IdHashMap;
 
 import java.util.List;
-import java.util.UUID;
 
 public class EntityTabPage extends TablePage {
 
-    public EntityTabPage(UpdateHandler parent, UUID playerUUID) {
-        super(parent, playerUUID, new TablePageConfig("EntityTab", 0, true));
+    public EntityTabPage(UpdateHandler parent, PlayerRef playerRef) {
+        super(parent, playerRef, new TablePageConfig("EntityTab", 0, true));
         config.setIconSize(30);
         config.getRows().add(new TablePageRow("Name", 160, TablePageRowType.STRING, TablePageRowVisualizeType.STRING));
         config.getRows().add(new TablePageRow("Killed", 120, TablePageRowType.LONG, TablePageRowVisualizeType.STRING));
@@ -20,7 +20,7 @@ public class EntityTabPage extends TablePage {
         config.getRows().add(new TablePageRow("DamageDealt", 140, TablePageRowType.DOUBLE, TablePageRowVisualizeType.STRING));
         config.getRows().add(new TablePageRow("DamageReceived", 140, TablePageRowType.DOUBLE, TablePageRowVisualizeType.STRING));
 
-        EntityStats stats = EntityStatsHandler.get().getEntityStatsFor(playerUUID);
+        EntityStats stats = EntityStatsHandler.get().getEntityStatsFor(playerRef.getUuid());
         List<EntityStats.SingleEntityStats> entities = stats.getEntities().values().stream().toList();
         Object[][] values = new Object[entities.size()][];
 

@@ -4,17 +4,17 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
 import javax.annotation.Nonnull;
-import java.util.UUID;
 
 public abstract class TabPage {
     protected UpdateHandler parent;
-    protected final UUID playerUUID;
-    public TabPage(UpdateHandler parent, UUID playerUUID) {
+    protected final PlayerRef playerRef;
+    public TabPage(UpdateHandler parent, PlayerRef playerRef) {
         this.parent = parent;
-        this.playerUUID = playerUUID;
+        this.playerRef = playerRef;
     }
 
 

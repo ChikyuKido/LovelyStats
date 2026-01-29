@@ -39,7 +39,7 @@ public class LeaderboardPage extends InteractiveCustomUIPage<LeaderboardPage.Dat
         event.addEventBinding(CustomUIEventBindingType.Activating,"#PlayersTab", EventData.of("Button","player"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#BlocksTab", EventData.of("Button","block"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#EntityTab", EventData.of("Button","entity"),false);
-        currentPage = new LeaderboardPlayerTabPage(this,playerRef.getUuid());
+        currentPage = new LeaderboardPlayerTabPage(this,playerRef);
         currentPage.build(cb,event);
     }
 
@@ -60,9 +60,9 @@ public class LeaderboardPage extends InteractiveCustomUIPage<LeaderboardPage.Dat
         if(currentPageName.equals(page)) return;
         currentPageName = page;
         switch (page) {
-            case "player" -> currentPage = new LeaderboardPlayerTabPage(this,playerRef.getUuid());
-            case "block" -> currentPage = new LeaderboardItemTabPage(this,playerRef.getUuid());
-            case "entity" -> currentPage = new LeaderboardEntityTabPage(this,playerRef.getUuid());
+            case "player" -> currentPage = new LeaderboardPlayerTabPage(this,playerRef);
+            case "block" -> currentPage = new LeaderboardItemTabPage(this,playerRef);
+            case "entity" -> currentPage = new LeaderboardEntityTabPage(this,playerRef);
         }
         UICommandBuilder cb = new UICommandBuilder();
         cb.set("#EntityTabImage.Background","entity.png");
@@ -84,6 +84,11 @@ public class LeaderboardPage extends InteractiveCustomUIPage<LeaderboardPage.Dat
     @Override
     public void sendUpdate(UICommandBuilder cb) {
         super.sendUpdate(cb);
+    }
+
+    @Override
+    public void sendUpdate(UICommandBuilder cb, UIEventBuilder event, boolean forceUpdate) {
+        super.sendUpdate(cb,event,forceUpdate);
     }
 
     public static class Data {

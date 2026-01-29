@@ -4,6 +4,7 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import io.github.chikyukido.lovelystats.handler.PlaytimeStatsHandler;
 import io.github.chikyukido.lovelystats.pages.TabPage;
@@ -18,8 +19,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class PlaytimeTabPage extends TabPage {
-    public PlaytimeTabPage(StatsPage parent, UUID playerUUID) {
-        super(parent,playerUUID);
+    public PlaytimeTabPage(StatsPage parent, PlayerRef playerRef) {
+        super(parent,playerRef);
     }
 
 
@@ -27,7 +28,7 @@ public class PlaytimeTabPage extends TabPage {
     public void build(UICommandBuilder cb, UIEventBuilder event) {
         cb.append("#TabPages", "stats/playtime/playtime_page.ui");
 
-        PlaytimeStats stats = PlaytimeStatsHandler.get().getPlaytimeForPlayer(playerUUID);
+        PlaytimeStats stats = PlaytimeStatsHandler.get().getPlaytimeForPlayer(playerRef.getUuid());
 
         cb.set("#TotalPlaytime.Text", OwnFormat.formatTime(stats.getTotalPlaytime()));
         cb.set("#TotalActiveTime.Text", OwnFormat.formatTime(stats.getTotalActivePlaytime()));
@@ -68,7 +69,7 @@ public class PlaytimeTabPage extends TabPage {
         }
 
 
-        List<PlaytimePeriod> periods = getPeriods(playerUUID, PeriodType.DAY, 7);
+        List<PlaytimePeriod> periods = getPeriods(playerRef.getUuid(), PeriodType.DAY, 7);
         for (int i = 0; i < 7; i++) {
             PlaytimePeriod p = i < periods.size() ? periods.get(i) : null;
             cb.set("#Row"+(i+1)+" #Date" + (i+1) + ".Text", p != null ? p.label : "-");
@@ -87,7 +88,7 @@ public class PlaytimeTabPage extends TabPage {
             cb.set("#SessionRow"+(i+1)+" #Idle" + (i+1) + ".Text", s != null ? OwnFormat.formatTime(s.getIdleTime()) : "-");
         }
 
-        int[] distBuckets = getSessionDistribution(playerUUID);
+        int[] distBuckets = getSessionDistribution(playerRef.getUuid());
         for (int i = 0; i < 5; i++) {
             cb.set("#Dist" + (i+1) + "Value.Text", "" + (i < distBuckets.length ? distBuckets[i] : 0));
         }

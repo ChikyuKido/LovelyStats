@@ -1,5 +1,6 @@
 package io.github.chikyukido.lovelystats.pages.stats;
 
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import io.github.chikyukido.lovelystats.handler.ItemStatsHandler;
 import io.github.chikyukido.lovelystats.pages.UpdateHandler;
 import io.github.chikyukido.lovelystats.pages.table.*;
@@ -10,8 +11,8 @@ import java.util.*;
 
 public class ItemTabPage extends TablePage {
 
-    public ItemTabPage(UpdateHandler parent, UUID playerUUID) {
-        super(parent, playerUUID, new TablePageConfig("ItemTab", 0, true));
+    public ItemTabPage(UpdateHandler parent, PlayerRef playerRef) {
+        super(parent, playerRef, new TablePageConfig("ItemTab", 0, true));
         config.setIconSize(30);
 
         config.getRows().add(new TablePageRow("Name", 160, TablePageRowType.STRING, TablePageRowVisualizeType.STRING));
@@ -21,7 +22,7 @@ public class ItemTabPage extends TablePage {
         config.getRows().add(new TablePageRow("Dropped", 120, TablePageRowType.LONG, TablePageRowVisualizeType.STRING));
         config.getRows().add(new TablePageRow("Crafted", 120, TablePageRowType.LONG, TablePageRowVisualizeType.STRING));
 
-        List<ItemStatsData> statsList = aggregate(playerUUID);
+        List<ItemStatsData> statsList = aggregate(playerRef.getUuid());
         Object[][] values = new Object[statsList.size()][];
 
         for (int i = 0; i < statsList.size(); i++) {

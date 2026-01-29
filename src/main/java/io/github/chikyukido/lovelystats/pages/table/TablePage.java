@@ -6,6 +6,7 @@ import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import io.github.chikyukido.lovelystats.pages.TabPage;
 import io.github.chikyukido.lovelystats.pages.UpdateHandler;
@@ -15,14 +16,13 @@ import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 public class TablePage extends TabPage {
     protected final TablePageConfig config;
     private String currentSort = "name";
     private boolean ascending = true;
-    public TablePage(UpdateHandler parent, UUID playerUUID,TablePageConfig config) {
-        super(parent, playerUUID);
+    public TablePage(UpdateHandler parent, PlayerRef playerRef, TablePageConfig config) {
+        super(parent, playerRef);
         this.config = config;
     }
 
@@ -56,9 +56,12 @@ public class TablePage extends TabPage {
     @Override
     public void handleEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull String data) {
         sortAndRefreshGrid(data,new UICommandBuilder(),true);
+
     }
     private void sortAndRefreshGrid(String sortBy,UICommandBuilder cb,boolean sendUpdate) {
-        sortBy = sortBy.split("_")[1];
+        var sortBySplit = sortBy.split("_");
+        if (sortBySplit.length != 2) return;
+        sortBy = sortBySplit[1];
         int sortByRowIndex = Integer.parseInt(sortBy);
         TablePageRow row = config.getRows().get(sortByRowIndex);
         TablePageRowType type = row.type();
@@ -104,6 +107,7 @@ public class TablePage extends TabPage {
         for (int i = 0; i < values.length; i++) {
             StringBuilder sb = new StringBuilder();
             Object[] valueRow = values[i];
+
 
             sb.append("Group #StatContainer { ");
             sb.append("LayoutMode: Left; ");

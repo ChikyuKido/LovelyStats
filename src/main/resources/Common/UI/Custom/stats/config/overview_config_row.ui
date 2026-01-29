@@ -1,0 +1,29 @@
+$C = "../../Common.ui";
+
+Group #OverviewConfigRow {
+    LayoutMode: Left;
+    Padding: (Bottom: 10);
+    Label #OverviewConfigRowLabel {
+      Text: "Show Entities";
+      Style: (FontSize: 16, TextColor: #e6edf5);
+      Anchor: (Width: 500, Right: 8);
+      Padding: (Top: 5, Bottom: 5);
+    }
+    Button #OverviewConfigRowUp {
+      Group #ConfigTabImage {
+        Background: "../../up.png";
+        Anchor: (Width: 24, Height: 18);
+      }
+    }
+    Button #OverviewConfigRowDown {
+      Padding: (Left: 20,Right: 20);
+      Group #ConfigTabImage {
+        Background: "../../down.png";
+        Anchor: (Width: 24, Height: 18);
+      }
+    }
+    $C.@SmallSecondaryTextButton #OverviewConfigRowToggle {
+      Anchor: (Width: 100, Right: 8);
+      Text: "Yes";
+    }
+  }

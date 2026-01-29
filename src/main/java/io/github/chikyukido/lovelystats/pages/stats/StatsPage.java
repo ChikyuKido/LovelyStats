@@ -38,7 +38,8 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> implement
         event.addEventBinding(CustomUIEventBindingType.Activating,"#PlaytimeTab", EventData.of("Button","playtime"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#BlocksTab", EventData.of("Button","block"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#EntityTab", EventData.of("Button","entity"),false);
-        currentPage = new PlayerTabPage(this,playerUUID);
+        event.addEventBinding(CustomUIEventBindingType.Activating,"#ConfigTab", EventData.of("Button","config"),false);
+        currentPage = new PlayerTabPage(this,playerRef);
         currentPage.build(cb,event);
     }
 
@@ -46,7 +47,7 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> implement
     public void handleDataEvent(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store, @Nonnull Data data) {
         super.handleDataEvent(ref, store, data);
 
-        if(data.value.equals("player") || data.value.equals("block") || data.value.equals("entity") || data.value.equals("playtime")) {
+        if(data.value.equals("player") || data.value.equals("block") || data.value.equals("entity") || data.value.equals("playtime") || data.value.equals("config")) {
             rebuild(data.value);
             return;
         }
@@ -59,21 +60,24 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> implement
         if(currentPageName.equals(page)) return;
         currentPageName = page;
         switch (page) {
-            case "player" -> currentPage = new PlayerTabPage(this,playerUUID);
-            case "block" -> currentPage = new ItemTabPage(this,playerUUID);
-            case "entity" -> currentPage = new EntityTabPage(this,playerUUID);
-            case "playtime" -> currentPage = new PlaytimeTabPage(this,playerUUID);
+            case "player" -> currentPage = new PlayerTabPage(this,playerRef);
+            case "block" -> currentPage = new ItemTabPage(this,playerRef);
+            case "entity" -> currentPage = new EntityTabPage(this,playerRef);
+            case "playtime" -> currentPage = new PlaytimeTabPage(this,playerRef);
+            case "config" -> currentPage = new ConfigTabPage(this,playerRef);
         }
         UICommandBuilder cb = new UICommandBuilder();
         cb.set("#EntityTabImage.Background","entity.png");
         cb.set("#BlocksTabImage.Background","blocks.png");
         cb.set("#PlayersTabImage.Background","player.png");
         cb.set("#PlaytimeTabImage.Background","time.png");
+        cb.set("#ConfigTabImage.Background","config.png");
         switch (page) {
             case "player" -> cb.set("#PlayersTabImage.Background","player_selected.png");
             case "block" -> cb.set("#BlocksTabImage.Background","blocks_selected.png");
             case "entity" -> cb.set("#EntityTabImage.Background","entity_selected.png");
             case "playtime" -> cb.set("#PlaytimeTabImage.Background","time_selected.png");
+            case "config" -> cb.set("#ConfigTabImage.Background","config_selected.png");
         }
         UIEventBuilder event = new UIEventBuilder();
         cb.clear("#TabPages");
@@ -86,6 +90,11 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> implement
     @Override
     public void sendUpdate(UICommandBuilder cb) {
         super.sendUpdate(cb);
+    }
+
+    @Override
+    public void sendUpdate(UICommandBuilder cb, UIEventBuilder event, boolean forceUpdate) {
+        super.sendUpdate(cb,event,forceUpdate);
     }
 
     public static class Data {

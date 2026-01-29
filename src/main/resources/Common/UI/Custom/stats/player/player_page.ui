@@ -8,6 +8,6 @@ Group #StatsGrid {
 
     Group #BodyRow {
         LayoutMode: Top;
-
+        Padding: (Top: 8);
     }
 }
