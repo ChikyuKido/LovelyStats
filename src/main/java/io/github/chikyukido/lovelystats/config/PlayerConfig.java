@@ -7,6 +7,7 @@ import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PlayerConfig {
     private static final Gson GSON = new GsonBuilder()
@@ -23,20 +24,46 @@ public class PlayerConfig {
     }
 
     public PlayerConfigData getPlayerConfig(UUID uuid) {
-        if(!players.containsKey(uuid.toString())) {
-            PlayerConfigData playerConfigData = new PlayerConfigData();
-            playerConfigData.overview = new ArrayList<>(List.of(
-                    new PlayerConfigData.PlayerConfigDataOverviewEntry("Show Entity",true),
-                    new PlayerConfigData.PlayerConfigDataOverviewEntry("Show Player",true),
-                    new PlayerConfigData.PlayerConfigDataOverviewEntry("Show Playtime",true),
-                    new PlayerConfigData.PlayerConfigDataOverviewEntry("Show Items",true),
-                    new PlayerConfigData.PlayerConfigDataOverviewEntry("Show Activity",true)
-            ));
-            players.put(uuid.toString(),playerConfigData);
-        }
-        return players.get(uuid.toString());
+        String key = uuid.toString();
+        PlayerConfigData playerConfigData = players.get(key);
 
+        if (playerConfigData == null) {
+            playerConfigData = createDefaultPlayerConfig();
+            players.put(key, playerConfigData);
+        } else {
+            // ensure that every player has every entry
+            mergeDefaults(playerConfigData);
+        }
+
+        return playerConfigData;
     }
+
+    private PlayerConfigData createDefaultPlayerConfig() {
+        PlayerConfigData config = new PlayerConfigData();
+        config.overview = new ArrayList<>(List.of(
+                new PlayerConfigData.PlayerConfigDataOverviewEntry("Show Entity", true),
+                new PlayerConfigData.PlayerConfigDataOverviewEntry("Show Player", true),
+                new PlayerConfigData.PlayerConfigDataOverviewEntry("Show PVP", true),
+                new PlayerConfigData.PlayerConfigDataOverviewEntry("Show Playtime", true),
+                new PlayerConfigData.PlayerConfigDataOverviewEntry("Show Items", true),
+                new PlayerConfigData.PlayerConfigDataOverviewEntry("Show Activity", true)
+        ));
+        return config;
+    }
+
+    private void mergeDefaults(PlayerConfigData config) {
+        Map<String, Boolean> current = config.overview.stream()
+                .collect(Collectors.toMap(e -> e.name, e -> e.active));
+
+        List<PlayerConfigData.PlayerConfigDataOverviewEntry> defaults = createDefaultPlayerConfig().overview;
+
+        for (PlayerConfigData.PlayerConfigDataOverviewEntry def : defaults) {
+            if (!current.containsKey(def.name)) {
+                config.overview.add(def);
+            }
+        }
+    }
+
 
     public static String toJson(PlayerConfig config) {
         return GSON.toJson(config);

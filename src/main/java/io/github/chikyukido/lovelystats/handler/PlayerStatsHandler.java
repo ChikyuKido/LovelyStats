@@ -116,6 +116,30 @@ public class PlayerStatsHandler {
         ps.incrementJumps();
         ps.markDirty();
     }
+    public void incrementPlayerDeaths(UUID uuid) {
+        PlayerStats ps = getPlayerStats(uuid);
+        ps.incrementPlayerDeaths();
+        ps.markDirty();
+    }
+
+    public void incrementPlayerKills(UUID uuid) {
+        PlayerStats ps = getPlayerStats(uuid);
+        ps.incrementPlayerKills();
+        ps.markDirty();
+    }
+
+    public void addPlayerDamageDealt(UUID uuid, double amount) {
+        PlayerStats ps = getPlayerStats(uuid);
+        ps.addPlayerDamageDealt(amount);
+        ps.markDirty();
+    }
+
+    public void addPlayerDamageReceived(UUID uuid, double amount) {
+        PlayerStats ps = getPlayerStats(uuid);
+        ps.addPlayerDamageReceived(amount);
+        ps.markDirty();
+    }
+
 
     public PlayerStats getPlayerStats(UUID uuid) {
         return players.computeIfAbsent(uuid, PlayerStats::new);

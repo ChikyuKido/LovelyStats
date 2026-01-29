@@ -38,6 +38,7 @@ public class PlayerTabPage extends TabPage {
                 case "Show Playtime" -> buildPlaytimeStats(cb);
                 case "Show Activity" -> buildActivityStats(cb);
                 case "Show Items" -> buildItemStats(cb);
+                case "Show PVP" -> buildPVPStats(cb);
             }
         }
     }
@@ -57,6 +58,7 @@ public class PlayerTabPage extends TabPage {
 
         addSection(cb, "Items");
         addStat(cb, "Blocks Placed:", String.valueOf(itemStats.getTotalBlocksPlaced()));
+        addStat(cb, "Blocks Destroyed:", String.valueOf(itemStats.getTotalBlocksBroken()));
         addStat(cb, "Items Collected:", String.valueOf(itemStats.getTotalCollected()));
         addStat(cb, "Items Dropped:", String.valueOf(itemStats.getTotalDropped()));
         addStat(cb, "Items Crafted:", String.valueOf(itemStats.getTotalItemsCrafted()));
@@ -66,10 +68,20 @@ public class PlayerTabPage extends TabPage {
         PlayerStats ps = PlayerStatsHandler.get().getPlayerStats(playerRef.getUuid());
 
         addSection(cb, "Player");
-        addStat(cb, "Deaths:", String.valueOf(ps.getDeaths()));
+        addStat(cb, "Deaths:", String.valueOf(ps.getDeaths()+ps.getPlayerDeaths()));
         addStat(cb, "Jumps:", String.valueOf(ps.getJumps()));
         addStat(cb, "Chat Messages:", String.valueOf(ps.getChatMessages()));
     }
+    private void buildPVPStats(UICommandBuilder cb) {
+        PlayerStats ps = PlayerStatsHandler.get().getPlayerStats(playerRef.getUuid());
+
+        addSection(cb, "PVP");
+        addStat(cb, "Kills:", String.valueOf(ps.getPlayerKills()));
+        addStat(cb, "Deaths:", String.valueOf(ps.getPlayerDeaths()));
+        addStat(cb, "Damage Dealt:", String.format("%.1f", ps.getPlayerDamageDealt()));
+        addStat(cb, "Damage Taken:", String.format("%.1f", ps.getPlayerDamageReceived()));
+    }
+
 
     private void buildPlaytimeStats(UICommandBuilder cb) {
         PlaytimeStats pts = PlaytimeStatsHandler.get().getPlaytimeForPlayer(playerRef.getUuid());

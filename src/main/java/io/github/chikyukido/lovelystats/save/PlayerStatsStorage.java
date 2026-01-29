@@ -10,7 +10,7 @@ public class PlayerStatsStorage implements StatsStorage<PlayerStats> {
     public static final PlayerStatsStorage INSTANCE = new PlayerStatsStorage();
     private static final File DATA_FOLDER = new File("mods/LovelyStats/playerstats");
     private static final File OLD_DATA_FOLDER = new File("playerstats");
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
 
     static {
         if (OLD_DATA_FOLDER.exists()) {
@@ -34,7 +34,8 @@ public class PlayerStatsStorage implements StatsStorage<PlayerStats> {
 
         try (DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
             int version = in.readInt();
-            if (version != VERSION) {
+
+            if (version != 1 && version != 2) {
                 throw new IOException("Unsupported player stats file version: " + version);
             }
 
@@ -51,7 +52,19 @@ public class PlayerStatsStorage implements StatsStorage<PlayerStats> {
             long chatMessages = in.readLong();
             long deaths = in.readLong();
 
-            PlayerStats player = new PlayerStats(
+            long playerDeaths = 0;
+            long playerKills = 0;
+            double playerDamageDealt = 0;
+            double playerDamageReceived = 0;
+
+            if (version == 2) {
+                playerDeaths = in.readLong();
+                playerKills = in.readLong();
+                playerDamageDealt = in.readDouble();
+                playerDamageReceived = in.readDouble();
+            }
+
+            return new PlayerStats(
                     uuid,
                     distanceWalked,
                     distanceRun,
@@ -63,9 +76,12 @@ public class PlayerStatsStorage implements StatsStorage<PlayerStats> {
                     elevationDown,
                     chatMessages,
                     deaths,
-                    jumps
+                    jumps,
+                    playerDeaths,
+                    playerKills,
+                    playerDamageDealt,
+                    playerDamageReceived
             );
-            return player;
         }
     }
 
@@ -89,6 +105,11 @@ public class PlayerStatsStorage implements StatsStorage<PlayerStats> {
             out.writeLong(player.getJumps());
             out.writeLong(player.getChatMessages());
             out.writeLong(player.getDeaths());
+
+            out.writeLong(player.getPlayerDeaths());
+            out.writeLong(player.getPlayerKills());
+            out.writeDouble(player.getPlayerDamageDealt());
+            out.writeDouble(player.getPlayerDamageReceived());
         }
 
         if (!temp.renameTo(file)) {

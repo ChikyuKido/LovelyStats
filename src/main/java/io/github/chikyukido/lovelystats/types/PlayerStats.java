@@ -2,7 +2,7 @@ package io.github.chikyukido.lovelystats.types;
 
 import java.util.UUID;
 
-public class PlayerStats extends SaveStat{
+public class PlayerStats extends SaveStat {
     private final UUID uuid;
     private double distanceWalked;
     private double distanceRun;
@@ -16,7 +16,13 @@ public class PlayerStats extends SaveStat{
     private long deaths;
     private long jumps;
 
-    public PlayerStats(UUID uuid, double distanceWalked, double distanceRun, double distanceSwam, double distanceFallen, double distanceClimbed, double distanceSneaked, double elevationUp, double elevationDown, long chatMessages, long deaths, long jumps) {
+    // PvP
+    private long playerDeaths;
+    private long playerKills;
+    private double playerDamageDealt;
+    private double playerDamageReceived;
+
+    public PlayerStats(UUID uuid, double distanceWalked, double distanceRun, double distanceSwam, double distanceFallen, double distanceClimbed, double distanceSneaked, double elevationUp, double elevationDown, long chatMessages, long deaths, long jumps, long playerDeaths, long playerKills, double playerDamageDealt, double playerDamageReceived) {
         this.uuid = uuid;
         this.distanceWalked = distanceWalked;
         this.distanceRun = distanceRun;
@@ -29,6 +35,10 @@ public class PlayerStats extends SaveStat{
         this.chatMessages = chatMessages;
         this.deaths = deaths;
         this.jumps = jumps;
+        this.playerDeaths = playerDeaths;
+        this.playerKills = playerKills;
+        this.playerDamageDealt = playerDamageDealt;
+        this.playerDamageReceived = playerDamageReceived;
     }
 
     public PlayerStats(UUID uuid) {
@@ -79,6 +89,22 @@ public class PlayerStats extends SaveStat{
         jumps++;
     }
 
+    public void incrementPlayerDeaths() {
+        playerDeaths++;
+    }
+
+    public void incrementPlayerKills() {
+        playerKills++;
+    }
+
+    public void addPlayerDamageDealt(double amount) {
+        playerDamageDealt += amount;
+    }
+
+    public void addPlayerDamageReceived(double amount) {
+        playerDamageReceived += amount;
+    }
+
     public UUID getUuid() {
         return uuid;
     }
@@ -125,5 +151,21 @@ public class PlayerStats extends SaveStat{
 
     public long getDeaths() {
         return deaths;
+    }
+
+    public long getPlayerDeaths() {
+        return playerDeaths;
+    }
+
+    public long getPlayerKills() {
+        return playerKills;
+    }
+
+    public double getPlayerDamageDealt() {
+        return playerDamageDealt;
+    }
+
+    public double getPlayerDamageReceived() {
+        return playerDamageReceived;
     }
 }

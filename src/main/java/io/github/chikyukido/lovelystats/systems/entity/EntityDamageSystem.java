@@ -11,6 +11,7 @@ import com.hypixel.hytale.server.core.modules.entitystats.asset.DefaultEntitySta
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.npc.entities.NPCEntity;
 import io.github.chikyukido.lovelystats.handler.EntityStatsHandler;
+import io.github.chikyukido.lovelystats.handler.PlayerStatsHandler;
 import io.github.chikyukido.lovelystats.util.Murmur3;
 
 import javax.annotation.Nonnull;
@@ -60,11 +61,22 @@ public class EntityDamageSystem extends EntityEventSystem<EntityStore, Damage> {
             if (!sourceRef.isValid()) return;
 
             NPCEntity npc = store.getComponent(sourceRef,NPCEntity.getComponentType());
-            if(npc == null) return;
+            if(npc != null) {
+                EntityStatsHandler.get().increaseDamageReceived(player.getUuid(), Murmur3.hash64(sanitizeRoleName(npc.getRoleName())), damage.getAmount());
+                if (died) {
+                    EntityStatsHandler.get().increaseKilledBY(player.getUuid(), Murmur3.hash64(sanitizeRoleName(npc.getRoleName())));
+                }
+            }
+            Player sourcePlayer = store.getComponent(sourceRef,Player.getComponentType());
+            if(sourcePlayer != null) {
+                PlayerStatsHandler.get().addPlayerDamageDealt(sourcePlayer.getUuid(),damage.getAmount());
+                PlayerStatsHandler.get().addPlayerDamageReceived(player.getUuid(),damage.getAmount());
 
-            EntityStatsHandler.get().increaseDamageReceived(player.getUuid(), Murmur3.hash64(sanitizeRoleName(npc.getRoleName())), damage.getAmount());
-            if(died) {
-                EntityStatsHandler.get().increaseKilledBY(player.getUuid(), Murmur3.hash64(sanitizeRoleName(npc.getRoleName())));
+                if(died) {
+                    PlayerStatsHandler.get().incrementPlayerDeaths(player.getUuid());
+                    PlayerStatsHandler.get().incrementPlayerKills(sourcePlayer.getUuid());
+                }
+
             }
         }
     }
