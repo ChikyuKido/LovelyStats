@@ -25,6 +25,6 @@ public class LeaderboardCommand extends AbstractPlayerCommand {
         Player player = commandContext.senderAs(Player.class);
         player.getPageManager().openCustomPage(ref,store,new LeaderboardPage(playerRef));
         long end = System.currentTimeMillis();
-        LOGGER.atInfo().log("Opened Stats page in %dms", end-start);
+//        LOGGER.atInfo().log("Opened Stats page in %dms", end-start);
     }
 }

@@ -43,7 +43,7 @@ public class StatsCommand extends AbstractPlayerCommand {
             player.getPageManager().openCustomPage(ref, store, new StatsPage(playerRef, playerUUID));
         }
         long end = System.currentTimeMillis();
-        LOGGER.atInfo().log("Opened Stats page in %dms", end-start);
+//        LOGGER.atInfo().log("Opened Stats page in %dms", end-start);
     }
 
 }

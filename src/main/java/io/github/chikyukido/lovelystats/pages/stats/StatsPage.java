@@ -85,7 +85,7 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> implement
         currentPage.build(cb,event);
         super.sendUpdate(cb,event,false);
         long end = System.currentTimeMillis();
-        LOGGER.atInfo().log("Rebuild Stats page in %dms", end-start);
+//        LOGGER.atInfo().log("Rebuild Stats page in %dms", end-start);
     }
     @Override
     public void sendUpdate(UICommandBuilder cb) {

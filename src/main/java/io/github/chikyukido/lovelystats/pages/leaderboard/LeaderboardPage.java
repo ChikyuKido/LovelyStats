@@ -79,7 +79,7 @@ public class LeaderboardPage extends InteractiveCustomUIPage<LeaderboardPage.Dat
         currentPage.build(cb,event);
         super.sendUpdate(cb,event,false);
         long end = System.currentTimeMillis();
-        LOGGER.atInfo().log("Rebuild Stats page in %dms", end-start);
+//        LOGGER.atInfo().log("Rebuild Stats page in %dms", end-start);
     }
     @Override
     public void sendUpdate(UICommandBuilder cb) {

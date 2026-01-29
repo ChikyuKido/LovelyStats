@@ -14,10 +14,10 @@ public class SaveSystem {
 
     public static void run() {
         HytaleServer.SCHEDULED_EXECUTOR.scheduleAtFixedRate(() -> {
-            long startTime = System.nanoTime(); // start timing
+            long startTime = System.nanoTime();
             save();
             long duration = System.nanoTime() - startTime;
-            LOGGER.atInfo().log("Saved all player data in %s", formatDuration(duration));
+//            LOGGER.atInfo().log("Saved all player data in %s", formatDuration(duration));
         }, 1, 1, TimeUnit.MINUTES);
     }
     public static void save() {
