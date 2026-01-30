@@ -1,5 +1,6 @@
 package io.github.chikyukido.lovelystats.handler;
 
+import com.hypixel.hytale.logger.HytaleLogger;
 import io.github.chikyukido.lovelystats.save.ItemStatsStorage;
 import io.github.chikyukido.lovelystats.types.ItemStats;
 
@@ -8,7 +9,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ItemStatsHandler {
-
+    public static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     private static final ItemStatsHandler INSTANCE = new ItemStatsHandler();
     private final ConcurrentHashMap<UUID, ItemStats> players = new ConcurrentHashMap<>();
 
@@ -19,12 +20,9 @@ public class ItemStatsHandler {
     }
 
     public static void init() {
-        try {
-            var loaded = ItemStatsStorage.INSTANCE.loadAll();
-            for (ItemStats stats : loaded) {
-                INSTANCE.players.put(stats.getUuid(), stats);
-            }
-        } catch (IOException ignored) {
+        var loaded = ItemStatsStorage.INSTANCE.loadAll();
+        for (ItemStats stats : loaded) {
+            INSTANCE.players.put(stats.getUuid(), stats);
         }
     }
 
@@ -34,7 +32,8 @@ public class ItemStatsHandler {
             try {
                 ItemStatsStorage.INSTANCE.store(stats);
                 stats.clearDirty();
-            } catch (Exception ignored) {
+            }catch (IOException e) {
+                LOGGER.atWarning().withCause(e).log("Failed to save item stats for player %s", stats.getUuid());
             }
         }
     }

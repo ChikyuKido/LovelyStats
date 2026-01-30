@@ -1,5 +1,6 @@
 package io.github.chikyukido.lovelystats.handler;
 
+import com.hypixel.hytale.logger.HytaleLogger;
 import io.github.chikyukido.lovelystats.save.PlaytimeStatsStorage;
 import io.github.chikyukido.lovelystats.types.PlaytimeStats;
 
@@ -8,7 +9,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PlaytimeStatsHandler {
-
+    public static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     private static final PlaytimeStatsHandler INSTANCE = new PlaytimeStatsHandler();
     private final ConcurrentHashMap<UUID, PlaytimeStats> players = new ConcurrentHashMap<>();
 
@@ -19,23 +20,12 @@ public class PlaytimeStatsHandler {
     }
 
     public static void init() {
-        try {
-            var loaded = PlaytimeStatsStorage.INSTANCE.loadAll();
-            for (PlaytimeStats stats : loaded) {
-                INSTANCE.players.put(stats.getUuid(), stats);
-            }
-        } catch (IOException ignored) {}
-    }
-
-    public void savePlayer(UUID uuid) {
-        PlaytimeStats stats = players.get(uuid);
-        if (stats != null && stats.isDirty()) {
-            try {
-                PlaytimeStatsStorage.INSTANCE.store(stats);
-                stats.clearDirty();
-            } catch (Exception ignored) {}
+        var loaded = PlaytimeStatsStorage.INSTANCE.loadAll();
+        for (PlaytimeStats stats : loaded) {
+            INSTANCE.players.put(stats.getUuid(), stats);
         }
     }
+
 
     public void saveAllPlayers() {
         for (PlaytimeStats stats : players.values()) {
@@ -43,7 +33,9 @@ public class PlaytimeStatsHandler {
                 try {
                     PlaytimeStatsStorage.INSTANCE.store(stats);
                     stats.clearDirty();
-                } catch (Exception ignored) {}
+                } catch (IOException e) {
+                    LOGGER.atWarning().withCause(e).log("Failed to save playtime stats for player %s", stats.getUuid());
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 package io.github.chikyukido.lovelystats.handler;
 
+import com.hypixel.hytale.logger.HytaleLogger;
 import io.github.chikyukido.lovelystats.save.EntityStatsStorage;
 import io.github.chikyukido.lovelystats.types.EntityStats;
 
@@ -8,7 +9,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class EntityStatsHandler {
-
+    public static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     private static final EntityStatsHandler INSTANCE = new EntityStatsHandler();
     private final ConcurrentHashMap<UUID, EntityStats> players = new ConcurrentHashMap<>();
 
@@ -19,23 +20,9 @@ public class EntityStatsHandler {
     }
 
     public static void init() {
-        try {
-            var loaded = EntityStatsStorage.INSTANCE.loadAll();
-            for (EntityStats stats : loaded) {
-                INSTANCE.players.put(stats.getUuid(), stats);
-            }
-        } catch (IOException ignored) {
-        }
-    }
-
-    public void savePlayer(UUID uuid) {
-        EntityStats stats = players.get(uuid);
-        if (stats != null && stats.isDirty()) {
-            try {
-                EntityStatsStorage.INSTANCE.store(stats);
-                stats.clearDirty();
-            } catch (Exception ignored) {
-            }
+        var loaded = EntityStatsStorage.INSTANCE.loadAll();
+        for (EntityStats stats : loaded) {
+            INSTANCE.players.put(stats.getUuid(), stats);
         }
     }
 
@@ -45,7 +32,8 @@ public class EntityStatsHandler {
                 try {
                     EntityStatsStorage.INSTANCE.store(stats);
                     stats.clearDirty();
-                } catch (Exception ignored) {
+                } catch (IOException e) {
+                    LOGGER.atWarning().withCause(e).log("Failed to save entity stats for player %s", stats.getUuid());
                 }
             }
         }

@@ -1,5 +1,6 @@
 package io.github.chikyukido.lovelystats.handler;
 
+import com.hypixel.hytale.logger.HytaleLogger;
 import io.github.chikyukido.lovelystats.save.PlayerStatsStorage;
 import io.github.chikyukido.lovelystats.types.PlayerStats;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
@@ -10,7 +11,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerStatsHandler {
-
+    public static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     private static final PlayerStatsHandler INSTANCE = new PlayerStatsHandler();
     private final ConcurrentHashMap<UUID, PlayerStats> players = new ConcurrentHashMap<>();
     private final Long2ObjectMap<PlayerStats> playersFast = new Long2ObjectOpenHashMap<>();
@@ -22,26 +23,15 @@ public class PlayerStatsHandler {
     }
 
     public static void init() {
-        try {
-            var loadedPlayers = PlayerStatsStorage.INSTANCE.loadAll();
-            for (PlayerStats player : loadedPlayers) {
-                INSTANCE.players.put(player.getUuid(), player);
-                INSTANCE.playersFast.put(player.getUuid().getMostSignificantBits(), player);
-            }
-        } catch (IOException ignored) {
+
+        var loadedPlayers = PlayerStatsStorage.INSTANCE.loadAll();
+        for (PlayerStats player : loadedPlayers) {
+            INSTANCE.players.put(player.getUuid(), player);
+            INSTANCE.playersFast.put(player.getUuid().getMostSignificantBits(), player);
         }
+
     }
 
-    public void savePlayer(UUID uuid) {
-        PlayerStats player = players.get(uuid);
-        if (player != null && player.isDirty()) {
-            try {
-                PlayerStatsStorage.INSTANCE.store(player);
-                player.clearDirty();
-            } catch (IOException ignored) {
-            }
-        }
-    }
 
     public void saveAllPlayers() {
         for (PlayerStats player : players.values()) {
@@ -49,7 +39,8 @@ public class PlayerStatsHandler {
                 try {
                     PlayerStatsStorage.INSTANCE.store(player);
                     player.clearDirty();
-                } catch (IOException ignored) {
+                } catch (IOException e) {
+                    LOGGER.atWarning().withCause(e).log("Failed to save entity stats for player %s", player.getUuid());
                 }
             }
         }

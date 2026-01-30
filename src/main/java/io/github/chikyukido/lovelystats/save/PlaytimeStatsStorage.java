@@ -16,8 +16,7 @@ public class PlaytimeStatsStorage implements StatsStorage<PlaytimeStats> {
         DATA_FOLDER.mkdirs();
     }
 
-    private PlaytimeStatsStorage() {
-    }
+    private PlaytimeStatsStorage() {}
 
     @Override
     public void store(PlaytimeStats player) throws IOException {
