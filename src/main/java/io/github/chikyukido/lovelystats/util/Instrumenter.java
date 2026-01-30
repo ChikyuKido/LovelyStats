@@ -3,7 +3,7 @@ package io.github.chikyukido.lovelystats.util;
 import java.util.concurrent.atomic.LongAdder;
 
 public final class Instrumenter {
-    public static boolean ENABLED = false;
+    public static final boolean ENABLED = false;
     private static final Instrumenter INSTANCE = new Instrumenter();
     private static final int MAX_FUNCS = 16;
 
@@ -38,8 +38,8 @@ public final class Instrumenter {
 
     public static void exit(int id, long startNs) {
         if (!ENABLED) return;
-        INSTANCE.calls[id].increment();
         INSTANCE.timeNs[id].add(System.nanoTime() - startNs);
+        INSTANCE.calls[id].increment();
     }
 
     @Override

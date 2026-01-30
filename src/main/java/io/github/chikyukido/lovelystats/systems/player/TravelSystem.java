@@ -14,7 +14,6 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import io.github.chikyukido.lovelystats.handler.PlayerStatsHandler;
 import io.github.chikyukido.lovelystats.types.PlayerStats;
-import io.github.chikyukido.lovelystats.util.Instrumenter;
 import it.unimi.dsi.fastutil.longs.Long2BooleanMap;
 import it.unimi.dsi.fastutil.longs.Long2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
@@ -24,7 +23,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class TravelSystem extends DelayedEntitySystem<EntityStore> {
-    private static final int INSTRUMENTER_ID_END = Instrumenter.register("TravelSystemEnd");
     Long2ObjectMap<Vector3d> lastPositions = new Long2ObjectOpenHashMap<>();
     Long2BooleanMap lastJumping = new Long2BooleanOpenHashMap();
 
@@ -34,12 +32,10 @@ public class TravelSystem extends DelayedEntitySystem<EntityStore> {
 
     @Override
     public void tick(float v, int i, @Nonnull ArchetypeChunk<EntityStore> archetypeChunk, @Nonnull Store<EntityStore> store, @Nonnull CommandBuffer<EntityStore> commandBuffer) {
-        long start = Instrumenter.enter(INSTRUMENTER_ID_END);
         PlayerRef player = archetypeChunk.getComponent(i, PlayerRef.getComponentType());
         TransformComponent transform = archetypeChunk.getComponent(i, TransformComponent.getComponentType());
         MovementStatesComponent state = archetypeChunk.getComponent(i, MovementStatesComponent.getComponentType());
         if (player == null || transform == null || state == null) {
-            Instrumenter.exit(INSTRUMENTER_ID_END,start);
             return;
         }
         long key = player.getUuid().getMostSignificantBits();
@@ -48,7 +44,6 @@ public class TravelSystem extends DelayedEntitySystem<EntityStore> {
 
         double distance = lastPos.distanceTo(currentPosition);
         if (distance <= 0.0 || Double.isNaN(distance)) {
-            Instrumenter.exit(INSTRUMENTER_ID_END,start);
             return;
         }
         double elevation = currentPosition.y-lastPos.y;
@@ -85,7 +80,6 @@ public class TravelSystem extends DelayedEntitySystem<EntityStore> {
 
         lastPos.assign(currentPosition);
         lastJumping.put(key, states.jumping);
-        Instrumenter.exit(INSTRUMENTER_ID_END,start);
     }
 
     @Nullable
