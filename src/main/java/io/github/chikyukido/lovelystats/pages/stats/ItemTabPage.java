@@ -23,17 +23,21 @@ public class ItemTabPage extends TablePage {
         config.getRows().add(new TablePageRow("Crafted", 120, TablePageRowType.LONG, TablePageRowVisualizeType.STRING));
 
         List<ItemStatsData> statsList = aggregate(playerRef.getUuid());
-        Object[][] values = new Object[statsList.size()][];
+        List<Object[]> rows = new ArrayList<>();
 
-        for (int i = 0; i < statsList.size(); i++) {
-            values[i] = aggregateRow(statsList.get(i));
+        for (ItemStatsData stats : statsList) {
+            Object[] value = aggregateRow(stats);
+            if (!"Unknown Block".equals(value[1])) {
+                rows.add(value);
+            }
         }
+        Object[][] values = rows.toArray(new Object[0][]);
 
         config.setValues(values);
     }
 
     private Object[] aggregateRow(ItemStatsData stats) {
-        Object[] data = new Object[config.getRows().size() + 1];  // +1 for icon
+        Object[] data = new Object[config.getRows().size() + 1];
         data[0] = IdHashMap.realIcon(stats.blockId());
         data[1] = IdHashMap.realName(stats.blockId());
         data[2] = stats.placed;

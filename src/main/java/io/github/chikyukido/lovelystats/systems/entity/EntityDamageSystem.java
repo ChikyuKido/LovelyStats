@@ -3,6 +3,7 @@ package io.github.chikyukido.lovelystats.systems.entity;
 import com.hypixel.hytale.component.*;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.EntityEventSystem;
+import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.modules.entity.damage.Damage;
 import com.hypixel.hytale.server.core.modules.entitystats.EntityStatMap;
@@ -13,6 +14,7 @@ import com.hypixel.hytale.server.npc.entities.NPCEntity;
 import io.github.chikyukido.lovelystats.handler.EntityStatsHandler;
 import io.github.chikyukido.lovelystats.handler.PlayerStatsHandler;
 import io.github.chikyukido.lovelystats.util.Murmur3;
+import io.github.chikyukido.lovelystats.util.NPCRoles;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -48,6 +50,8 @@ public class EntityDamageSystem extends EntityEventSystem<EntityStore, Damage> {
 
             Player player = store.getComponent(sourceRef,Player.getComponentType());
             if(player == null) return;
+
+            player.sendMessage(Message.raw(sanitizeRoleName(npc.getRoleName())));
             EntityStatsHandler.get().increaseDamageDealt(player.getUuid(), Murmur3.hash64(sanitizeRoleName(npc.getRoleName())), damage.getAmount());
             if(died) {
                 EntityStatsHandler.get().increaseKilled(player.getUuid(), Murmur3.hash64(sanitizeRoleName(npc.getRoleName())));
@@ -81,16 +85,7 @@ public class EntityDamageSystem extends EntityEventSystem<EntityStore, Damage> {
         }
     }
     private String sanitizeRoleName(String roleName) {
-        if (roleName.contains("_Patrol")) {
-            roleName = roleName.replace("_Patrol", "");
-        }
-        if (roleName.contains("_Wander")) {
-            roleName = roleName.replace("_Wander", "");
-        }
-        if (roleName.contains("Frog")) {
-            roleName = "Frog_Green";
-        }
-        return roleName;
+        return NPCRoles.getRole(roleName);
     }
     @Nullable
     @Override

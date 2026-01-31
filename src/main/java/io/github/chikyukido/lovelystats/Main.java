@@ -21,8 +21,10 @@ import io.github.chikyukido.lovelystats.systems.player.TravelSystem;
 import io.github.chikyukido.lovelystats.systems.playtime.PlaytimePlayerSystem;
 import io.github.chikyukido.lovelystats.util.IdHashMap;
 import io.github.chikyukido.lovelystats.util.Instrumenter;
+import io.github.chikyukido.lovelystats.util.NPCRoles;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class Main extends JavaPlugin {
@@ -51,13 +53,6 @@ public class Main extends JavaPlugin {
 
         this.getEntityStoreRegistry().registerSystem(new TravelSystem());
 
-
-        ItemStatsHandler.init();
-        PlaytimeStatsHandler.init();
-        PlayerStatsHandler.init();
-        EntityStatsHandler.init();
-        RecordedPlayerHandler.init();
-
         PlaytimePlayerSystem.registerPlaytimeSystem();
         LastInteractionSystem.registerLastInteractionSystem();
         ItemCollectedSystem.registerItemCollectedSystem();
@@ -79,7 +74,16 @@ public class Main extends JavaPlugin {
     @Override
     protected void start() {
         IdHashMap.init();
-
+        try {
+            NPCRoles.init();
+        }catch (IOException e) {
+            getLogger().atWarning().withCause(e).log("Failed to load NPC roles");
+        }
+        ItemStatsHandler.init();
+        PlaytimeStatsHandler.init();
+        PlayerStatsHandler.init();
+        EntityStatsHandler.init();
+        RecordedPlayerHandler.init();
     }
 
 }

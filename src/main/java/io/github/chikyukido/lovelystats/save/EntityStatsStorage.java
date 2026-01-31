@@ -2,6 +2,9 @@ package io.github.chikyukido.lovelystats.save;
 
 import io.github.chikyukido.lovelystats.types.EntityStats;
 import io.github.chikyukido.lovelystats.types.EntityStats.SingleEntityStats;
+import io.github.chikyukido.lovelystats.util.IdHashMap;
+import io.github.chikyukido.lovelystats.util.Murmur3;
+import io.github.chikyukido.lovelystats.util.NPCRoles;
 
 import java.io.*;
 import java.util.Map;
@@ -66,12 +69,26 @@ public class EntityStatsStorage implements StatsStorage<EntityStats> {
 
             for (int i = 0; i < entityCount; i++) {
                 long entityID = in.readLong();
+                String entityIDStr = IdHashMap.ENTITY_ID_HASHMAP.get(entityID);
+                if(entityIDStr == null) {
+                    continue;
+                }
+                String sanitizedIDStr = NPCRoles.getRole(entityIDStr);
                 long killed = in.readLong();
                 long killedBy = in.readLong();
                 double damageDealt = in.readDouble();
                 double damageReceived = in.readDouble();
-
-                entities.put(entityID, new SingleEntityStats(entityID, killed, killedBy, damageDealt, damageReceived));
+                long newEntityID = Murmur3.hash64(sanitizedIDStr);
+                if(!entities.containsKey(newEntityID)) {
+                    entities.put(entityID, new SingleEntityStats(newEntityID, killed, killedBy, damageDealt, damageReceived));
+                }else {
+                    entities.compute(newEntityID, (k, stat) -> new SingleEntityStats(stat.getEntityID(),
+                            stat.getKilled() + killed,
+                            stat.getKilledBy() + killedBy,
+                            stat.getDamageDealt() + damageDealt,
+                            stat.getDamageReceived() + damageReceived)
+                    );
+                }
             }
         }
 

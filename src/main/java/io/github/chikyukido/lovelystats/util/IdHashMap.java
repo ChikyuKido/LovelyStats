@@ -7,16 +7,19 @@ import com.hypixel.hytale.server.core.asset.type.item.config.Item;
 import com.hypixel.hytale.server.npc.NPCPlugin;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class IdHashMap {
-
     public static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
-
+    private static final List<String> ownEntityIcon = List.of(
+            "Skeleton"
+    );
 
     public static final Map<Long, String> ITEM_HASHMAP = new HashMap<>();
     public static final Map<Long, String> ITEM_ICON_HASHMAP = new HashMap<>();
     public static final Map<Long, String> ENTITY_HASHMAP = new HashMap<>();
+    public static final Map<Long, String> ENTITY_ID_HASHMAP = new HashMap<>();
     public static final Map<Long, String> ENTITY_ICON_HASHMAP = new HashMap<>();
 
     public static void init() {
@@ -51,15 +54,14 @@ public class IdHashMap {
 
         for (String id : NPCPlugin.get().getBuilderManager().getTemplateNames()) {
             if(ENTITY_HASHMAP.containsKey(Murmur3.hash64(id))) continue;
-            ENTITY_HASHMAP.put(Murmur3.hash64(id),Message.translation("server.npcRoles."+id+".name").getAnsiMessage());
-            ENTITY_ICON_HASHMAP.put(Murmur3.hash64(id),"UI/Custom/Pages/Memories/npcs/"+id+".png");
+            ENTITY_ID_HASHMAP.put(Murmur3.hash64(id),id);
+            sanitizeEntityIcon(id);
         }
 
         long endTime = System.nanoTime();
         long durationMs = (endTime - startTime) / 1_000_000;
         LOGGER.atInfo().log("Loaded %d block names in %dms",ITEM_HASHMAP.size(), durationMs);
     }
-
 
     public static String realName(long hash) {
         return ITEM_HASHMAP.getOrDefault(hash, "Unknown Block");
@@ -72,5 +74,21 @@ public class IdHashMap {
     }
     public static String realIcon(long hash) {
         return ITEM_ICON_HASHMAP.getOrDefault(hash, "Unknown Block");
+    }
+
+    private static void sanitizeEntityIcon(String id) {
+        String name = Message.translation("server.npcRoles."+id+".name").getAnsiMessage();
+        if(name.equals("server.npcRoles."+id+".name")) {
+            name = id;
+        }
+        String icon = ENTITY_ICON_HASHMAP.getOrDefault(Murmur3.hash64(id),"UI/Custom/Pages/Memories/npcs/"+id+".png");
+        for (String own : ownEntityIcon) {
+            if (name.equals(own)) {
+                icon = "UI/Custom/own/" + id + ".png";
+                break;
+            }
+        }
+        ENTITY_HASHMAP.put(Murmur3.hash64(id),name);
+        ENTITY_ICON_HASHMAP.put(Murmur3.hash64(id),icon);
     }
 }

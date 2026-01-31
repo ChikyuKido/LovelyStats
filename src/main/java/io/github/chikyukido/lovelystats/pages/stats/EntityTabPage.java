@@ -14,11 +14,11 @@ public class EntityTabPage extends TablePage {
     public EntityTabPage(UpdateHandler parent, PlayerRef playerRef) {
         super(parent, playerRef, new TablePageConfig("EntityTab", 0, true));
         config.setIconSize(30);
-        config.getRows().add(new TablePageRow("Name", 160, TablePageRowType.STRING, TablePageRowVisualizeType.STRING));
+        config.getRows().add(new TablePageRow("Name", 240, TablePageRowType.STRING, TablePageRowVisualizeType.STRING));
         config.getRows().add(new TablePageRow("Killed", 120, TablePageRowType.LONG, TablePageRowVisualizeType.STRING));
-        config.getRows().add(new TablePageRow("KilledBy", 120, TablePageRowType.LONG, TablePageRowVisualizeType.STRING));
-        config.getRows().add(new TablePageRow("DamageDealt", 140, TablePageRowType.DOUBLE, TablePageRowVisualizeType.STRING));
-        config.getRows().add(new TablePageRow("DamageReceived", 140, TablePageRowType.DOUBLE, TablePageRowVisualizeType.STRING));
+        config.getRows().add(new TablePageRow("Died By", 120, TablePageRowType.LONG, TablePageRowVisualizeType.STRING));
+        config.getRows().add(new TablePageRow("Dmg Dealt", 100, TablePageRowType.DOUBLE, TablePageRowVisualizeType.STRING));
+        config.getRows().add(new TablePageRow("Dmg Taken", 100, TablePageRowType.DOUBLE, TablePageRowVisualizeType.STRING));
 
         EntityStats stats = EntityStatsHandler.get().getEntityStatsFor(playerRef.getUuid());
         List<EntityStats.SingleEntityStats> entities = stats.getEntities().values().stream().toList();
