@@ -3,7 +3,6 @@ package io.github.chikyukido.lovelystats.systems.entity;
 import com.hypixel.hytale.component.*;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.EntityEventSystem;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.modules.entity.damage.Damage;
 import com.hypixel.hytale.server.core.modules.entitystats.EntityStatMap;
@@ -51,7 +50,6 @@ public class EntityDamageSystem extends EntityEventSystem<EntityStore, Damage> {
             Player player = store.getComponent(sourceRef,Player.getComponentType());
             if(player == null) return;
 
-            player.sendMessage(Message.raw(sanitizeRoleName(npc.getRoleName())));
             EntityStatsHandler.get().increaseDamageDealt(player.getUuid(), Murmur3.hash64(sanitizeRoleName(npc.getRoleName())), damage.getAmount());
             if(died) {
                 EntityStatsHandler.get().increaseKilled(player.getUuid(), Murmur3.hash64(sanitizeRoleName(npc.getRoleName())));
