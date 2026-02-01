@@ -8,11 +8,13 @@ import io.github.chikyukido.lovelystats.types.EntityStats;
 import io.github.chikyukido.lovelystats.util.IdHashMap;
 
 import java.util.List;
+import java.util.UUID;
 
 public class EntityTabPage extends TablePage {
-
-    public EntityTabPage(UpdateHandler parent, PlayerRef playerRef) {
+    private final UUID statsUUID;
+    public EntityTabPage(UpdateHandler parent, PlayerRef playerRef, UUID statsUUID) {
         super(parent, playerRef, new TablePageConfig("EntityTab", 0, true));
+        this.statsUUID = statsUUID;
         config.setIconSize(30);
         config.getRows().add(new TablePageRow("Name", 240, TablePageRowType.STRING, TablePageRowVisualizeType.STRING));
         config.getRows().add(new TablePageRow("Killed", 120, TablePageRowType.LONG, TablePageRowVisualizeType.STRING));
@@ -20,7 +22,7 @@ public class EntityTabPage extends TablePage {
         config.getRows().add(new TablePageRow("Dmg Dealt", 100, TablePageRowType.DOUBLE, TablePageRowVisualizeType.STRING));
         config.getRows().add(new TablePageRow("Dmg Taken", 100, TablePageRowType.DOUBLE, TablePageRowVisualizeType.STRING));
 
-        EntityStats stats = EntityStatsHandler.get().getEntityStatsFor(playerRef.getUuid());
+        EntityStats stats = EntityStatsHandler.get().getEntityStatsFor(statsUUID);
         List<EntityStats.SingleEntityStats> entities = stats.getEntities().values().stream().toList();
         Object[][] values = new Object[entities.size()][];
 

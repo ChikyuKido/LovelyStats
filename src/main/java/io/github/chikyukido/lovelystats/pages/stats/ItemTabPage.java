@@ -10,9 +10,10 @@ import io.github.chikyukido.lovelystats.util.IdHashMap;
 import java.util.*;
 
 public class ItemTabPage extends TablePage {
-
-    public ItemTabPage(UpdateHandler parent, PlayerRef playerRef) {
+    private final UUID statsUUID;
+    public ItemTabPage(UpdateHandler parent, PlayerRef playerRef, UUID statsUUID) {
         super(parent, playerRef, new TablePageConfig("ItemTab", 0, true));
+        this.statsUUID = statsUUID;
         config.setIconSize(30);
 
         config.getRows().add(new TablePageRow("Name", 160, TablePageRowType.STRING, TablePageRowVisualizeType.STRING));
@@ -22,7 +23,7 @@ public class ItemTabPage extends TablePage {
         config.getRows().add(new TablePageRow("Dropped", 120, TablePageRowType.LONG, TablePageRowVisualizeType.STRING));
         config.getRows().add(new TablePageRow("Crafted", 120, TablePageRowType.LONG, TablePageRowVisualizeType.STRING));
 
-        List<ItemStatsData> statsList = aggregate(playerRef.getUuid());
+        List<ItemStatsData> statsList = aggregate(statsUUID);
         List<Object[]> rows = new ArrayList<>();
 
         for (ItemStatsData stats : statsList) {

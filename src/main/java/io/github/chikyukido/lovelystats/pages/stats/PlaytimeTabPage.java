@@ -19,16 +19,17 @@ import java.util.List;
 import java.util.UUID;
 
 public class PlaytimeTabPage extends TabPage {
-    public PlaytimeTabPage(StatsPage parent, PlayerRef playerRef) {
+    private final UUID statsUUID;
+    public PlaytimeTabPage(StatsPage parent, PlayerRef playerRef, UUID statsUUID) {
         super(parent,playerRef);
+        this.statsUUID = statsUUID;
     }
-
 
     @Override
     public void build(UICommandBuilder cb, UIEventBuilder event) {
         cb.append("#TabPages", "stats/playtime/playtime_page.ui");
 
-        PlaytimeStats stats = PlaytimeStatsHandler.get().getPlaytimeForPlayer(playerRef.getUuid());
+        PlaytimeStats stats = PlaytimeStatsHandler.get().getPlaytimeForPlayer(statsUUID);
 
         cb.set("#TotalPlaytime.Text", OwnFormat.formatTime(stats.getTotalPlaytime()));
         cb.set("#TotalActiveTime.Text", OwnFormat.formatTime(stats.getTotalActivePlaytime()));
@@ -69,7 +70,7 @@ public class PlaytimeTabPage extends TabPage {
         }
 
 
-        List<PlaytimePeriod> periods = getPeriods(playerRef.getUuid(), PeriodType.DAY, 7);
+        List<PlaytimePeriod> periods = getPeriods(statsUUID, PeriodType.DAY, 7);
         for (int i = 0; i < 7; i++) {
             PlaytimePeriod p = i < periods.size() ? periods.get(i) : null;
             cb.set("#Row"+(i+1)+" #Date" + (i+1) + ".Text", p != null ? p.label : "-");
@@ -88,7 +89,7 @@ public class PlaytimeTabPage extends TabPage {
             cb.set("#SessionRow"+(i+1)+" #Idle" + (i+1) + ".Text", s != null ? OwnFormat.formatTime(s.getIdleTime()) : "-");
         }
 
-        int[] distBuckets = getSessionDistribution(playerRef.getUuid());
+        int[] distBuckets = getSessionDistribution(statsUUID);
         for (int i = 0; i < 5; i++) {
             cb.set("#Dist" + (i+1) + "Value.Text", "" + (i < distBuckets.length ? distBuckets[i] : 0));
         }

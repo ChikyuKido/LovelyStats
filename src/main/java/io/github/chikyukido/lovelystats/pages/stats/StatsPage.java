@@ -24,11 +24,11 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> implement
     public static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
     private TabPage currentPage;
     private String currentPageName = "player";
-    private final UUID playerUUID;
+    private final UUID statsUUID;
 
-    public StatsPage(@Nonnull PlayerRef playerRef, UUID playerUUID) {
+    public StatsPage(@Nonnull PlayerRef playerRef, UUID statssUUID) {
         super(playerRef, CustomPageLifetime.CanDismiss,Data.CODEX);
-        this.playerUUID = playerUUID;
+        this.statsUUID = statssUUID;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> implement
         event.addEventBinding(CustomUIEventBindingType.Activating,"#BlocksTab", EventData.of("Button","block"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#EntityTab", EventData.of("Button","entity"),false);
         event.addEventBinding(CustomUIEventBindingType.Activating,"#ConfigTab", EventData.of("Button","config"),false);
-        currentPage = new PlayerTabPage(this,playerRef);
+        currentPage = new PlayerTabPage(this,playerRef,statsUUID);
         currentPage.build(cb,event);
     }
 
@@ -60,10 +60,10 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> implement
         if(currentPageName.equals(page)) return;
         currentPageName = page;
         switch (page) {
-            case "player" -> currentPage = new PlayerTabPage(this,playerRef);
-            case "block" -> currentPage = new ItemTabPage(this,playerRef);
-            case "entity" -> currentPage = new EntityTabPage(this,playerRef);
-            case "playtime" -> currentPage = new PlaytimeTabPage(this,playerRef);
+            case "player" -> currentPage = new PlayerTabPage(this,playerRef,statsUUID);
+            case "block" -> currentPage = new ItemTabPage(this,playerRef,statsUUID);
+            case "entity" -> currentPage = new EntityTabPage(this,playerRef,statsUUID);
+            case "playtime" -> currentPage = new PlaytimeTabPage(this,playerRef,statsUUID);
             case "config" -> currentPage = new ConfigTabPage(this,playerRef);
         }
         UICommandBuilder cb = new UICommandBuilder();
@@ -84,7 +84,7 @@ public class StatsPage extends InteractiveCustomUIPage<StatsPage.Data> implement
 
         currentPage.build(cb,event);
         super.sendUpdate(cb,event,false);
-        long end = System.currentTimeMillis();
+//        long end = System.currentTimeMillis();
 //        LOGGER.atInfo().log("Rebuild Stats page in %dms", end-start);
     }
     @Override

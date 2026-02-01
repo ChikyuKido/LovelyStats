@@ -18,10 +18,13 @@ import io.github.chikyukido.lovelystats.types.PlaytimeStats;
 import io.github.chikyukido.lovelystats.util.OwnFormat;
 
 import javax.annotation.Nonnull;
+import java.util.UUID;
 
 public class PlayerTabPage extends TabPage {
-    public PlayerTabPage(StatsPage parent,  PlayerRef playerRef) {
+    private final UUID statsUUID;
+    public PlayerTabPage(StatsPage parent, PlayerRef playerRef, UUID statsUUID) {
         super(parent,playerRef);
+        this.statsUUID = statsUUID;
     }
 
 
@@ -44,7 +47,7 @@ public class PlayerTabPage extends TabPage {
     }
 
     private void buildEntityStats(UICommandBuilder cb) {
-        var entityStats = EntityStatsHandler.get().getEntityStatsFor(playerRef.getUuid());
+        var entityStats = EntityStatsHandler.get().getEntityStatsFor(statsUUID);
 
         addSection(cb, "Entities");
         addStat(cb, "Kills:", String.valueOf(entityStats.getTotalKilled()));
@@ -54,7 +57,7 @@ public class PlayerTabPage extends TabPage {
     }
 
     private void buildItemStats(UICommandBuilder cb) {
-        var itemStats = ItemStatsHandler.get().getBlockPlayer(playerRef.getUuid());
+        var itemStats = ItemStatsHandler.get().getBlockPlayer(statsUUID);
 
         addSection(cb, "Items");
         addStat(cb, "Blocks Placed:", String.valueOf(itemStats.getTotalBlocksPlaced()));
@@ -65,7 +68,7 @@ public class PlayerTabPage extends TabPage {
     }
 
     private void buildPlayerStats(UICommandBuilder cb) {
-        PlayerStats ps = PlayerStatsHandler.get().getPlayerStats(playerRef.getUuid());
+        PlayerStats ps = PlayerStatsHandler.get().getPlayerStats(statsUUID);
 
         addSection(cb, "Player");
         addStat(cb, "Deaths:", String.valueOf(ps.getDeaths()+ps.getPlayerDeaths()));
@@ -73,7 +76,7 @@ public class PlayerTabPage extends TabPage {
         addStat(cb, "Chat Messages:", String.valueOf(ps.getChatMessages()));
     }
     private void buildPVPStats(UICommandBuilder cb) {
-        PlayerStats ps = PlayerStatsHandler.get().getPlayerStats(playerRef.getUuid());
+        PlayerStats ps = PlayerStatsHandler.get().getPlayerStats(statsUUID);
 
         addSection(cb, "PVP");
         addStat(cb, "Kills:", String.valueOf(ps.getPlayerKills()));
@@ -84,7 +87,7 @@ public class PlayerTabPage extends TabPage {
 
 
     private void buildPlaytimeStats(UICommandBuilder cb) {
-        PlaytimeStats pts = PlaytimeStatsHandler.get().getPlaytimeForPlayer(playerRef.getUuid());
+        PlaytimeStats pts = PlaytimeStatsHandler.get().getPlaytimeForPlayer(statsUUID);
 
         addSection(cb, "Playtime");
         addStat(cb, "Total Playtime:", OwnFormat.formatTime(pts.getTotalPlaytime()));
@@ -93,7 +96,7 @@ public class PlayerTabPage extends TabPage {
     }
 
     private void buildActivityStats(UICommandBuilder cb) {
-        PlayerStats ps = PlayerStatsHandler.get().getPlayerStats(playerRef.getUuid());
+        PlayerStats ps = PlayerStatsHandler.get().getPlayerStats(statsUUID);
 
         addSection(cb, "Activity");
         addStat(cb, "Walked:", OwnFormat.formatDistance(ps.getDistanceWalked()));
