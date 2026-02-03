@@ -29,9 +29,7 @@ public class PlayerStatsHandler {
             INSTANCE.players.put(player.getUuid(), player);
             INSTANCE.playersFast.put(player.getUuid().getMostSignificantBits(), player);
         }
-
     }
-
 
     public void saveAllPlayers() {
         for (PlayerStats player : players.values()) {
@@ -83,7 +81,6 @@ public class PlayerStatsHandler {
         ps.addPlayerDamageReceived(amount);
         ps.markDirty();
     }
-
 
     public PlayerStats getPlayerStats(UUID uuid) {
         long key = uuid.getMostSignificantBits();

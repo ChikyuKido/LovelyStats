@@ -3,6 +3,8 @@ package io.github.chikyukido.lovelystats.save;
 import io.github.chikyukido.lovelystats.types.PlayerStats;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 public class PlayerStatsStorage implements StatsStorage<PlayerStats> {
@@ -112,8 +114,18 @@ public class PlayerStatsStorage implements StatsStorage<PlayerStats> {
             out.writeDouble(player.getPlayerDamageReceived());
         }
 
-        if (!temp.renameTo(file)) {
-            throw new IOException("Failed to save player stats file: " + file.getAbsolutePath());
+        try {
+            Files.move(
+                    temp.toPath(),
+                    file.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING,
+                    StandardCopyOption.ATOMIC_MOVE
+            );
+        } catch (IOException e) {
+            throw new IOException(
+                    "Failed to save player stats file: " + file.getAbsolutePath(),
+                    e
+            );
         }
     }
 }

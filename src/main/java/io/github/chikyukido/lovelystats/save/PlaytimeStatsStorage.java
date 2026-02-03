@@ -4,6 +4,8 @@ import io.github.chikyukido.lovelystats.types.PlaytimeSession;
 import io.github.chikyukido.lovelystats.types.PlaytimeStats;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
 
@@ -57,8 +59,18 @@ public class PlaytimeStatsStorage implements StatsStorage<PlaytimeStats> {
             }
         }
 
-        if (!temp.renameTo(file)) {
-            throw new IOException("Failed to save player file: " + file.getAbsolutePath());
+        try {
+            Files.move(
+                    temp.toPath(),
+                    file.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING,
+                    StandardCopyOption.ATOMIC_MOVE
+            );
+        } catch (IOException e) {
+            throw new IOException(
+                    "Failed to save entity playtime file: " + file.getAbsolutePath(),
+                    e
+            );
         }
     }
 

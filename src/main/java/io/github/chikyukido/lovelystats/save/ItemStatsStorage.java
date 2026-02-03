@@ -3,6 +3,8 @@ package io.github.chikyukido.lovelystats.save;
 import io.github.chikyukido.lovelystats.types.ItemStats;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.UUID;
 
@@ -38,8 +40,18 @@ public class ItemStatsStorage implements StatsStorage<ItemStats> {
             writeMap(out, player.getToolsBroken());
         }
 
-        if (!temp.renameTo(file)) {
-            throw new IOException("Failed to save player file: " + file.getAbsolutePath());
+        try {
+            Files.move(
+                    temp.toPath(),
+                    file.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING,
+                    StandardCopyOption.ATOMIC_MOVE
+            );
+        } catch (IOException e) {
+            throw new IOException(
+                    "Failed to save items stats file: " + file.getAbsolutePath(),
+                    e
+            );
         }
     }
 
@@ -57,7 +69,6 @@ public class ItemStatsStorage implements StatsStorage<ItemStats> {
             if (version != VERSION) {
                 throw new IOException("Unsupported block player file version: " + version);
             }
-
 
             readMap(in, player.getBlocksBroken());
             readMap(in, player.getBlocksPlaced());

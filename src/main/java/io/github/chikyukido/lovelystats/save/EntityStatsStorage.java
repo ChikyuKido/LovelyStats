@@ -7,6 +7,8 @@ import io.github.chikyukido.lovelystats.util.Murmur3;
 import io.github.chikyukido.lovelystats.util.NPCRoles;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.UUID;
 
@@ -44,8 +46,18 @@ public class EntityStatsStorage implements StatsStorage<EntityStats> {
             }
         }
 
-        if (!temp.renameTo(file)) {
-            throw new IOException("Failed to save entity stats file: " + file.getAbsolutePath());
+        try {
+            Files.move(
+                    temp.toPath(),
+                    file.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING,
+                    StandardCopyOption.ATOMIC_MOVE
+            );
+        } catch (IOException e) {
+            throw new IOException(
+                    "Failed to save entity stats file: " + file.getAbsolutePath(),
+                    e
+            );
         }
     }
 

@@ -1,5 +1,5 @@
-import os
 import json
+import os
 
 manual_map = {
     "Bear_Polar": "Bear_Polar",
@@ -92,7 +92,6 @@ def scan_jsons(dir_path):
                     continue
     return result
 
-# --- Step 2: Scan PNGs ---
 def scan_pngs(dir_path):
     pngs = set()
     for root, _, files in os.walk(dir_path):
@@ -102,7 +101,6 @@ def scan_pngs(dir_path):
                 pngs.add(name)
     return pngs
 
-# --- Step 3: Compare ---
 def compare_memories(memory_map, png_set):
     memory_values = set(v for v in memory_map.values() if isinstance(v, str))
 
